@@ -2,12 +2,12 @@
   <div id="dashboard">
     <div class="container-fluid ps-0">
       <div class="row g-0">
-        <div :class="sidebar">
+        <div :class="sidebar" class="sidebar-admin sticky-top">
           <transition name="slide">
             <AdminSidebar
               v-if="sidebarStatus"
               :display="sidebarToggle"
-              msg="Dashboard"
+              menu="dashboard"
             ></AdminSidebar>
           </transition>
         </div>
@@ -39,6 +39,7 @@ export default {
       if (this.sidebarStatus == true) {
         this.sidebarStatus = false;
         this.header = "col-md-12";
+        this.sidebar = "d-none";
       } else {
         this.sidebarStatus = true;
         this.sidebar = "col-md-3";

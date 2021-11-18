@@ -157,6 +157,16 @@ input.bday[read-only] {
     margin-bottom: -5px !important;
 }
 
+.sidebar-admin {
+    position: sticky;
+    /* width: 100%; */
+    background: rgb(129, 127, 255);
+    background: linear-gradient( 283deg, rgba(129, 127, 255, 0.8547794117647058) 0%, rgba(11, 66, 215, 1) 99%);
+    height: auto;
+    padding: 10px;
+    min-height: 100vh;
+}
+
 @media screen and (max-width: 600px) {
     .vue-modal {
         max-width: 90%;

@@ -1,27 +1,41 @@
 <template>
   <div id="sidebar">
     <div class="sidebar">
-      <h3 class="mb-4">
-        {{ msg }}
-      </h3>
+      <h3 class="text-center mb-4 my-2">Dashboard</h3>
       <ul class="sidebar-ul">
-        <li class="sidebar-li">
+        <li
+          class="sidebar-li"
+          :class="menu == 'dashboard' ? 'active' : ''"
+          @click="linkTo('/admin/dashboard')"
+        >
           <vue-feather type="home" class="me-2 float-end"></vue-feather>
           <span> Dashboard </span>
         </li>
-        <li class="sidebar-li">
+        <li
+          class="sidebar-li"
+          :class="menu == 'module' ? 'active' : ''"
+          @click="linkTo('/admin/module')"
+        >
           <vue-feather type="book" class="me-2 float-end"></vue-feather>
           <span> Modules </span>
         </li>
-        <li class="sidebar-li">
+        <li class="sidebar-li" :class="menu == 'student' ? 'active' : ''">
           <vue-feather type="users" class="me-2 float-end"></vue-feather>
-          <span> Students </span>
+          <span @click="linkTo('/admin/student')"> Students </span>
           <ul class="sub-sidebar">
-            <li class="sub-sidebar-li">
+            <li
+              class="sub-sidebar-li"
+              :class="submenu == 'student' ? 'sub-active' : ''"
+              @click="linkTo('/admin/student')"
+            >
               <vue-feather type="list" class="me-2 float-end"></vue-feather>
               <span> Student List </span>
             </li>
-            <li class="sub-sidebar-li">
+            <li
+              class="sub-sidebar-li"
+              :class="submenu == 'progress' ? 'sub-active' : ''"
+              @click="linkTo('/admin/student/progress')"
+            >
               <vue-feather type="activity" class="me-2 float-end"></vue-feather>
               <span> Student Progress</span>
             </li>
@@ -40,18 +54,22 @@ import VueFeather from "vue-feather";
 export default {
   name: "AdminSidebar",
   props: {
-    msg: String,
+    menu: String,
+    submenu: String,
     display: Function,
   },
   components: {
     VueFeather,
   },
+  methods: {
+    linkTo(link) {
+      this.$router.push({ path: link });
+    },
+  },
 };
 </script>
 <style scoped>
-.sidebar {
-  position: sticky;
-  width: 100%;
+/* .sidebar {
   background: rgb(129, 127, 255);
   background: linear-gradient(
     283deg,
@@ -60,7 +78,7 @@ export default {
   );
   height: 100vh;
   padding: 10px;
-}
+} */
 
 h3 {
   text-transform: uppercase;
@@ -87,15 +105,15 @@ h3 {
 .sidebar-li:hover {
   background: #fff;
   color: rgb(25, 23, 133);
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .sub-sidebar {
   list-style: none;
   margin: 10px 0 !important;
-  padding: 10px 0 !important;
+  /* margin: 0 !important; */
+  padding: 0 !important;
   background: #fff;
-  border-radius: 5px;
   color: #000;
   transition: all 0.3s ease;
 }
@@ -114,6 +132,18 @@ h3 {
   bottom: 30px;
   background: #fff;
   left: 40%;
+}
+
+.active {
+  background: #db953f;
+  color: rgb(11, 11, 14);
+  border-radius: 10px;
+}
+
+.sub-active {
+  background: rgb(25, 23, 133);
+  color: #fff;
+  padding: 6px 10px;
 }
 
 @media screen and (max-width: 600px) {

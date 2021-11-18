@@ -10,17 +10,22 @@ const routes = [
   {
     path: '/reset/:token',
     name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../components/Home/Auth/Reset')
+    component: () => import('../components/Home/Auth/Reset')
   },
   {
     path: '/admin',
     name: 'Admin Login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Auth/Admin')
+    component: () => import('../views/Auth/Admin')
   },
   {
     path: '/admin/dashboard',
     name: 'Admin-Dashboard',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Admin/Dashboard')
+    component: () => import('../views/Admin/Dashboard')
+  },
+  {
+    path: '/admin/student',
+    name: 'Admin-Student',
+    component: () => import('../views/Admin/Student')
   }
 ]
 
