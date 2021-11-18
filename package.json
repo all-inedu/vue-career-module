@@ -1,0 +1,61 @@
+{
+  "name": "career-module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "@popperjs/core": "^2.10.2",
+    "animate.css": "^4.1.1",
+    "animejs": "^3.2.1",
+    "axios": "^0.24.0",
+    "bootstrap": "^5.1.3",
+    "core-js": "^3.6.5",
+    "feather-icons": "^4.28.0",
+    "jquery": "^3.6.0",
+    "moment": "^2.29.1",
+    "particles.vue3": "^1.20.3",
+    "sweetalert2": "^11.1.10",
+    "vue": "^3.0.0",
+    "vue-feather": "^2.0.0-rc.1",
+    "vue-router": "^4.0.0-0",
+    "vue-unicons": "^3.2.1",
+    "vue-universal-modal": "^1.1.3",
+    "vue-verification-code-input": "^1.0.0",
+    "vue3-datepicker": "^0.2.5",
+    "vue3-tel-input": "^1.0.4"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^7.0.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
