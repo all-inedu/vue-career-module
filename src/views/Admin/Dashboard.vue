@@ -1,5 +1,6 @@
 <template>
   <div id="dashboard">
+    <AdminCheck></AdminCheck>
     <div class="container-fluid ps-0">
       <div class="row g-0">
         <div :class="sidebar" class="sidebar-admin sticky-top">
@@ -19,11 +20,13 @@
   </div>
 </template>
 <script>
+import AdminCheck from "@/components/Admin/UserCheck";
 import AdminHeader from "@/components/Admin/Header";
 import AdminSidebar from "@/components/Admin/Sidebar";
 export default {
   name: "Dashboard",
   components: {
+    AdminCheck,
     AdminHeader,
     AdminSidebar,
   },
@@ -47,6 +50,34 @@ export default {
       }
     },
   },
-  created() {},
+  created() {
+    if (sessionStorage.getItem("user") != null) {
+      this.user = JSON.parse(sessionStorage.getItem("user"));
+    } else {
+      this.user = sessionStorage.getItem("user");
+    }
+  },
 };
 </script>
+<style scoped>
+.fade-enter-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.slide-leave-active,
+.slide-enter-active {
+  transition: 1s;
+}
+
+.slide-enter {
+  transform: translate(100%, 0);
+}
+
+.slide-leave-to {
+  transform: translate(-100%, 0);
+}
+</style>

@@ -1,5 +1,6 @@
 <template>
   <div id="dashboard">
+    <AdminCheck></AdminCheck>
     <div class="container-fluid ps-0">
       <div class="row g-0">
         <div :class="sidebar" class="sidebar-admin sticky-top">
@@ -7,8 +8,8 @@
             <AdminSidebar
               v-if="sidebarStatus"
               :display="sidebarToggle"
-              menu="student"
-              submenu="student"
+              menu="user"
+              submenu="user"
             ></AdminSidebar>
           </transition>
         </div>
@@ -16,9 +17,7 @@
           <AdminHeader :display="sidebarToggle"></AdminHeader>
           <div class="container p-md-3 p-2">
             <div class="row">
-              <div class="col-md-12">
-                <h4>Student List</h4>
-              </div>
+              <div class="col-md-12"></div>
 
               <div class="col-md-12">
                 <div class="row">
@@ -40,6 +39,7 @@
                   </div>
                   <div class="col-md-7 text-end">
                     <vue-feather
+                      @click="refreshProcess"
                       type="refresh-cw"
                       class="me-3 pointer"
                     ></vue-feather>
@@ -55,67 +55,78 @@
                     </div>
                   </div>
                 </div>
+                <hr class="my-2" />
               </div>
 
-              <div class="col-md-12 mt-3">
-                <div class="row row-cols-3">
-                  <div
-                    class="col mb-md-4 mb-2"
-                    v-for="item in userList.data"
-                    :key="item.id"
-                  >
-                    <div class="card h-100 shadow">
-                      <div class="card-body">
-                        <div class="row align-items-center">
-                          <div class="col-3 text-center">
-                            <vue-feather type="user" size="50"></vue-feather>
-                          </div>
-                          <div class="col-9">
-                            <h6 class="my-0 mb-2">
-                              <b class="text-uppercase">
-                                {{ item.first_name }} {{ item.last_name }}
-                                <vue-feather
-                                  v-if="item.is_verified == 1"
-                                  type="check"
-                                  stroke="green"
-                                ></vue-feather>
-                              </b>
-                            </h6>
-                            <p class="card-label text-primary">
-                              {{ item.email }}
-                            </p>
-                            <p class="card-label">
-                              {{ item.phone_number }} |
-                              {{ formatDate(item.birthday) }}
-                            </p>
+              <div class="col-md-12 mt-1">
+                <transition name="fade">
+                  <div class="row row-cols-md-3" v-if="showing">
+                    <div
+                      class="col-12 mb-md-4 mb-2"
+                      v-for="item in userList.data"
+                      :key="item.id"
+                    >
+                      <div
+                        class="card h-100 card-list"
+                        @click="goToDetail(item.id)"
+                      >
+                        <div class="card-body">
+                          <div class="row align-items-center">
+                            <div class="col-3 text-center">
+                              <vue-feather type="user" size="50"></vue-feather>
+                            </div>
+                            <div class="col-9">
+                              <h6 class="my-0 mb-2">
+                                <b class="text-uppercase">
+                                  {{ item.first_name }} {{ item.last_name }}
+                                  <vue-feather
+                                    v-if="item.is_verified == 1"
+                                    type="check"
+                                    stroke="green"
+                                  ></vue-feather>
+                                </b>
+                              </h6>
+                              <p class="card-label text-primary">
+                                {{ item.email }}
+                              </p>
+                              <p class="card-label">
+                                {{ item.phone_number }} |
+                                {{ formatDate(item.birthday) }}
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="card-footer">
-                        <div class="float-start">
-                          <label class="join-date">
+                        <div class="card-footer">
+                          <div class="float-start">
+                            <label class="join-date">
+                              <vue-feather
+                                type="calendar"
+                                size="20"
+                                class="ms-2"
+                              ></vue-feather>
+                              Join date on {{ formatDate(item.created_at) }}
+                            </label>
+                          </div>
+                          <div class="float-end">
                             <vue-feather
-                              type="calendar"
+                              type="arrow-right"
                               size="20"
                               class="ms-2"
                             ></vue-feather>
-                            Join date on {{ formatDate(item.created_at) }}
-                          </label>
-                        </div>
-                        <div class="float-end">
-                          <vue-feather
-                            type="arrow-right"
-                            size="20"
-                            class="ms-2"
-                          ></vue-feather>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </transition>
               </div>
 
-              <div class="col-md-12 mt-3">
+              <div
+                class="col-md-12 mt-3"
+                v-if="
+                  showing && userList.data.length > 0 && userList.last_page > 1
+                "
+              >
                 <nav aria-label="Page navigation example">
                   <ul class="pagination justify-content-center">
                     <li
@@ -126,7 +137,14 @@
                       <a class="page-link">Previous</a>
                     </li>
                     <div v-for="n in userList.last_page" :key="n">
-                      <li class="page-item">
+                      <li
+                        v-if="
+                          userList.current_page - 3 < n &&
+                          userList.current_page + 3 > n
+                        "
+                        class="page-item"
+                        :class="userList.current_page == n ? 'active' : ''"
+                      >
                         <a class="page-link" @click="userPage(n)" href="#">{{
                           n
                         }}</a>
@@ -141,6 +159,26 @@
                     </li>
                   </ul>
                 </nav>
+                <div class="text-center">
+                  <small>Total : {{ userList.total }} Students</small>
+                </div>
+              </div>
+
+              <div class="col-md-12" v-if="!showing">
+                <div class="text-center my-5">
+                  <vue-feather
+                    type="loader"
+                    size="50"
+                    animation="spin"
+                  ></vue-feather>
+                </div>
+              </div>
+
+              <div
+                class="col-md-12 my-5 text-center"
+                v-if="showing && !userList.data.length"
+              >
+                <h5>Sorry, data is not found.</h5>
               </div>
             </div>
           </div>
@@ -150,6 +188,7 @@
   </div>
 </template>
 <script>
+import AdminCheck from "@/components/Admin/UserCheck";
 import AdminHeader from "@/components/Admin/Header";
 import AdminSidebar from "@/components/Admin/Sidebar";
 import VueFeather from "vue-feather";
@@ -159,6 +198,7 @@ import moment from "moment";
 export default {
   name: "Student",
   components: {
+    AdminCheck,
     AdminHeader,
     AdminSidebar,
     VueFeather,
@@ -174,6 +214,8 @@ export default {
       filter: "",
       search: "",
       is_verify: false,
+      showing: false,
+      category: "",
     };
   },
   methods: {
@@ -188,24 +230,58 @@ export default {
         this.header = "col-md-9";
       }
     },
+    reload() {
+      this.showing = true;
+    },
     userPage(n) {
-      axios
-        .get(this.api_url + "user?page=" + n, {
-          headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
-          },
-        })
-        .then((res) => {
-          this.userList = res.data.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      this.showing = false;
+      if (this.category == "search") {
+        if (this.filter == "") {
+          this.filter = "name";
+        }
+        axios
+          .post(
+            this.api_url + "filter/student?page=" + n,
+            {
+              category: this.filter,
+              value: this.search,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + this.userSession.data.token,
+              },
+            }
+          )
+          .then((res) => {
+            if (res.data.success) {
+              this.reload();
+              this.userList = res.data.data;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        axios
+          .get(this.api_url + "user?page=" + n, {
+            headers: {
+              Authorization: "Bearer " + this.userSession.data.token,
+            },
+          })
+          .then((res) => {
+            this.reload();
+            this.userList = res.data.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
     formatDate(n) {
       return moment(n).format("LL");
     },
     verifyProcess() {
+      this.showing = false;
       axios
         .post(
           this.api_url + "filter/student",
@@ -220,8 +296,8 @@ export default {
           }
         )
         .then((res) => {
-          console.log(res.data);
           if (res.data.success) {
+            this.reload();
             this.userList = res.data.data;
           }
         })
@@ -230,6 +306,11 @@ export default {
         });
     },
     searchProcess() {
+      this.showing = false;
+      this.category = "search";
+      if (this.filter == "") {
+        this.filter = "name";
+      }
       axios
         .post(
           this.api_url + "filter/student",
@@ -245,12 +326,36 @@ export default {
         )
         .then((res) => {
           if (res.data.success) {
+            this.reload();
             this.userList = res.data.data;
           }
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+    refreshProcess() {
+      this.search = "";
+      this.filter = "";
+      this.showing = false;
+      axios
+        .get(this.api_url + "user", {
+          headers: {
+            Authorization: "Bearer " + this.userSession.data.token,
+          },
+        })
+        .then((res) => {
+          if (res.data.success) {
+            this.reload();
+            this.userList = res.data.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToDetail(id) {
+      this.$router.push({ path: "/admin/user/" + id });
     },
   },
   created() {
@@ -265,6 +370,7 @@ export default {
         })
         .then((res) => {
           if (res.data.success) {
+            this.reload();
             this.userList = res.data.data;
           }
         })
@@ -284,5 +390,23 @@ export default {
   font-size: 14px;
   margin: 0 !important;
   line-height: 1.5;
+}
+
+.fade-enter-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from {
+  opacity: 0;
+}
+
+.card-list {
+  transition: all 0.5s ease;
+  border: 2px solid rgb(243, 243, 243);
+  cursor: pointer;
+}
+
+.card-list:hover {
+  border: 2px solid rgb(38, 25, 114);
 }
 </style>

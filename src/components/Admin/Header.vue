@@ -29,7 +29,7 @@
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" @click="logout">
                 <vue-feather
                   type="rotate-cw"
                   stroke="blue"
@@ -57,6 +57,12 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    logout() {
+      sessionStorage.removeItem("user");
+      this.$router.push({ path: "/" });
+    },
   },
 };
 </script>

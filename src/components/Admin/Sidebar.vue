@@ -1,50 +1,55 @@
 <template>
-  <div id="sidebar">
-    <div class="sidebar">
-      <h3 class="text-center mb-4 my-2">Dashboard</h3>
-      <ul class="sidebar-ul">
-        <li
-          class="sidebar-li"
-          :class="menu == 'dashboard' ? 'active' : ''"
-          @click="linkTo('/admin/dashboard')"
-        >
-          <vue-feather type="home" class="me-2 float-end"></vue-feather>
-          <span> Dashboard </span>
-        </li>
-        <li
-          class="sidebar-li"
-          :class="menu == 'module' ? 'active' : ''"
-          @click="linkTo('/admin/module')"
-        >
-          <vue-feather type="book" class="me-2 float-end"></vue-feather>
-          <span> Modules </span>
-        </li>
-        <li class="sidebar-li" :class="menu == 'student' ? 'active' : ''">
-          <vue-feather type="users" class="me-2 float-end"></vue-feather>
-          <span @click="linkTo('/admin/student')"> Students </span>
-          <ul class="sub-sidebar">
-            <li
-              class="sub-sidebar-li"
-              :class="submenu == 'student' ? 'sub-active' : ''"
-              @click="linkTo('/admin/student')"
-            >
-              <vue-feather type="list" class="me-2 float-end"></vue-feather>
-              <span> Student List </span>
-            </li>
-            <li
-              class="sub-sidebar-li"
-              :class="submenu == 'progress' ? 'sub-active' : ''"
-              @click="linkTo('/admin/student/progress')"
-            >
-              <vue-feather type="activity" class="me-2 float-end"></vue-feather>
-              <span> Student Progress</span>
-            </li>
-          </ul>
-        </li>
-      </ul>
-
-      <div class="text-center d-md-none d-block">
-        <button class="btn btn-sidebar" @click="display">Close</button>
+  <div id="sidebar" class="sidebar">
+    <h3 class="text-center mb-4 my-2">Dashboard</h3>
+    <ul class="sidebar-ul">
+      <li
+        class="sidebar-li"
+        :class="menu == 'dashboard' ? 'active' : ''"
+        @click="linkTo('/admin/dashboard')"
+      >
+        <vue-feather type="home" class="me-2 float-end"></vue-feather>
+        <span> Dashboard </span>
+      </li>
+      <li
+        class="sidebar-li"
+        :class="menu == 'module' ? 'active' : ''"
+        @click="linkTo('/admin/module')"
+      >
+        <vue-feather type="book" class="me-2 float-end"></vue-feather>
+        <span> Modules </span>
+      </li>
+      <li class="sidebar-li" :class="menu == 'user' ? 'active' : ''">
+        <vue-feather type="users" class="me-2 float-end"></vue-feather>
+        <span @click="linkTo('/admin/student')"> Users </span>
+        <ul class="sub-sidebar">
+          <li
+            class="sub-sidebar-li"
+            :class="submenu == 'user' ? 'sub-active' : ''"
+            @click="linkTo('/admin/user')"
+          >
+            <vue-feather type="list" class="me-2 float-end"></vue-feather>
+            <span> User List </span>
+          </li>
+          <li
+            class="sub-sidebar-li"
+            :class="submenu == 'progress' ? 'sub-active' : ''"
+            @click="linkTo('/admin/user/progress')"
+          >
+            <vue-feather type="activity" class="me-2 float-end"></vue-feather>
+            <span> User Progress</span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="btn-sidebar">
+      <div class="text-center">
+        <button class="btn btn-light pb-2 pt-1">
+          <vue-feather
+            type="arrow-left"
+            class="mb-1 float-end pointer"
+            @click="display"
+          ></vue-feather>
+        </button>
       </div>
     </div>
   </div>
@@ -69,16 +74,11 @@ export default {
 };
 </script>
 <style scoped>
-/* .sidebar {
-  background: rgb(129, 127, 255);
-  background: linear-gradient(
-    283deg,
-    rgba(129, 127, 255, 0.8547794117647058) 0%,
-    rgba(11, 66, 215, 1) 99%
-  );
-  height: 100vh;
-  padding: 10px;
-} */
+.sidebar {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 20px;
+}
 
 h3 {
   text-transform: uppercase;
@@ -127,13 +127,6 @@ h3 {
   padding: 6px 10px;
 }
 
-.btn-sidebar {
-  position: absolute;
-  bottom: 30px;
-  background: #fff;
-  left: 40%;
-}
-
 .active {
   background: #db953f;
   color: rgb(11, 11, 14);
@@ -148,8 +141,7 @@ h3 {
 
 @media screen and (max-width: 600px) {
   .sidebar {
-    position: absolute;
-    z-index: 999;
+    position: relative;
   }
 }
 </style>

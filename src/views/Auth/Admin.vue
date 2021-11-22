@@ -117,10 +117,12 @@ export default {
             if (response.data.data.is_verified == 1) {
               // login success
               sessionStorage.setItem("user", JSON.stringify(response.data));
-              this.toast("success", "You have successfully logged in");
               if (response.data.data.role_id == 1) {
                 this.toast("warning", "Oops, you're not admin");
                 this.$router.push({ path: "/" });
+              } else if (response.data.data.role_id == 2) {
+                this.toast("success", "You have successfully logged in");
+                this.$router.push({ path: "/admin/dashboard" });
               }
             } else {
               // verify
@@ -133,6 +135,9 @@ export default {
         })
         .catch((error) => {
           Swal.close();
+          if (!error.response) {
+            this.toast("warning", "Please check your network");
+          }
           if (typeof error.response.data.error == "object") {
             this.error_login = error.response.data.error;
             Swal.close();
@@ -159,6 +164,8 @@ export default {
       if (this.user.data.role_id == 1) {
         this.toast("warning", "You have already logged in as a student");
         this.$router.push({ path: "/" });
+      } else if (this.user.data.role_id == 2) {
+        this.$router.push({ path: "/admin/dashboard" });
       }
     } else {
       this.user = sessionStorage.getItem("user");

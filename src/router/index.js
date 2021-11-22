@@ -23,9 +23,19 @@ const routes = [
     component: () => import('../views/Admin/Dashboard')
   },
   {
-    path: '/admin/student',
-    name: 'Admin-Student',
-    component: () => import('../views/Admin/Student')
+    path: '/admin/module',
+    name: 'Admin-Dashboard',
+    component: () => import('../views/Admin/Module')
+  },
+  {
+    path: '/admin/user',
+    name: 'Admin-User',
+    component: () => import('../views/Admin/User')
+  },
+  {
+    path: '/admin/user/:id',
+    name: 'Admin-User-Detail',
+    component: () => import('../views/Admin/UserDetail')
   }
 ]
 
