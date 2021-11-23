@@ -17,12 +17,14 @@
           <AdminHeader :display="sidebarToggle"></AdminHeader>
           <div class="container p-md-3 p-2">
             <!-- Create Module    -->
-            <div class="row p-0 sticky-top bg-white py-2 mx-0">
+            <div class="row p-0 mb-2 sticky-top bg-white py-2 mx-0">
               <div class="col-md-9">
-                <button class="btn btn-info mx-0">
-                  <vue-feather type="plus-circle" class="pe-2"></vue-feather>
-                  Create a Module
-                </button>
+                <router-link to="/admin/module/create">
+                  <button class="btn btn-dark mx-0">
+                    <vue-feather type="plus-circle" class="pe-2"></vue-feather>
+                    Create a Module
+                  </button>
+                </router-link>
               </div>
               <div class="col-md-3">
                 <input type="text" class="form-control" placeholder="Search" />
@@ -52,7 +54,11 @@
                         <div class="row align-items-center">
                           <div class="col text-start">
                             <label class="switch">
-                              <input type="checkbox" checked />
+                              <input
+                                type="checkbox"
+                                v-model="moduleStatus"
+                                @click="statusProcess(i)"
+                              />
                               <span class="slider round"></span>
                             </label>
                           </div>
@@ -109,6 +115,7 @@ import AdminSidebar from "@/components/Admin/Sidebar";
 import VueFeather from "vue-feather";
 // import axios from "axios";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 export default {
   name: "Student",
@@ -128,7 +135,7 @@ export default {
       moduleList: [],
       search: "",
       showing: false,
-      category: "",
+      moduleStatus: false,
     };
   },
   methods: {
@@ -141,6 +148,38 @@ export default {
         this.sidebarStatus = true;
         this.sidebar = "col-md-3";
         this.header = "col-md-9";
+      }
+    },
+    statusProcess(i) {
+      console.log(i);
+      if (this.moduleStatus == true) {
+        Swal.fire({
+          title: "Are you sure to incative this module?",
+          showCancelButton: true,
+          confirmButtonText: "Yes",
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            Swal.fire("Saved!", "", "success");
+            this.moduleStatus = false;
+          } else {
+            this.moduleStatus = true;
+          }
+        });
+      } else {
+        Swal.fire({
+          title: "Are you sure to activate this module?",
+          showCancelButton: true,
+          confirmButtonText: "Yes",
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            Swal.fire("Saved!", "", "success");
+            this.moduleStatus = true;
+          } else {
+            this.moduleStatus = false;
+          }
+        });
       }
     },
     reload() {

@@ -12,6 +12,7 @@ import { uniSortAmountDown, uniSortAmountUp, uniEye, uniEyeSlash, uniScheduleMon
 import VueTelInput from 'vue3-tel-input'
 import 'vue3-tel-input/dist/vue3-tel-input.css'
 import Datepicker from "vue3-datepicker";
+import Editor from "@tinymce/tinymce-vue";
 
 
 Unicon.add([uniSortAmountDown, uniSortAmountUp, uniEye, uniEyeSlash, uniScheduleMonochrome, uniBagMonochrome, uniChartPieMonochrome, uniBriefcaseMonochrome, uniGraphBarMonochrome, uniCommentMonochrome, uniCommentDotsMonochrome, uniCommentMessageMonochrome, uniLockAccessMonochrome, uniLockMonochrome, uniCalenderMonochrome, uniExclamationCircleMonochrome, uniCheckMonochrome, uniUsersAlt, uniUserCircle, uniUser, uniArrowCircleDown])
@@ -27,4 +28,5 @@ app.use(VueTelInput, VueTelInputOptions)
 app.use(Unicon)
 app.use(Particles)
 app.use(Datepicker)
+app.component('editor', Editor)
 app.mount('#app')

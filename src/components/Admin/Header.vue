@@ -46,6 +46,8 @@
 </template>
 <script>
 import VueFeather from "vue-feather";
+import "@/assets/css/admin-style.css";
+
 export default {
   name: "AdminHeader",
   props: {

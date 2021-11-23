@@ -35,6 +35,7 @@ export default {
       sidebar: "col-md-3",
       sidebarStatus: true,
       header: "col-md-9",
+      user: [],
     };
   },
   methods: {

@@ -12,6 +12,8 @@ const routes = [
     name: 'About',
     component: () => import('../components/Home/Auth/Reset')
   },
+
+  // ADMIN 
   {
     path: '/admin',
     name: 'Admin Login',
@@ -19,24 +21,34 @@ const routes = [
   },
   {
     path: '/admin/dashboard',
-    name: 'Admin-Dashboard',
+    name: 'Admin Dashboard',
     component: () => import('../views/Admin/Dashboard')
   },
   {
     path: '/admin/module',
-    name: 'Admin-Dashboard',
+    name: 'Admin Module',
     component: () => import('../views/Admin/Module')
   },
   {
+    path: '/admin/module/create',
+    name: 'Admin Module Create',
+    component: () => import('../views/Admin/ModuleCreate')
+  },
+  {
     path: '/admin/user',
-    name: 'Admin-User',
+    name: 'Admin User',
     component: () => import('../views/Admin/User')
   },
   {
     path: '/admin/user/:id',
-    name: 'Admin-User-Detail',
+    name: 'Admin User Detail',
     component: () => import('../views/Admin/UserDetail')
-  }
+  },
+  {
+    path: '/admin/user/progress',
+    name: 'Admin User Progress',
+    component: () => import('../views/Admin/User')
+  },
 ]
 
 const router = createRouter({
