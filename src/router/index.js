@@ -35,6 +35,11 @@ const routes = [
     component: () => import('../views/Admin/ModuleCreate')
   },
   {
+    path: '/admin/module/create/:id',
+    name: 'Admin Module ID',
+    component: () => import('../views/Admin/ModuleCreate')
+  },
+  {
     path: '/admin/user',
     name: 'Admin User',
     component: () => import('../views/Admin/User')

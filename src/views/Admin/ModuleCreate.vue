@@ -14,141 +14,59 @@
         </div>
         <div :class="header">
           <AdminHeader :display="sidebarToggle"></AdminHeader>
-          <!-- Form Create  -->
-          <div class="container p-md-3 p-2">
-            <div class="row">
-              <div class="col-md-12">
-                <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Module</a></li>
-                    <li class="breadcrumb-item active">Create</li>
-                  </ol>
-                </nav>
-              </div>
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-body">
-                    <form @submit.prevent="saveModule">
-                      <div class="row">
-                        <div class="col-md-8">
-                          <div class="mb-3">
-                            <label>Module Name</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              v-model="module.module_name"
-                            />
-                          </div>
-                          <div class="row">
-                            <div class="col-md-7">
-                              <div class="mb-3">
-                                <label>Category</label>
-                                <select
-                                  class="form-select"
-                                  v-model="module.category_id"
-                                >
-                                  <option
-                                    value=""
-                                    selected
-                                    disabled
-                                    class="text-muted"
-                                  >
-                                    Please select the category
-                                  </option>
-                                  <option
-                                    v-for="index in category.list"
-                                    :key="index.id"
-                                    :value="index.id"
-                                  >
-                                    {{ index.name }}
-                                  </option>
-                                </select>
-                                <vue-select :options="['Red', 'Green']">
-                                </vue-select>
-                              </div>
-                            </div>
-                            <div class="col-md-5">
-                              <div class="mb-3">
-                                <label>Price</label>
-                                <div class="input-group mb-3">
-                                  <span class="input-group-text">Rp</span>
-                                  <input
-                                    v-if="showPrice"
-                                    v-model="module.price"
-                                    type="number"
-                                    class="form-control"
-                                    @blur="priceVisible('blur')"
-                                  />
-                                  <input
-                                    v-if="!showPrice"
-                                    v-model="format_price"
-                                    type="text"
-                                    class="form-control"
-                                    @focus="priceVisible('focus')"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="mb-3">
-                            <label>Description</label>
-                            <editor
-                              v-model="module.desc"
-                              api-key="h7t62ozvqkx2ifkeh051fsy3k9irz7axx1g2zitzpbaqfo8m"
-                              :init="{
-                                height: 400,
-                                menubar: true,
-                                inline: false,
-                                plugins:
-                                  'print preview importcss searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media  template codesample table charmap hr pagebreak nonbreaking anchor  insertdatetime advlist lists wordcount   textpattern noneditable help charmap quickbars  emoticons',
-                                toolbar:
-                                  'undo redo | formatselect | bold italic backcolor | \
-           alignleft aligncenter alignright alignjustify | \
-           bullist numlist outdent indent | removeformat | help',
-                              }"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label class="d-block">Thumbnail</label>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              @change="previewImage"
-                              class="form-control form-control-sm"
-                              id="my-file"
-                            />
-                          </div>
-                          <div class="border p-2 mt-3">
-                            <p>Preview Here:</p>
-                            <transition name="fade">
-                              <div v-if="preview">
-                                <img :src="preview" class="img-fluid" />
-                                <p class="mb-0">file name: {{ image.name }}</p>
-                                <p class="mb-0">
-                                  size: {{ image.size / 1024 }}KB
-                                </p>
-                              </div>
-                            </transition>
-                          </div>
-                        </div>
-                        <div class="col-md-8">
-                          <hr />
-                          <div class="float-end">
-                            <button type="submit" class="btn btn-primary mx-0">
-                              Submit
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
+          <transition name="fade">
+            <div class="container" v-if="!showing">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="text-center my-5">
+                    <vue-feather
+                      type="loader"
+                      size="50"
+                      animation="spin"
+                    ></vue-feather>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </transition>
+          <!-- Stepper  -->
+          <transition name="fade">
+            <div class="container" v-if="showing">
+              <div class="row justify-content-center">
+                <div class="col-md-8">
+                  <ul class="Container-progessbar">
+                    <li :class="section >= 1 ? 'active' : ''">Module</li>
+                    <li :class="section >= 2 ? 'active' : ''">Outline</li>
+                    <li :class="section >= 3 ? 'active' : ''">Part</li>
+                    <li :class="section >= 4 ? 'active' : ''">Element</li>
+                    <li :class="section >= 5 ? 'active' : ''">Complete</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </transition>
+
+          <transition name="fade">
+            <v-module
+              @check-section="checkSection"
+              v-if="showing && section == 1"
+            >
+            </v-module>
+          </transition>
+
+          <transition name="fade">
+            <v-outline
+              @check-section="checkSection"
+              v-if="showing && section == 2"
+            ></v-outline>
+          </transition>
+
+          <transition name="fade">
+            <v-part
+              @check-section="checkSection"
+              v-if="showing && section == 3"
+            ></v-part>
+          </transition>
         </div>
       </div>
     </div>
@@ -158,7 +76,13 @@
 import AdminCheck from "@/components/Admin/UserCheck";
 import AdminHeader from "@/components/Admin/Header";
 import AdminSidebar from "@/components/Admin/Sidebar";
-import axios from "axios";
+
+import Module from "@/components/Admin/Module/Module";
+import Outline from "@/components/Admin/Module/Outline";
+import Part from "@/components/Admin/Module/Part";
+
+import VueFeather from "vue-feather";
+import Swal from "sweetalert2";
 
 export default {
   name: "Module Create",
@@ -166,32 +90,42 @@ export default {
     AdminCheck,
     AdminHeader,
     AdminSidebar,
+    VueFeather,
+    "v-module": Module,
+    "v-outline": Outline,
+    "v-part": Part,
   },
   data() {
     return {
       api_url: "https://api-cm.all-inedu.com/api/v1/",
+      userSession: [],
       sidebar: "col-md-3",
       sidebarStatus: true,
       header: "col-md-9",
-      preview: null,
-      image: null,
-      format_price: "",
-      showPrice: false,
-      userSession: [],
-      category: {
-        selected: "",
-        list: "",
-      },
-      module: {
-        module_name: "",
-        desc: "",
-        category_id: "",
-        price: "",
-        status: "1",
-      },
+      showing: false,
+      section: 3,
     };
   },
   methods: {
+    toast(status, title) {
+      const Toast = Swal.mixin({
+        toast: true,
+        width: "32rem",
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: status,
+        title: title,
+      });
+    },
     sidebarToggle() {
       if (this.sidebarStatus == true) {
         this.sidebarStatus = false;
@@ -203,61 +137,88 @@ export default {
         this.header = "col-md-9";
       }
     },
-    previewImage(event) {
-      var input = event.target;
-      if (input.files) {
-        var reader = new FileReader();
-        reader.onload = (e) => {
-          this.preview = e.target.result;
-        };
-        this.image = input.files[0];
-        reader.readAsDataURL(input.files[0]);
-      }
+    reload() {
+      this.showing = true;
     },
-    categoryList() {
-      axios
-        .get(this.api_url + "category/all", {
-          headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
-          },
-        })
-        .then((res) => {
-          this.category.list = res.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    priceVisible(s) {
-      if (s == "blur") {
-        this.showPrice = false;
-        this.format_price = this.module.price
-          .toString()
-          .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1.");
-      } else if (s == "focus") {
-        this.showPrice = true;
-      }
-    },
-    saveModule() {
-      console.log(this.module);
+    checkSection(data) {
+      this.section = data;
     },
   },
   created() {
-    if (sessionStorage.getItem("user") != null) {
-      this.userSession = JSON.parse(sessionStorage.getItem("user"));
-      this.categoryList();
-    } else {
-      this.userSession = sessionStorage.getItem("user");
-    }
+    setTimeout(() => {
+      this.reload();
+    }, 1000);
   },
 };
 </script>
 <style scoped>
 .fade-enter-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.5s ease;
 }
 
-.fade-enter {
+.fade-enter-from {
   opacity: 0;
+}
+
+ul,
+ol {
+  padding-left: 0;
+}
+
+.Container-progessbar {
+  display: flex;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  counter-reset: step;
+}
+.Container-progessbar li {
+  width: calc(100% / 4);
+  text-align: center;
+  counter-increment: step;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #747d8c;
+}
+.Container-progessbar li:before {
+  content: counter(step);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: white;
+  border: 3px solid #dedede;
+  color: #747d8c;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.Container-progessbar li:after {
+  content: "";
+  height: 3px;
+  width: 100%;
+  background-color: #dedede;
+  position: absolute;
+  left: -50%;
+  top: 23px;
+  z-index: -2;
+}
+.Container-progessbar li:first-child:after {
+  display: none;
+}
+.Container-progessbar li.active:before,
+.Container-progessbar li.active::after {
+  background-color: #2ed573;
+  color: #fff;
+  border-color: #2ed573;
+}
+.Container-progessbar li.false:before,
+.Container-progessbar li.false::after {
+  background-color: #ea2027;
+  color: #fff;
+  border-color: #ea2027;
 }
 </style>
