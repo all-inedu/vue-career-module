@@ -70,7 +70,7 @@
 
 .slide-leave-active,
 .slide-enter-active {
-    transition: 0.9s;
+    transition: 0.3s;
 }
 
 .slide-enter-from {
@@ -78,7 +78,7 @@
 }
 
 .slide-leave-to {
-    transform: translate(100%, 0);
+    transform: translate(-100%, 0);
 }
 
 .swal2-shown>[aria-hidden="true"] {
@@ -247,7 +247,22 @@ input:checked+.slider:before {
     border-radius: 50%;
 }
 
-@media screen and (max-width: 600px) {
+.sidebar-left {
+    width: 25%;
+    position: sticky;
+    top: 0px;
+}
+
+.content {
+    width: 75%;
+}
+
+.full-content {
+    width: 100%;
+}
+
+
+@media screen and (max-width: 800px) {
     .vue-modal {
         max-width: 90%;
         /* padding: 25px; */
@@ -288,11 +303,30 @@ input:checked+.slider:before {
 
     }
 
+    .sidebar-left {
+        display: none;
+    }
+
+    .sidebar-mobile {
+        width: 100%;
+        position: fixed;
+        height: 100vh;
+        display: block !important;
+        z-index: 1021;
+    }
+
+    .content {
+        width: 100%;
+    }
+
+    .full-content {
+        width: 100%;
+    }
 
     .btn-sidebar {
         display: block;
         position: absolute;
-        top: 13px;
+        top: -3px;
         left: 10px;
     }
 }

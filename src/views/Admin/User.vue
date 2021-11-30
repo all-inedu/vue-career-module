@@ -3,16 +3,19 @@
     <AdminCheck></AdminCheck>
     <div class="container-fluid ps-0">
       <div class="row g-0">
-        <div :class="sidebar" class="sidebar-admin sticky-top">
-          <transition name="slide">
+        <transition name="slide">
+          <div
+            :class="sidebar"
+            v-if="sidebarStatus"
+            class="sidebar-admin sticky-top"
+          >
             <AdminSidebar
-              v-if="sidebarStatus"
               :display="sidebarToggle"
               menu="user"
               submenu="user"
             ></AdminSidebar>
-          </transition>
-        </div>
+          </div>
+        </transition>
         <div :class="header">
           <AdminHeader :display="sidebarToggle"></AdminHeader>
           <div class="container p-md-3 p-2">
@@ -206,9 +209,9 @@ export default {
   data() {
     return {
       api_url: "https://api-cm.all-inedu.com/api/v1/",
-      sidebar: "col-md-3",
+      sidebar: "sidebar-left",
       sidebarStatus: true,
-      header: "col-md-9",
+      header: "content",
       userSession: [],
       userList: [],
       filter: "",
@@ -222,12 +225,12 @@ export default {
     sidebarToggle() {
       if (this.sidebarStatus == true) {
         this.sidebarStatus = false;
+        this.header = "full-content";
         this.sidebar = "d-none";
-        this.header = "col-md-12";
       } else {
         this.sidebarStatus = true;
-        this.sidebar = "col-md-3";
-        this.header = "col-md-9";
+        this.sidebar = "sidebar-left sidebar-mobile";
+        this.header = "content";
       }
     },
     reload() {

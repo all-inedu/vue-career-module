@@ -3,15 +3,15 @@
     <AdminCheck></AdminCheck>
     <div class="container-fluid ps-0">
       <div class="row g-0">
-        <div :class="sidebar" class="sidebar-admin sticky-top">
-          <transition name="slide">
-            <AdminSidebar
-              v-if="sidebarStatus"
-              :display="sidebarToggle"
-              menu="module"
-            ></AdminSidebar>
-          </transition>
-        </div>
+        <transition name="slide">
+          <div
+            :class="sidebar"
+            class="sidebar-admin sticky-top"
+            v-if="sidebarStatus"
+          >
+            <AdminSidebar :display="sidebarToggle" menu="module"></AdminSidebar>
+          </div>
+        </transition>
         <div :class="header">
           <AdminHeader :display="sidebarToggle"></AdminHeader>
           <transition name="fade">
@@ -31,7 +31,7 @@
           </transition>
           <!-- Stepper  -->
           <transition name="fade">
-            <div class="container" v-if="showing">
+            <div class="container sticky-top bg-white" v-if="showing">
               <div class="row justify-content-center">
                 <div class="col-md-8">
                   <ul class="Container-progessbar">
@@ -67,6 +67,13 @@
               v-if="showing && section == 3"
             ></v-part>
           </transition>
+
+          <transition name="fade">
+            <v-element
+              @check-section="checkSection"
+              v-if="showing && section == 4"
+            ></v-element>
+          </transition>
         </div>
       </div>
     </div>
@@ -80,9 +87,12 @@ import AdminSidebar from "@/components/Admin/Sidebar";
 import Module from "@/components/Admin/Module/Module";
 import Outline from "@/components/Admin/Module/Outline";
 import Part from "@/components/Admin/Module/Part";
+import Element from "@/components/Admin/Module/Element";
 
 import VueFeather from "vue-feather";
 import Swal from "sweetalert2";
+
+import "@/assets/css/stepper.css";
 
 export default {
   name: "Module Create",
@@ -94,16 +104,17 @@ export default {
     "v-module": Module,
     "v-outline": Outline,
     "v-part": Part,
+    "v-element": Element,
   },
   data() {
     return {
       api_url: "https://api-cm.all-inedu.com/api/v1/",
       userSession: [],
-      sidebar: "col-md-3",
+      sidebar: "sidebar-left",
       sidebarStatus: true,
-      header: "col-md-9",
+      header: "content",
       showing: false,
-      section: 3,
+      section: 1,
     };
   },
   methods: {
@@ -129,12 +140,12 @@ export default {
     sidebarToggle() {
       if (this.sidebarStatus == true) {
         this.sidebarStatus = false;
-        this.header = "col-md-12";
+        this.header = "full-content";
         this.sidebar = "d-none";
       } else {
         this.sidebarStatus = true;
-        this.sidebar = "col-md-3";
-        this.header = "col-md-9";
+        this.sidebar = "sidebar-left sidebar-mobile";
+        this.header = "content";
       }
     },
     reload() {
@@ -158,67 +169,5 @@ export default {
 
 .fade-enter-from {
   opacity: 0;
-}
-
-ul,
-ol {
-  padding-left: 0;
-}
-
-.Container-progessbar {
-  display: flex;
-  width: 100%;
-  padding-top: 20px;
-  padding-bottom: 10px;
-  counter-reset: step;
-}
-.Container-progessbar li {
-  width: calc(100% / 4);
-  text-align: center;
-  counter-increment: step;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #747d8c;
-}
-.Container-progessbar li:before {
-  content: counter(step);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  background-color: white;
-  border: 3px solid #dedede;
-  color: #747d8c;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-.Container-progessbar li:after {
-  content: "";
-  height: 3px;
-  width: 100%;
-  background-color: #dedede;
-  position: absolute;
-  left: -50%;
-  top: 23px;
-  z-index: -2;
-}
-.Container-progessbar li:first-child:after {
-  display: none;
-}
-.Container-progessbar li.active:before,
-.Container-progessbar li.active::after {
-  background-color: #2ed573;
-  color: #fff;
-  border-color: #2ed573;
-}
-.Container-progessbar li.false:before,
-.Container-progessbar li.false::after {
-  background-color: #ea2027;
-  color: #fff;
-  border-color: #ea2027;
 }
 </style>

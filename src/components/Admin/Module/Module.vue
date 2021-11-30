@@ -37,10 +37,14 @@
                             <transition name="fade">
                               <div v-if="preview">
                                 <img :src="preview" class="img-fluid" />
-                                <p class="mb-0">file name: {{ image.name }}</p>
-                                <p class="mb-0">
-                                  size: {{ image.size / 1024 }}KB
-                                </p>
+                              </div>
+                            </transition>
+                            <transition name="fade">
+                              <div v-if="!preview">
+                                <img
+                                  src="https://dummyimage.com/600x400/b0b0b0/5c5c5c&text=Thumbnail"
+                                  class="img-fluid"
+                                />
                               </div>
                             </transition>
                           </div>
@@ -180,6 +184,7 @@
 <script>
 import VueFeather from "vue-feather";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   name: "create",
@@ -197,6 +202,7 @@ export default {
       category: {
         list: [],
       },
+      module_id: "",
       module: {
         module_name: "",
         desc: "",
@@ -210,6 +216,31 @@ export default {
     };
   },
   methods: {
+    loading() {
+      Swal.fire({
+        title: "Please wait a minute",
+      });
+      Swal.showLoading();
+    },
+    toast(status, title) {
+      const Toast = Swal.mixin({
+        toast: true,
+        width: "32rem",
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: status,
+        title: title,
+      });
+    },
     previewImage(event) {
       var input = event.target;
       if (input.files) {
@@ -247,34 +278,48 @@ export default {
       }
     },
     saveModule() {
-      this.$emit("check-section", 2);
-      // let formData = new FormData();
-      // formData.append("thumbnail", this.image);
-      // formData.append("module_name", this.module.module_name);
-      // formData.append("desc", this.module.desc);
-      // formData.append("category_id", this.module.category_id);
-      // formData.append("price", this.module.price);
-      // formData.append("status", this.module.status);
-      // axios
-      //   .post(this.api_url + "module", formData, {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //       Authorization: "Bearer " + this.userSession.data.token,
-      //     },
-      //   })
-      //   .then((response) => {
-      //     this.toast("success", response.data.message);
-      this.part = true;
-      //   console.log(response.data);
-      // })
-      // .catch((err) => {
-      // if (typeof err.response.data.error == "Object") {
-      //   this.error_validation.module = err.response.data.error;
-      // } else {
-      //   this.toast("warning", err.response.data.message);
-      // }
-      //   console.log(this.error_validation.module);
-      // });
+      this.loading();
+      // create a new
+      let formData = new FormData();
+      formData.append("thumbnail", this.image);
+      formData.append("module_name", this.module.module_name);
+      formData.append("desc", this.module.desc);
+      formData.append("category_id", this.module.category_id);
+      formData.append("price", this.module.price);
+      formData.append("status", this.module.status);
+      formData.append("module_id", this.module_id);
+
+      axios
+        .post(this.api_url + "module", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + this.userSession.data.token,
+          },
+        })
+        .then((response) => {
+          Swal.close();
+          if (response.data.success == true) {
+            this.toast("success", response.data.message);
+            this.$router.push({
+              path: "/admin/module/create/" + response.data.data.module.id,
+            });
+            this.$emit("check-section", 2);
+          } else {
+            this.toast("warning", response.data.error);
+          }
+        })
+        .catch((err) => {
+          Swal.close();
+          if (err.response.data) {
+            if (typeof err.response.data.error == "object") {
+              this.error_validation.module = err.response.data.error;
+            } else {
+              this.toast("warning", err.response.data.message);
+            }
+          } else {
+            this.toast("warning", err.response);
+          }
+        });
     },
   },
   created() {
@@ -283,6 +328,32 @@ export default {
       this.categories();
     } else {
       this.userSession = sessionStorage.getItem("user");
+    }
+
+    if (this.$route.params.module_id) {
+      axios
+        .get(this.api_url + "module/" + this.$route.params.module_id, {
+          headers: {
+            Authorization: "Bearer " + this.userSession.data.token,
+          },
+        })
+        .then((response) => {
+          this.module.module_name = response.data.data[0].module_name;
+          this.module.category_id = response.data.data[0].category_id;
+          this.module.price = response.data.data[0].price;
+          this.module.desc = response.data.data[0].desc;
+          this.module_id = response.data.data[0].id;
+          this.preview =
+            "https://api-cm.all-inedu.com/" + response.data.data[0].thumbnail;
+
+          if (response.data.data[0].progress > 1) {
+            this.$emit("check-section", 2);
+          }
+        })
+        .catch(() => {
+          this.toast("warning", "Module id is not found");
+          this.$router.push({ path: "/admin/module" });
+        });
     }
   },
 };

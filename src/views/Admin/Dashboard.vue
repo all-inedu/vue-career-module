@@ -3,15 +3,18 @@
     <AdminCheck></AdminCheck>
     <div class="container-fluid ps-0">
       <div class="row g-0">
-        <div :class="sidebar" class="sidebar-admin sticky-top">
-          <transition name="slide">
+        <transition name="slide">
+          <div
+            :class="sidebar"
+            v-if="sidebarStatus"
+            class="sidebar-admin sticky-top"
+          >
             <AdminSidebar
-              v-if="sidebarStatus"
               :display="sidebarToggle"
               menu="dashboard"
             ></AdminSidebar>
-          </transition>
-        </div>
+          </div>
+        </transition>
         <div :class="header">
           <AdminHeader :display="sidebarToggle"></AdminHeader>
         </div>
@@ -32,9 +35,9 @@ export default {
   },
   data() {
     return {
-      sidebar: "col-md-3",
+      sidebar: "sidebar-left",
       sidebarStatus: true,
-      header: "col-md-9",
+      header: "content",
       user: [],
     };
   },
@@ -42,12 +45,12 @@ export default {
     sidebarToggle() {
       if (this.sidebarStatus == true) {
         this.sidebarStatus = false;
-        this.header = "col-md-12";
+        this.header = "full-content";
         this.sidebar = "d-none";
       } else {
         this.sidebarStatus = true;
-        this.sidebar = "col-md-3";
-        this.header = "col-md-9";
+        this.sidebar = "sidebar-left sidebar-mobile";
+        this.header = "content";
       }
     },
   },

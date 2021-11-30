@@ -10,6 +10,7 @@
         <vue-feather type="home" class="me-2 float-end"></vue-feather>
         <span> Dashboard </span>
       </li>
+      <hr class="m-0" />
       <li
         class="sidebar-li"
         :class="menu == 'module' ? 'active' : ''"
@@ -18,6 +19,7 @@
         <vue-feather type="book" class="me-2 float-end"></vue-feather>
         <span> Modules </span>
       </li>
+      <hr class="m-0" />
       <li class="sidebar-li" :class="menu == 'user' ? 'active' : ''">
         <vue-feather type="users" class="me-2 float-end"></vue-feather>
         <span @click="linkTo('/admin/student')"> Users </span>
@@ -30,6 +32,7 @@
             <vue-feather type="list" class="me-2 float-end"></vue-feather>
             <span> User List </span>
           </li>
+          <hr class="m-0" />
           <li
             class="sub-sidebar-li"
             :class="submenu == 'progress' ? 'sub-active' : ''"
@@ -40,6 +43,7 @@
           </li>
         </ul>
       </li>
+      <hr class="m-0" />
     </ul>
     <div class="btn-sidebar">
       <div class="text-center">
@@ -94,12 +98,11 @@ h3 {
 }
 
 .sidebar-li {
-  margin-left: 0 !important;
+  margin: 5px 0 !important;
   padding: 8px 10px !important;
   color: #fff;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-bottom: 1px solid #6069bd;
 }
 
 .sidebar-li:hover {

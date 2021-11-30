@@ -35,7 +35,7 @@ const routes = [
     component: () => import('../views/Admin/ModuleCreate')
   },
   {
-    path: '/admin/module/create/:id',
+    path: '/admin/module/create/:module_id/:outline_id?/:part_id?',
     name: 'Admin Module ID',
     component: () => import('../views/Admin/ModuleCreate')
   },

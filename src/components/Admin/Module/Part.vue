@@ -1,5 +1,5 @@
 <template>
-  <div id="outline">
+  <div id="part">
     <transition name="fade">
       <div class="container p-md-3 p-2">
         <div class="row">
@@ -24,17 +24,27 @@
                 <transition name="fade">
                   <div class="row justify-content-center my-3" v-if="add">
                     <div class="col-md-12 mb-3">
-                      <form>
+                      <form @submit.prevent="savePart">
                         <div class="row align-items-center">
                           <div class="col-md-9 mb-3">
                             <input
+                              v-model="part.title"
                               type="text"
                               class="form-control"
                               placeholder="Part title"
                             />
+                            <transition name="fade">
+                              <small
+                                class="text-danger"
+                                v-if="error_form.title"
+                              ></small>
+                            </transition>
                           </div>
                           <div class="col-md-3 text-md-end text-center">
-                            <button class="btn btn-sm btn-success">
+                            <button
+                              type="submit"
+                              class="btn btn-sm btn-success"
+                            >
                               Save & Create Element
                             </button>
                           </div>
@@ -84,6 +94,8 @@
 </template>
 <script>
 import VueFeather from "vue-feather";
+import axios from "axios";
+
 export default {
   name: "part",
   components: {
@@ -91,16 +103,71 @@ export default {
   },
   data() {
     return {
+      api_url: "https://api-cm.all-inedu.com/api/v1/",
+      userSession: [],
+      module_id: this.$route.params.module_id,
       add: false,
+      outline: [],
+      part: {
+        outline_id: "",
+        title: "",
+      },
+      error_form: {
+        title: "",
+      },
     };
   },
   methods: {
     previous() {
+      this.$router.push({ path: "/admin/module/create/" + this.module_id });
       this.$emit("check-section", 2);
     },
     addForm() {
       this.add = true;
     },
+    savePart() {
+      axios
+        .post(this.api_url + "part", this.part)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          this.error_form.title = error.response.data.error.title[0];
+          // this.toast("warning", "Outline id is not found");
+        });
+      // this.$emit("check-section", 4);
+    },
+  },
+  watch: {
+    $route(to) {
+      this.part.outline_id = to.params.outline_id;
+    },
+  },
+  created() {
+    if (sessionStorage.getItem("user") != null) {
+      this.userSession = JSON.parse(sessionStorage.getItem("user"));
+    } else {
+      this.userSession = sessionStorage.getItem("user");
+    }
+
+    // get data outline
+    // if (this.$route.params.outline_id) {
+    //   this.module.module_id = this.$route.params.module_id;
+    //   axios
+    //     .get(this.api_url + "module/" + this.$route.params.module_id, {
+    //       headers: {
+    //         Authorization: "Bearer " + this.userSession.data.token,
+    //       },
+    //     })
+    //     .then((response) => {
+    //       this.module.module_id = response.data.data[0].id;
+    //       this.module.module_name = response.data.data[0].module_name;
+    //     })
+    //     .catch(() => {
+    //       this.toast("warning", "Outline id is not found");
+    //       this.$router.push({ path: "/admin/module/create/" + this.module_id });
+    //     });
+    // }
   },
 };
 </script>
