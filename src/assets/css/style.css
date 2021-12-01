@@ -70,7 +70,7 @@
 
 .slide-leave-active,
 .slide-enter-active {
-    transition: 0.3s;
+    transition: 0.7s;
 }
 
 .slide-enter-from {

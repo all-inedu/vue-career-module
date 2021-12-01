@@ -128,7 +128,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Outline title"
+                          placeholder="Outline name"
                           required
                           v-model="outline.pathway.name"
                         />
@@ -574,8 +574,8 @@ export default {
           },
         })
         .then((response) => {
-          this.module.module_id = response.data.data[0].id;
-          this.module.module_name = response.data.data[0].module_name;
+          this.module.module_id = response.data.data.module[0].id;
+          this.module.module_name = response.data.data.module[0].module_name;
         })
         .catch(() => {
           this.toast("warning", "Module id is not found");

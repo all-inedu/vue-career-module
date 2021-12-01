@@ -338,15 +338,18 @@ export default {
           },
         })
         .then((response) => {
-          this.module.module_name = response.data.data[0].module_name;
-          this.module.category_id = response.data.data[0].category_id;
-          this.module.price = response.data.data[0].price;
-          this.module.desc = response.data.data[0].desc;
-          this.module_id = response.data.data[0].id;
-          this.preview =
-            "https://api-cm.all-inedu.com/" + response.data.data[0].thumbnail;
+          this.module.module_name = response.data.data.module[0].module_name;
+          this.module.category_id = response.data.data.module[0].category_id;
+          this.module.price = response.data.data.module[0].price;
+          this.module.desc = response.data.data.module[0].desc;
+          this.module_id = response.data.data.module[0].id;
+          if (response.data.data.module[0].thumbnail != null) {
+            this.preview =
+              "https://api-cm.all-inedu.com/" +
+              response.data.data.module[0].thumbnail;
+          }
 
-          if (response.data.data[0].progress > 1) {
+          if (response.data.data.module[0].progress > 1) {
             this.$emit("check-section", 2);
           }
         })

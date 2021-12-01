@@ -64,6 +64,12 @@
               <div class="col-md-12 mt-1">
                 <transition name="fade">
                   <div class="row row-cols-md-3" v-if="showing">
+                    <div class="col-md-12" v-if="userList.from">
+                      <small
+                        >Showing {{ userList.from }} to {{ userList.to }} of
+                        {{ userList.total }} modules</small
+                      >
+                    </div>
                     <div
                       class="col-12 mb-md-4 mb-2"
                       v-for="item in userList.data"
@@ -162,9 +168,6 @@
                     </li>
                   </ul>
                 </nav>
-                <div class="text-center">
-                  <small>Total : {{ userList.total }} Students</small>
-                </div>
               </div>
 
               <div class="col-md-12" v-if="!showing">
@@ -181,7 +184,7 @@
                 class="col-md-12 my-5 text-center"
                 v-if="showing && !userList.data.length"
               >
-                <h5>Sorry, data is not found.</h5>
+                Sorry, username is not found.
               </div>
             </div>
           </div>

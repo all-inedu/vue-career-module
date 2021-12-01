@@ -71,17 +71,4 @@ export default {
 .fade-enter {
   opacity: 0;
 }
-
-.slide-leave-active,
-.slide-enter-active {
-  transition: 1s;
-}
-
-.slide-enter {
-  transform: translate(100%, 0);
-}
-
-.slide-leave-to {
-  transform: translate(-100%, 0);
-}
 </style>

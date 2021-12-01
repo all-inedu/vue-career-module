@@ -13,6 +13,7 @@ import VueTelInput from 'vue3-tel-input'
 import 'vue3-tel-input/dist/vue3-tel-input.css'
 import Datepicker from "vue3-datepicker";
 import Editor from "@tinymce/tinymce-vue";
+import VueCustomTooltip from '@adamdehaven/vue-custom-tooltip'
 
 
 Unicon.add([uniSortAmountDown, uniSortAmountUp, uniEye, uniEyeSlash, uniScheduleMonochrome, uniBagMonochrome, uniChartPieMonochrome, uniBriefcaseMonochrome, uniGraphBarMonochrome, uniCommentMonochrome, uniCommentDotsMonochrome, uniCommentMessageMonochrome, uniLockAccessMonochrome, uniLockMonochrome, uniCalenderMonochrome, uniExclamationCircleMonochrome, uniCheckMonochrome, uniUsersAlt, uniUserCircle, uniUser, uniArrowCircleDown])
@@ -22,6 +23,14 @@ const VueTelInputOptions = {
     onlyCountries: ['ID', 'SG', "GB", "US", "CA", "MY"]
 }
 
+const TooltipOptions = {
+    name: 'VueCustomTooltip',
+    color: '#fff',
+    background: '#000',
+    borderRadius: 100,
+    fontWeight: 400,
+}
+
 const app = createApp(App)
 app.use(router)
 app.use(VueTelInput, VueTelInputOptions)
@@ -29,4 +38,5 @@ app.use(Unicon)
 app.use(Particles)
 app.use(Datepicker)
 app.component('editor', Editor)
+app.use(VueCustomTooltip, TooltipOptions)
 app.mount('#app')
