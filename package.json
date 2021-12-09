@@ -25,6 +25,7 @@
     "particles.vue3": "^1.20.3",
     "sweetalert2": "^11.1.10",
     "vue": "^3.0.0",
+    "vue-chart-3": "^3.0.3",
     "vue-feather": "^2.0.0-rc.1",
     "vue-next-select": "^2.10.2",
     "vue-router": "^4.0.0-0",

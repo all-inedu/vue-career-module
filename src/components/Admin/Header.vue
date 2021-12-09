@@ -2,7 +2,7 @@
   <nav>
     <div class="row">
       <div class="col text-start">
-        <button class="btn btn-primary" @click="display">
+        <button class="btn btn-admin btn-primary" @click="display">
           <vue-feather type="menu" stroke="white" class="me-2"></vue-feather>
           Menu
         </button>
@@ -17,7 +17,11 @@
           >
             <vue-feather type="user" stroke="blue" class="me-2"></vue-feather>
           </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <ul
+            class="dropdown-menu"
+            aria-labelledby="dropdownMenuButton1"
+            style="z-index: 1200"
+          >
             <li>
               <a class="dropdown-item" href="#">
                 <vue-feather

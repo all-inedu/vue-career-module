@@ -35,11 +35,41 @@
               <div class="row justify-content-center">
                 <div class="col-md-8">
                   <ul class="Container-progessbar">
-                    <li :class="section >= 1 ? 'active' : ''">Module</li>
-                    <li :class="section >= 2 ? 'active' : ''">Outline</li>
-                    <li :class="section >= 3 ? 'active' : ''">Part</li>
-                    <li :class="section >= 4 ? 'active' : ''">Element</li>
-                    <li :class="section >= 5 ? 'active' : ''">Complete</li>
+                    <li
+                      :class="
+                        section == 1 ? 'active' : progress > 0 ? 'status' : ''
+                      "
+                    >
+                      Module
+                    </li>
+                    <li
+                      :class="
+                        section == 2 ? 'active' : progress > 1 ? 'status' : ''
+                      "
+                    >
+                      Outline
+                    </li>
+                    <li
+                      :class="
+                        section == 3 ? 'active' : progress > 2 ? 'status' : ''
+                      "
+                    >
+                      Part
+                    </li>
+                    <li
+                      :class="
+                        section == 4 ? 'active' : progress > 3 ? 'status' : ''
+                      "
+                    >
+                      Element
+                    </li>
+                    <li
+                      :class="
+                        section == 5 ? 'active' : progress > 4 ? 'status' : ''
+                      "
+                    >
+                      Complete
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -49,6 +79,7 @@
           <transition name="fade">
             <v-module
               @check-section="checkSection"
+              @check-progress="checkProgress"
               v-if="showing && section == 1"
             >
             </v-module>
@@ -57,6 +88,7 @@
           <transition name="fade">
             <v-outline
               @check-section="checkSection"
+              @check-progress="checkProgress"
               v-if="showing && section == 2"
             ></v-outline>
           </transition>
@@ -64,6 +96,7 @@
           <transition name="fade">
             <v-part
               @check-section="checkSection"
+              @check-progress="checkProgress"
               v-if="showing && section == 3"
             ></v-part>
           </transition>
@@ -71,6 +104,7 @@
           <transition name="fade">
             <v-element
               @check-section="checkSection"
+              @check-progress="checkProgress"
               v-if="showing && section == 4"
             ></v-element>
           </transition>
@@ -89,6 +123,7 @@ import Outline from "@/components/Admin/Module/Outline";
 import Part from "@/components/Admin/Module/Part";
 import Element from "@/components/Admin/Module/Element";
 
+import axios from "axios";
 import VueFeather from "vue-feather";
 import Swal from "sweetalert2";
 
@@ -114,6 +149,7 @@ export default {
       sidebarStatus: true,
       header: "content",
       showing: false,
+      progress: "",
       section: 1,
     };
   },
@@ -154,11 +190,36 @@ export default {
     checkSection(data) {
       this.section = data;
     },
+    checkProgress(data) {
+      this.progress = data;
+    },
   },
   created() {
     setTimeout(() => {
       this.reload();
     }, 1000);
+
+    if (sessionStorage.getItem("user") != null) {
+      this.userSession = JSON.parse(sessionStorage.getItem("user"));
+    } else {
+      this.userSession = sessionStorage.getItem("user");
+    }
+
+    if (this.$route.params.module_id) {
+      axios
+        .get(this.api_url + "module/" + this.$route.params.module_id, {
+          headers: {
+            Authorization: "Bearer " + this.userSession.data.token,
+          },
+        })
+        .then((response) => {
+          this.progress = response.data.data[0].progress;
+        })
+        .catch(() => {
+          this.toast("warning", "Module id is not found");
+          this.$router.push({ path: "/admin/module" });
+        });
+    }
   },
 };
 </script>

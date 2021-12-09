@@ -116,6 +116,7 @@ export default {
             console.log("");
             if (response.data.data.is_verified == 1) {
               // login success
+              // localStorage.user = JSON.stringify(response.data);
               sessionStorage.setItem("user", JSON.stringify(response.data));
               if (response.data.data.role_id == 1) {
                 this.toast("warning", "Oops, you're not admin");

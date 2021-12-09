@@ -52,11 +52,21 @@ ol {
     display: none;
 }
 
-.Container-progessbar li.active:before,
-.Container-progessbar li.active::after {
-    background-color: #2ed573;
+.Container-progessbar li.status:before {
+    background-color: #3d3fb6;
     color: #fff;
-    border-color: #2ed573;
+    border-color: #4860e6;
+}
+
+.Container-progessbar li.active:before {
+    background-color: #db942a;
+    color: #fff;
+    border-color: #b3761b;
+}
+
+.Container-progessbar li.status::after,
+.Container-progessbar li.active::after {
+    background-color: #368a10;
 }
 
 .Container-progessbar li.false:before,

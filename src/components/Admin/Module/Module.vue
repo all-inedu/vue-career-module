@@ -161,8 +161,40 @@
                         </div>
                       </div>
                       <hr />
+                      <div class="float-start">
+                        <button
+                          @click="returnModule"
+                          class="btn btn-admin btn-warning mx-0"
+                        >
+                          <vue-feather
+                            class="pe-2"
+                            type="arrow-left-circle"
+                          ></vue-feather>
+                          Return
+                        </button>
+                        <button
+                          class="btn btn-admin btn-danger mx-2"
+                          v-if="module_id && module.status == 1"
+                        >
+                          <vue-feather
+                            class="pe-2"
+                            type="eye-off"
+                          ></vue-feather>
+                          Deactivate
+                        </button>
+                        <button
+                          class="btn btn-admin btn-success mx-2"
+                          v-if="module_id && module.status == 2"
+                        >
+                          <vue-feather class="pe-2" type="eye"></vue-feather>
+                          Activate
+                        </button>
+                      </div>
                       <div class="float-end">
-                        <button type="submit" class="btn btn-primary mx-0">
+                        <button
+                          type="submit"
+                          class="btn btn-admin btn-primary mx-0"
+                        >
                           Next
                           <vue-feather
                             class="ps-2"
@@ -203,12 +235,19 @@ export default {
         list: [],
       },
       module_id: "",
+      old_module: {
+        module_name: "",
+        desc: "",
+        category_id: "",
+        price: "",
+        thumbnail: this.preview,
+      },
       module: {
         module_name: "",
         desc: "",
         category_id: "",
         price: "",
-        status: "0",
+        thumbnail: this.preview,
       },
       error_validation: {
         module: [],
@@ -278,48 +317,60 @@ export default {
       }
     },
     saveModule() {
-      this.loading();
-      // create a new
-      let formData = new FormData();
-      formData.append("thumbnail", this.image);
-      formData.append("module_name", this.module.module_name);
-      formData.append("desc", this.module.desc);
-      formData.append("category_id", this.module.category_id);
-      formData.append("price", this.module.price);
-      formData.append("status", this.module.status);
-      formData.append("module_id", this.module_id);
+      // this.loading();
 
-      axios
-        .post(this.api_url + "module", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + this.userSession.data.token,
-          },
-        })
-        .then((response) => {
-          Swal.close();
-          if (response.data.success == true) {
-            this.toast("success", response.data.message);
-            this.$router.push({
-              path: "/admin/module/create/" + response.data.data.module.id,
-            });
-            this.$emit("check-section", 2);
-          } else {
-            this.toast("warning", response.data.error);
-          }
-        })
-        .catch((err) => {
-          Swal.close();
-          if (err.response.data) {
-            if (typeof err.response.data.error == "object") {
-              this.error_validation.module = err.response.data.error;
+      // checking the array is same or not
+      if (JSON.stringify(this.old_module) == JSON.stringify(this.module)) {
+        this.$emit("check-section", 2);
+        // this.$emit("check-progress", response.data.data.module.progress);
+      } else {
+        // create a new
+        let formData = new FormData();
+        formData.append("thumbnail", this.image);
+        formData.append("module_name", this.module.module_name);
+        formData.append("desc", this.module.desc);
+        formData.append("category_id", this.module.category_id);
+        formData.append("price", this.module.price);
+        formData.append("module_id", this.module_id);
+
+        axios
+          .post(this.api_url + "module", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: "Bearer " + this.userSession.data.token,
+            },
+          })
+          .then((response) => {
+            Swal.close();
+            if (response.data.success == true) {
+              this.toast("success", response.data.message);
+              this.$router.push({
+                path: "/admin/module/create/" + response.data.data.module.id,
+              });
+              this.$emit("check-section", 2);
+              this.$emit("check-progress", response.data.data.module.progress);
             } else {
-              this.toast("warning", err.response.data.message);
+              this.toast("warning", response.data.error);
             }
-          } else {
-            this.toast("warning", err.response);
-          }
-        });
+          })
+          .catch((err) => {
+            Swal.close();
+            if (err.response.data) {
+              if (typeof err.response.data.error == "object") {
+                this.error_validation.module = err.response.data.error;
+              } else {
+                this.toast("warning", err.response.data.message);
+              }
+            } else {
+              this.toast("warning", err.response);
+            }
+          });
+      }
+    },
+    returnModule() {
+      this.$router.push({
+        path: "/admin/module",
+      });
     },
   },
   created() {
@@ -338,20 +389,22 @@ export default {
           },
         })
         .then((response) => {
-          this.module.module_name = response.data.data.module[0].module_name;
-          this.module.category_id = response.data.data.module[0].category_id;
-          this.module.price = response.data.data.module[0].price;
-          this.module.desc = response.data.data.module[0].desc;
-          this.module_id = response.data.data.module[0].id;
-          if (response.data.data.module[0].thumbnail != null) {
+          // data module
+          this.module.module_name = response.data.data[0].module_name;
+          this.module.category_id = response.data.data[0].category_id;
+          this.module.price = response.data.data[0].price;
+          this.module.desc = response.data.data[0].desc;
+          this.module_id = response.data.data[0].id;
+          if (response.data.data[0].thumbnail != null) {
             this.preview =
-              "https://api-cm.all-inedu.com/" +
-              response.data.data.module[0].thumbnail;
+              "https://api-cm.all-inedu.com/" + response.data.data[0].thumbnail;
           }
 
-          if (response.data.data.module[0].progress > 1) {
-            this.$emit("check-section", 2);
-          }
+          // old module
+          this.old_module.module_name = response.data.data[0].module_name;
+          this.old_module.category_id = response.data.data[0].category_id;
+          this.old_module.price = response.data.data[0].price;
+          this.old_module.desc = response.data.data[0].desc;
         })
         .catch(() => {
           this.toast("warning", "Module id is not found");

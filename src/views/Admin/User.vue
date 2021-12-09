@@ -36,7 +36,7 @@
                         @keyup.enter="searchProcess"
                         type="text"
                         class="form-control w-75"
-                        aria-label="Text input with dropdown button"
+                        placeholder="Search"
                       />
                     </div>
                   </div>

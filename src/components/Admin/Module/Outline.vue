@@ -8,6 +8,7 @@
               <div class="card-body">
                 <h3>Outline of {{ module.module_name }}</h3>
                 <ul class="list-group">
+                  <!-- INTRODUCTION  -->
                   <li class="list-group-item">
                     <div class="row g-0 align-items-center">
                       <div class="col-md-4">
@@ -15,12 +16,28 @@
                           >1</span
                         >
                         Introduction
+                        <small
+                          class="d-block notif-part text-muted"
+                          v-if="outline.introduction.total_part"
+                        >
+                          This outline has
+                          <strong>
+                            {{ outline.introduction.total_part }}
+                          </strong>
+                          part
+                        </small>
+                        <small
+                          class="d-block notif-part text-danger"
+                          v-if="!outline.introduction.total_part"
+                        >
+                          This outline has no part yet
+                        </small>
                       </div>
                       <div class="col-md-7">
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Outline title"
+                          placeholder="Outline name"
                           required
                           v-model="outline.introduction.name"
                         />
@@ -33,7 +50,7 @@
                           </small>
                         </transition>
                       </div>
-                      <div class="col-md-1 text-end">
+                      <div class="col-md-1 d-md-block d-none text-end">
                         <vue-feather
                           class="pointer"
                           type="arrow-right-circle"
@@ -43,8 +60,28 @@
                           @click="saveOutline(1)"
                         ></vue-feather>
                       </div>
+                      <div class="col-12 d-md-none d-block mt-2">
+                        <div class="d-grid gap-2">
+                          <button
+                            class="btn btn-admin btn-sm btn-primary mx-0"
+                            type="button"
+                            @click="saveOutline(1)"
+                          >
+                            Next
+                            <vue-feather
+                              class="ms-2"
+                              type="arrow-right"
+                              fill="green"
+                              stroke="white"
+                              size="18"
+                            ></vue-feather>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </li>
+
+                  <!-- CORE TASK  -->
                   <li class="list-group-item">
                     <div class="row g-0 align-items-center">
                       <div class="col-md-4">
@@ -52,12 +89,26 @@
                           >2</span
                         >
                         Core Task
+                        <small
+                          class="d-block notif-part text-muted"
+                          v-if="outline.core_task.total_part"
+                        >
+                          This outline has
+                          <strong> {{ outline.core_task.total_part }} </strong>
+                          part
+                        </small>
+                        <small
+                          class="d-block notif-part text-danger"
+                          v-if="!outline.core_task.total_part"
+                        >
+                          This outline has no part yet
+                        </small>
                       </div>
                       <div class="col-md-7">
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Outline title"
+                          placeholder="Outline name"
                           required
                           v-model="outline.core_task.name"
                         />
@@ -70,7 +121,7 @@
                           </small>
                         </transition>
                       </div>
-                      <div class="col-md-1 text-end">
+                      <div class="col-md-1 d-md-block d-none text-end">
                         <vue-feather
                           class="pointer"
                           type="arrow-right-circle"
@@ -80,8 +131,28 @@
                           @click="saveOutline(2)"
                         ></vue-feather>
                       </div>
+                      <div class="col-12 d-md-none d-block mt-2">
+                        <div class="d-grid gap-2">
+                          <button
+                            class="btn btn-admin btn-sm btn-primary mx-0"
+                            type="button"
+                            @click="saveOutline(2)"
+                          >
+                            Next
+                            <vue-feather
+                              class="ms-2"
+                              type="arrow-right"
+                              fill="green"
+                              stroke="white"
+                              size="18"
+                            ></vue-feather>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </li>
+
+                  <!-- TYPES  -->
                   <li class="list-group-item">
                     <div class="row g-0 align-items-center">
                       <div class="col-md-4">
@@ -89,12 +160,25 @@
                           >3</span
                         >
                         Types
+                        <small
+                          class="d-block notif-part text-muted"
+                          v-if="outline.types.total_part"
+                        >
+                          This outline has
+                          <strong> {{ outline.types.total_part }} </strong> part
+                        </small>
+                        <small
+                          class="d-block notif-part text-danger"
+                          v-if="!outline.types.total_part"
+                        >
+                          This outline has no part yet
+                        </small>
                       </div>
                       <div class="col-md-7">
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Outline title"
+                          placeholder="Outline name"
                           required
                           v-model="outline.types.name"
                         />
@@ -104,7 +188,7 @@
                           </small>
                         </transition>
                       </div>
-                      <div class="col-md-1 text-end">
+                      <div class="col-md-1 d-md-block d-none text-end">
                         <vue-feather
                           class="pointer"
                           type="arrow-right-circle"
@@ -114,8 +198,28 @@
                           @click="saveOutline(3)"
                         ></vue-feather>
                       </div>
+                      <div class="col-12 d-md-none d-block mt-2">
+                        <div class="d-grid gap-2">
+                          <button
+                            class="btn btn-admin btn-sm btn-primary mx-0"
+                            type="button"
+                            @click="saveOutline(3)"
+                          >
+                            Next
+                            <vue-feather
+                              class="ms-2"
+                              type="arrow-right"
+                              fill="green"
+                              stroke="white"
+                              size="18"
+                            ></vue-feather>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </li>
+
+                  <!-- PATHWAY  -->
                   <li class="list-group-item">
                     <div class="row g-0 align-items-center">
                       <div class="col-md-4">
@@ -123,6 +227,20 @@
                           >4</span
                         >
                         Pathway
+                        <small
+                          class="d-block notif-part text-muted"
+                          v-if="outline.pathway.total_part"
+                        >
+                          This outline has
+                          <strong> {{ outline.pathway.total_part }} </strong>
+                          part
+                        </small>
+                        <small
+                          class="d-block notif-part text-danger"
+                          v-if="!outline.pathway.total_part"
+                        >
+                          This outline has no part yet
+                        </small>
                       </div>
                       <div class="col-md-7">
                         <input
@@ -138,7 +256,7 @@
                           </small>
                         </transition>
                       </div>
-                      <div class="col-md-1 text-end">
+                      <div class="col-md-1 d-md-block d-none text-end">
                         <vue-feather
                           class="pointer"
                           type="arrow-right-circle"
@@ -148,8 +266,28 @@
                           @click="saveOutline(4)"
                         ></vue-feather>
                       </div>
+                      <div class="col-12 d-md-none d-block mt-2">
+                        <div class="d-grid gap-2">
+                          <button
+                            class="btn btn-admin btn-sm btn-primary mx-0"
+                            type="button"
+                            @click="saveOutline(4)"
+                          >
+                            Next
+                            <vue-feather
+                              class="ms-2"
+                              type="arrow-right"
+                              fill="green"
+                              stroke="white"
+                              size="18"
+                            ></vue-feather>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </li>
+
+                  <!-- CASE STUDY  -->
                   <li class="list-group-item">
                     <div class="row g-0 align-items-center">
                       <div class="col-md-4">
@@ -157,12 +295,26 @@
                           >5</span
                         >
                         Case Study
+                        <small
+                          class="d-block notif-part text-muted"
+                          v-if="outline.case_study.total_part"
+                        >
+                          This outline has
+                          <strong> {{ outline.case_study.total_part }} </strong>
+                          part
+                        </small>
+                        <small
+                          class="d-block notif-part text-danger"
+                          v-if="!outline.case_study.total_part"
+                        >
+                          This outline has no part yet
+                        </small>
                       </div>
                       <div class="col-md-7">
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Outline title"
+                          placeholder="Outline name"
                           required
                           v-model="outline.case_study.name"
                         />
@@ -175,7 +327,7 @@
                           </small>
                         </transition>
                       </div>
-                      <div class="col-md-1 text-end">
+                      <div class="col-md-1 d-md-block d-none text-end">
                         <vue-feather
                           class="pointer"
                           type="arrow-right-circle"
@@ -185,8 +337,28 @@
                           @click="saveOutline(5)"
                         ></vue-feather>
                       </div>
+                      <div class="col-12 d-md-none d-block mt-2">
+                        <div class="d-grid gap-2">
+                          <button
+                            class="btn btn-admin btn-sm btn-primary mx-0"
+                            type="button"
+                            @click="saveOutline(5)"
+                          >
+                            Next
+                            <vue-feather
+                              class="ms-2"
+                              type="arrow-right"
+                              fill="green"
+                              stroke="white"
+                              size="18"
+                            ></vue-feather>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </li>
+
+                  <!-- REFLECTION  -->
                   <li class="list-group-item">
                     <div class="row g-0 align-items-center">
                       <div class="col-md-4">
@@ -199,7 +371,7 @@
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Outline title"
+                          placeholder="Outline name"
                           required
                           v-model="outline.reflection.name"
                         />
@@ -212,7 +384,7 @@
                           </small>
                         </transition>
                       </div>
-                      <div class="col-md-1 text-end">
+                      <div class="col-md-1 d-md-block d-none text-end">
                         <vue-feather
                           class="pointer"
                           type="arrow-right-circle"
@@ -222,8 +394,28 @@
                           @click="saveOutline(6)"
                         ></vue-feather>
                       </div>
+                      <div class="col-12 d-md-none d-block mt-2">
+                        <div class="d-grid gap-2">
+                          <button
+                            class="btn btn-admin btn-sm btn-primary mx-0"
+                            type="button"
+                            @click="saveOutline(6)"
+                          >
+                            Next
+                            <vue-feather
+                              class="ms-2"
+                              type="arrow-right"
+                              fill="green"
+                              stroke="white"
+                              size="18"
+                            ></vue-feather>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </li>
+
+                  <!-- GLOSSARY  -->
                   <li class="list-group-item">
                     <div class="row g-0 align-items-center">
                       <div class="col-md-4">
@@ -231,12 +423,26 @@
                           >7</span
                         >
                         Glossary
+                        <small
+                          class="d-block notif-part text-muted"
+                          v-if="outline.glossary.total_part"
+                        >
+                          This outline has
+                          <strong> {{ outline.glossary.total_part }} </strong>
+                          part
+                        </small>
+                        <small
+                          class="d-block notif-part text-danger"
+                          v-if="!outline.glossary.total_part"
+                        >
+                          This outline has no part yet
+                        </small>
                       </div>
                       <div class="col-md-7">
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Outline title"
+                          placeholder="Outline name"
                           required
                           v-model="outline.glossary.name"
                         />
@@ -246,7 +452,7 @@
                           </small>
                         </transition>
                       </div>
-                      <div class="col-md-1 text-end">
+                      <div class="col-md-1 d-md-block d-none text-end">
                         <vue-feather
                           class="pointer"
                           type="arrow-right-circle"
@@ -256,8 +462,28 @@
                           @click="saveOutline(7)"
                         ></vue-feather>
                       </div>
+                      <div class="col-12 d-md-none d-block mt-2">
+                        <div class="d-grid gap-2">
+                          <button
+                            class="btn btn-admin btn-sm btn-primary mx-0"
+                            type="button"
+                            @click="saveOutline(7)"
+                          >
+                            Next
+                            <vue-feather
+                              class="ms-2"
+                              type="arrow-right"
+                              fill="green"
+                              stroke="white"
+                              size="18"
+                            ></vue-feather>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </li>
+
+                  <!-- ADDITIONAL RESOURCE -->
                   <li class="list-group-item">
                     <div class="row g-0 align-items-center">
                       <div class="col-md-4">
@@ -265,12 +491,25 @@
                           >8</span
                         >
                         Additional Resource
+                        <small
+                          class="d-block notif-part text-muted"
+                          v-if="outline.other.total_part"
+                        >
+                          This outline has
+                          <strong> {{ outline.other.total_part }} </strong> part
+                        </small>
+                        <small
+                          class="d-block notif-part text-danger"
+                          v-if="!outline.other.total_part"
+                        >
+                          This outline has no part yet
+                        </small>
                       </div>
                       <div class="col-md-7">
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Outline title"
+                          placeholder="Outline name"
                           required
                           v-model="outline.other.name"
                         />
@@ -280,7 +519,7 @@
                           </small>
                         </transition>
                       </div>
-                      <div class="col-md-1 text-end">
+                      <div class="col-md-1 d-md-block d-none text-end">
                         <vue-feather
                           class="pointer"
                           type="arrow-right-circle"
@@ -290,17 +529,38 @@
                           @click="saveOutline(8)"
                         ></vue-feather>
                       </div>
+                      <div class="col-12 d-md-none d-block mt-2">
+                        <div class="d-grid gap-2">
+                          <button
+                            class="btn btn-admin btn-sm btn-primary mx-0"
+                            type="button"
+                            @click="saveOutline(8)"
+                          >
+                            Next
+                            <vue-feather
+                              class="ms-2"
+                              type="arrow-right"
+                              fill="green"
+                              stroke="white"
+                              size="18"
+                            ></vue-feather>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </li>
                 </ul>
                 <div class="mt-3">
-                  <div class="float-end">
-                    <button @click="previous" class="btn btn-warning mx-0">
+                  <div class="float-start">
+                    <button
+                      @click="previous"
+                      class="btn btn-admin btn-warning mx-0"
+                    >
                       <vue-feather
                         class="pe-2"
                         type="arrow-left-circle"
                       ></vue-feather>
-                      Back
+                      Return
                     </button>
                   </div>
                 </div>
@@ -329,6 +589,7 @@ export default {
       module: {
         module_id: this.$route.params.module_id,
         module_name: "",
+        progress: "",
       },
       outline_old: {
         introduction: "",
@@ -507,6 +768,7 @@ export default {
       // }
     },
     save(formData, section_id) {
+      this.loading();
       if (formData.get("name") == "undefined") {
         formData.delete("name");
       }
@@ -518,7 +780,7 @@ export default {
           },
         })
         .then((response) => {
-          // Swal.close();
+          Swal.close();
           if (response.data.success == true) {
             this.toast("success", response.data.message);
             this.$router.push({
@@ -529,13 +791,18 @@ export default {
                 response.data.data.outline.id,
             });
             this.$emit("check-section", 3);
+            if (response.data.data.module_progress) {
+              this.$emit("check-progress", response.data.data.module_progress);
+            } else {
+              this.$emit("check-progress", this.module.progress);
+            }
           } else {
             this.toast("warning", response.data.error);
           }
           // console.log(response.data);
         })
         .catch((err) => {
-          // Swal.close();
+          Swal.close();
           if (section_id == 1) {
             this.form_error.introduction = err.response.data.error.name[0];
           } else if (section_id == 2) {
@@ -574,8 +841,9 @@ export default {
           },
         })
         .then((response) => {
-          this.module.module_id = response.data.data.module[0].id;
-          this.module.module_name = response.data.data.module[0].module_name;
+          this.module.module_id = response.data.data[0].id;
+          this.module.module_name = response.data.data[0].module_name;
+          this.module.progress = response.data.data[0].progress;
         })
         .catch(() => {
           this.toast("warning", "Module id is not found");
@@ -594,34 +862,42 @@ export default {
             if (value.section_id == 1) {
               this.outline.introduction.id = value.id;
               this.outline.introduction.name = value.name;
+              this.outline.introduction.total_part = value.total_part;
               this.outline_old.introduction = value.name;
             } else if (value.section_id == 2) {
               this.outline.core_task.id = value.id;
               this.outline.core_task.name = value.name;
+              this.outline.core_task.total_part = value.total_part;
               this.outline_old.core_task = value.name;
             } else if (value.section_id == 3) {
               this.outline.types.id = value.id;
               this.outline.types.name = value.name;
+              this.outline.types.total_part = value.total_part;
               this.outline_old.types = value.name;
             } else if (value.section_id == 4) {
               this.outline.pathway.name = value.name;
               this.outline.pathway.id = value.id;
+              this.outline.pathway.total_part = value.total_part;
               this.outline_old.pathway = value.name;
             } else if (value.section_id == 5) {
               this.outline.case_study.id = value.id;
               this.outline.case_study.name = value.name;
+              this.outline.case_study.total_part = value.total_part;
               this.outline_old.case_study = value.name;
             } else if (value.section_id == 6) {
               this.outline.reflection.id = value.id;
               this.outline.reflection.name = value.name;
+              this.outline.reflection.total_part = value.total_part;
               this.outline_old.reflection = value.name;
             } else if (value.section_id == 7) {
               this.outline.glossary.id = value.id;
               this.outline.glossary.name = value.name;
+              this.outline.glossary.total_part = value.total_part;
               this.outline_old.glossary = value.name;
             } else if (value.section_id == 8) {
               this.outline.other.id = value.id;
               this.outline.other.name = value.name;
+              this.outline.other.total_part = value.total_part;
               this.outline_old.other = value.name;
             }
           });
@@ -633,3 +909,9 @@ export default {
   },
 };
 </script>
+.<style scoped>
+.notif-part {
+  margin-left: 35px;
+  font-style: italic;
+}
+</style>

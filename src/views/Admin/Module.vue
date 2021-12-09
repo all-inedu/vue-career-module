@@ -84,17 +84,16 @@
               >
                 <button
                   class="btn border border-1 btn-sm mx-1 px-3"
-                  :class="
-                    search.status == null ? 'bg-secondary text-white' : ''
-                  "
+                  :class="search.status == null ? 'border-success' : ''"
                   @click="findByStatus(null)"
                 >
                   All
                 </button>
                 <button
                   class="btn border border-1 btn-sm mx-1"
-                  :class="search.status == 0 ? 'bg-secondary text-white' : ''"
+                  :class="search.status == 0 ? 'border-success' : ''"
                   @click="findByStatus(0)"
+                  :disabled="status.draft == 0"
                 >
                   Draft
                   <div class="d-inline ms-2 text-warning">
@@ -103,8 +102,9 @@
                 </button>
                 <button
                   class="btn border border-1 btn-sm mx-1"
-                  :class="search.status == 1 ? 'bg-info text-dark' : ''"
+                  :class="search.status == 1 ? 'border-success' : ''"
                   @click="findByStatus(1)"
+                  :disabled="status.publish == 0"
                 >
                   Published
                   <div class="d-inline ms-2 text-success">
@@ -113,7 +113,7 @@
                 </button>
                 <button
                   class="btn border border-1 btn-sm mx-1 me-md-3"
-                  :class="search.status == 2 ? 'bg-light text-dark' : ''"
+                  :class="search.status == 2 ? 'border-success' : ''"
                   @click="findByStatus(2)"
                   :disabled="status.inactive == 0"
                 >
@@ -125,7 +125,7 @@
               </div>
 
               <div class="col mb-3" v-for="i in moduleList.data" :key="i">
-                <div class="card h-100">
+                <div class="card h-100 card-module" @click="moreDetail(i.id)">
                   <div class="card-body">
                     <div class="row align-items-center">
                       <div class="col-md-3">
@@ -468,6 +468,15 @@ export default {
 
 .fade-enter-from {
   opacity: 0;
+}
+
+.card-module {
+  border: 3px solid rgba(223, 220, 220, 0.933);
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+.card-module:hover {
+  border: 3px solid rgb(114, 114, 245);
 }
 
 .module-picture {

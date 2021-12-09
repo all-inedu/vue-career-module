@@ -17,6 +17,7 @@
         </transition>
         <div :class="header">
           <AdminHeader :display="sidebarToggle"></AdminHeader>
+          <v-dashboard></v-dashboard>
         </div>
       </div>
     </div>
@@ -26,12 +27,16 @@
 import AdminCheck from "@/components/Admin/UserCheck";
 import AdminHeader from "@/components/Admin/Header";
 import AdminSidebar from "@/components/Admin/Sidebar";
+
+import Dashboard from "@/components/Admin/Dashboard/Dashboard";
+
 export default {
   name: "Dashboard",
   components: {
     AdminCheck,
     AdminHeader,
     AdminSidebar,
+    "v-dashboard": Dashboard,
   },
   data() {
     return {
