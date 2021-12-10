@@ -173,8 +173,10 @@
                           Return
                         </button>
                         <button
+                          type="button"
                           class="btn btn-admin btn-danger mx-2"
-                          v-if="module_id && module.status == 1"
+                          v-if="module.id && module.status == 1"
+                          @click="changeActivate(module.id, 2)"
                         >
                           <vue-feather
                             class="pe-2"
@@ -183,11 +185,25 @@
                           Deactivate
                         </button>
                         <button
+                          type="button"
                           class="btn btn-admin btn-success mx-2"
-                          v-if="module_id && module.status == 2"
+                          v-if="
+                            (module.id && module.status == 2) ||
+                            module.status == 3
+                          "
+                          @click="changeActivate(module.id, 1)"
                         >
                           <vue-feather class="pe-2" type="eye"></vue-feather>
                           Activate
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-admin btn-info mx-2"
+                          v-if="module.id && module.status == 1"
+                          @click="changeActivate(module.id, 3)"
+                        >
+                          <vue-feather class="pe-2" type="lock"></vue-feather>
+                          Lock
                         </button>
                       </div>
                       <div class="float-end">
@@ -217,6 +233,7 @@
 import VueFeather from "vue-feather";
 import axios from "axios";
 import Swal from "sweetalert2";
+import qs from "qs";
 
 export default {
   name: "create",
@@ -306,6 +323,29 @@ export default {
           console.log(error.response);
         });
     },
+    getModule(id) {
+      axios
+        .get(this.api_url + "module/" + id, {
+          headers: {
+            Authorization: "Bearer " + this.userSession.data.token,
+          },
+        })
+        .then((response) => {
+          // data module
+          this.module = response.data.data[0];
+          if (response.data.data[0].thumbnail != null) {
+            this.preview =
+              "https://api-cm.all-inedu.com/" + response.data.data[0].thumbnail;
+          }
+
+          // old module
+          this.old_module = response.data.data[0];
+        })
+        .catch(() => {
+          this.toast("warning", "Module id is not found");
+          this.$router.push({ path: "/admin/module" });
+        });
+    },
     priceVisible(s) {
       if (s == "blur") {
         this.showPrice = false;
@@ -372,6 +412,45 @@ export default {
         path: "/admin/module",
       });
     },
+    changeActivate(id, s) {
+      let status = qs.stringify({ status: s });
+      let title = "";
+      if (s == 1) {
+        title = "Are you sure to activate this module?";
+      } else if (s == 2) {
+        title = "Are you sure to deactivate this module?";
+      } else {
+        title = "Are you sure to lock this module?";
+      }
+
+      Swal.fire({
+        title: "<h5>" + title + "</h5>",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          axios
+            .put(this.api_url + "module/" + id, status, {
+              headers: {
+                "Content-Type":
+                  "application/x-www-form-urlencoded; charset=utf-8",
+                Authorization: "Bearer " + this.userSession.data.token,
+              },
+            })
+            .then((response) => {
+              console.log(response.data);
+              Swal.close();
+              this.toast("success", response.data.message);
+              this.getModule(id);
+            })
+            .catch((error) => {
+              Swal.close();
+              console.log(error.response);
+            });
+        }
+      });
+    },
   },
   created() {
     if (sessionStorage.getItem("user") != null) {
@@ -382,34 +461,7 @@ export default {
     }
 
     if (this.$route.params.module_id) {
-      axios
-        .get(this.api_url + "module/" + this.$route.params.module_id, {
-          headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
-          },
-        })
-        .then((response) => {
-          // data module
-          this.module.module_name = response.data.data[0].module_name;
-          this.module.category_id = response.data.data[0].category_id;
-          this.module.price = response.data.data[0].price;
-          this.module.desc = response.data.data[0].desc;
-          this.module_id = response.data.data[0].id;
-          if (response.data.data[0].thumbnail != null) {
-            this.preview =
-              "https://api-cm.all-inedu.com/" + response.data.data[0].thumbnail;
-          }
-
-          // old module
-          this.old_module.module_name = response.data.data[0].module_name;
-          this.old_module.category_id = response.data.data[0].category_id;
-          this.old_module.price = response.data.data[0].price;
-          this.old_module.desc = response.data.data[0].desc;
-        })
-        .catch(() => {
-          this.toast("warning", "Module id is not found");
-          this.$router.push({ path: "/admin/module" });
-        });
+      this.getModule(this.$route.params.module_id);
     }
   },
 };

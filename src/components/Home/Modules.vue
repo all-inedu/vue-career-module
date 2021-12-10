@@ -267,12 +267,11 @@ export default {
       }
     },
     getModule(slug) {
-      // this.user = JSON.parse(sessionStorage.getItem("user"));
-      if (!this.user) {
-        this.showLogin = true;
-      } else {
-        alert(slug);
-      }
+      // if (!this.user) {
+      //   this.showLogin = true;
+      // } else {
+      alert(slug);
+      // }
     },
     closeLogin() {
       this.showLogin = false;

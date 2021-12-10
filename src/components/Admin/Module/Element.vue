@@ -37,32 +37,54 @@
                       >
                         <div
                           class="col mb-4"
-                          v-for="i in element_data[index]"
-                          :key="i"
+                          v-for="(i, i_index) in x"
+                          :key="i_index"
                         >
-                          <div
-                            class="card card-element h-100"
-                            @click="editElement(i.id)"
-                          >
-                            <div class="float-end">
-                              <select class="sort-element">
-                                <option
-                                  v-for="(n, x) in element_data[index]"
-                                  :key="x"
-                                  :value="i.order"
-                                  :selected="i.order == x + 1"
+                          <div class="card card-element h-100">
+                            <div class="d-blo">
+                              <div class="float-start">
+                                <select
+                                  v-model="element_data[index][i_index].order"
+                                  class="sort-element"
+                                  @change="orderElement(i)"
                                 >
-                                  {{ x + 1 }}
-                                </option>
-                              </select>
+                                  <option
+                                    v-for="(n, x) in element_data[index]"
+                                    :key="x"
+                                    :value="x + 1"
+                                    :selected="i.order == x + 1"
+                                  >
+                                    {{ x + 1 }}
+                                  </option>
+                                </select>
+                              </div>
+                              <div
+                                class="float-end"
+                                style="margin-top: 5px; margin-right: 10px"
+                                @click="deleteElement(i.id)"
+                              >
+                                <vue-feather
+                                  type="x"
+                                  stroke="red"
+                                ></vue-feather>
+                              </div>
                             </div>
-                            <div class="card-body text-center">
+                            <div
+                              class="card-body text-center"
+                              @click="editElement(i.id)"
+                            >
                               <img
                                 :src="
                                   require('@/assets/admin/' +
                                     generateImage(i.category_element))
                                 "
-                                class="image-element rounded mx-auto d-block"
+                                class="
+                                  image-element
+                                  rounded
+                                  mx-auto
+                                  d-block
+                                  mt-1
+                                "
                                 alt="Element"
                               />
                               <p class="my-0 text-uppercase text-muted">
@@ -606,6 +628,7 @@
                     </div>
                   </div>
                 </transition>
+
                 <div class="mt-3" v-if="!addElement">
                   <hr />
                   <div class="float-start">
@@ -618,6 +641,18 @@
                         type="arrow-left-circle"
                       ></vue-feather>
                       Return
+                    </button>
+                  </div>
+                  <div class="float-end">
+                    <button
+                      @click="preview"
+                      class="btn btn-admin btn-primary mx-0"
+                    >
+                      Preview
+                      <vue-feather
+                        class="ps-2"
+                        type="arrow-right-circle"
+                      ></vue-feather>
                     </button>
                   </div>
                 </div>
@@ -633,6 +668,7 @@
 import VueFeather from "vue-feather";
 import Swal from "sweetalert2";
 import axios from "axios";
+import qs from "qs";
 
 export default {
   name: "element",
@@ -650,6 +686,7 @@ export default {
       outline: [],
       part: [],
       element_data: [],
+      order_element: [],
       element: {
         part_id: "",
         module_id: this.$route.params.module_id,
@@ -1027,6 +1064,35 @@ export default {
             });
         }
       });
+    },
+    orderElement(row) {
+      let form = qs.stringify({
+        element_id: row.id,
+        part_id: row.part_id,
+        group: row.group,
+        new_order: row.order,
+      });
+
+      axios
+        .put(this.api_url + "order/element", form, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+            Authorization: "Bearer " + this.userSession.data.token,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          Swal.close();
+          this.toast("success", response.data.message);
+          this.getElementData(this.element.part_id);
+        })
+        .catch((error) => {
+          Swal.close();
+          console.log(error.response.data);
+        });
+    },
+    preview() {
+      this.$emit("check-section", 5);
     },
   },
   watch: {

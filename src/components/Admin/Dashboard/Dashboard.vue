@@ -3,11 +3,14 @@
     <div class="container px-3 mt-3">
       <div class="row mt-md-5 mt-2">
         <div class="col-md-6">
-          <div class="card px-3 py-3 mb-3">
+          <div class="card card-dashboard px-3 py-3 mb-3">
             <div class="row">
               <div class="col-md-12">
                 <h3>Welcome to Admin Dashboard</h3>
-                <button class="btn btn-admin btn-secondary mx-0">
+                <button
+                  class="btn btn-admin btn-secondary mx-0"
+                  @click="link('/admin/module/create')"
+                >
                   <vue-feather type="plus"></vue-feather> Create Module Now
                 </button>
               </div>
@@ -32,7 +35,7 @@
                     style="margin-top: -5px"
                   >
                     <h4 class="my-0">
-                      <strong> 145 </strong>
+                      <strong> {{ user_register }} </strong>
                     </h4>
                   </div>
                 </div>
@@ -59,23 +62,31 @@
                   <span>Inactive</span>
                 </div>
                 <div class="float-end">
-                  <span class="badge bg-warning rounded-circle">4</span>
+                  <span class="badge bg-warning text-dark rounded-circle">{{
+                    module.draft
+                  }}</span>
                   <br />
-                  <span class="badge bg-success rounded-circle">4</span><br />
-                  <span class="badge bg-danger rounded-circle">4</span>
+                  <span class="badge bg-success rounded-circle">{{
+                    module.publish
+                  }}</span
+                  ><br />
+                  <span class="badge bg-danger rounded-circle">{{
+                    module.inactive
+                  }}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="col-md-6">
-          <LineChart :chartData="testData" />
+          <LineChart :chartData="userChart" :options="options" />
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+// import { ref } from "vue";
 import VueFeather from "vue-feather";
 import { LineChart } from "vue-chart-3";
 import {
@@ -89,6 +100,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import axios from "axios";
 
 Chart.register(
   LineController,
@@ -107,46 +119,118 @@ export default {
     VueFeather,
     LineChart,
   },
-  setup() {
-    const testData = {
-      labels: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ],
-      datasets: [
-        {
-          label: "User Joined / Week",
-          data: [15, 20, 12, 14, 10, 19, 20],
-          fill: false,
-          borderColor: "#041f4e",
-          tension: 0.1,
-        },
-        {
-          label: "User Logged-in / Week",
-          data: [10, 12, 15, 16, 8, 5, 10, 13],
-          fill: false,
-          borderColor: "#e18327",
-          tension: 0.1,
-        },
-      ],
-    };
-
-    return { testData };
-  },
   data() {
-    return {};
+    return {
+      api_url: "https://api-cm.all-inedu.com/api/v1/",
+      userSession: [],
+      user_register: "",
+      module: [],
+      userChart: {
+        labels: [],
+        datasets: [
+          {
+            label: "User Joined / Week",
+            data: [],
+            fill: false,
+            borderColor: "#041f4e",
+            backgroundColor: "#3464a8",
+            tension: 0.1,
+          },
+          {
+            label: "User Logged-in / Week",
+            data: [],
+            fill: false,
+            borderColor: "#e18327",
+            backgroundColor: "#fcc583",
+            tension: 0.1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: "USER JOINED & LOGGED-IN",
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 10,
+            ticks: {
+              // forces step size to be 50 units
+              stepSize: 5,
+            },
+          },
+        },
+      },
+    };
   },
   methods: {
     link(url) {
       this.$router.push({ path: url });
     },
+    getUserRegistered() {
+      axios
+        .get(this.api_url + "count/user", {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + this.userSession.data.token,
+          },
+        })
+        .then((response) => {
+          this.user_register = response.data;
+          // console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
+    getModule() {
+      axios
+        .get(this.api_url + "count/module", {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + this.userSession.data.token,
+          },
+        })
+        .then((response) => {
+          this.module = response.data;
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
+    getUserChart() {
+      axios
+        .get(this.api_url + "count/user/weekly", {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + this.userSession.data.token,
+          },
+        })
+        .then((response) => {
+          this.userChart.datasets[0].data = response.data.register;
+          this.userChart.datasets[1].data = response.data.login;
+          this.userChart.labels = response.data.date;
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
   },
-  created() {},
+  created() {
+    if (sessionStorage.getItem("user") != null) {
+      this.userSession = JSON.parse(sessionStorage.getItem("user"));
+    } else {
+      this.userSession = sessionStorage.getItem("user");
+    }
+
+    this.getUserRegistered();
+    this.getModule();
+    this.getUserChart();
+  },
 };
 </script>
 <style scoped>

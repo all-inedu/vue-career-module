@@ -107,8 +107,20 @@
                   :disabled="status.publish == 0"
                 >
                   Published
+
                   <div class="d-inline ms-2 text-success">
                     <strong>{{ status.publish }}</strong>
+                  </div>
+                </button>
+                <button
+                  class="btn border border-1 btn-sm mx-1"
+                  :class="search.status == 3 ? 'border-info' : ''"
+                  @click="findByStatus(3)"
+                  :disabled="status.lock == 0"
+                >
+                  Locked
+                  <div class="d-inline ms-2 text-success">
+                    <strong>{{ status.lock }}</strong>
                   </div>
                 </button>
                 <button
@@ -180,7 +192,9 @@
                                   ? 'btn-warning'
                                   : i.status == 1
                                   ? 'btn-success'
-                                  : 'btn-danger'
+                                  : i.status == 2
+                                  ? 'btn-danger'
+                                  : 'btn-info'
                               "
                             >
                               <small>
@@ -222,7 +236,7 @@
                     <li
                       class="page-item"
                       v-if="moduleList.current_page != 1"
-                      @click="userPage(moduleList.current_page - 1)"
+                      @click="modulePage(moduleList.current_page - 1)"
                     >
                       <a class="page-link">Previous</a>
                     </li>
@@ -235,7 +249,7 @@
                         class="page-item"
                         :class="moduleList.current_page == n ? 'active' : ''"
                       >
-                        <a class="page-link" @click="userPage(n)" href="#">{{
+                        <a class="page-link" @click="modulePage(n)" href="#">{{
                           n
                         }}</a>
                       </li>
@@ -243,7 +257,7 @@
                     <li
                       class="page-item"
                       v-if="moduleList.current_page != moduleList.last_page"
-                      @click="userPage(moduleList.current_page + 1)"
+                      @click="modulePage(moduleList.current_page + 1)"
                     >
                       <a class="page-link">Next</a>
                     </li>
@@ -379,6 +393,10 @@ export default {
         return "Draft";
       } else if (n == 1) {
         return "Published";
+      } else if (n == 2) {
+        return "Inactive";
+      } else if (n == 3) {
+        return "Locked";
       }
     },
     getMouduleData() {
@@ -394,6 +412,7 @@ export default {
             draft: response.data.data.drafted_module,
             publish: response.data.data.published_module,
             inactive: response.data.data.inactive_module,
+            lock: response.data.data.locked_module,
           };
           this.showing = true;
           // console.log(response.data);
@@ -424,8 +443,8 @@ export default {
             draft: response.data.data.drafted_module,
             publish: response.data.data.published_module,
             inactive: response.data.data.inactive_module,
+            lock: response.data.data.locked_module,
           };
-          this.showing = true;
           // console.log(response.data);
         })
         .catch((error) => {
@@ -444,6 +463,50 @@ export default {
     },
     moreDetail(id) {
       this.$router.push({ path: "/admin/module/create/" + id });
+    },
+    modulePage(n) {
+      this.showing = false;
+      if (this.keyword != "" || this.status != "") {
+        axios
+          .get(this.api_url + "module?page=" + n, {
+            headers: {
+              Authorization: "Bearer " + this.userSession.data.token,
+            },
+          })
+          .then((response) => {
+            this.showing = true;
+            this.moduleList = response.data.data.module;
+            this.status = {
+              draft: response.data.data.drafted_module,
+              publish: response.data.data.published_module,
+              inactive: response.data.data.inactive_module,
+              lock: response.data.data.locked_module,
+            };
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        axios
+          .get(this.api_url + "find/module?page=" + n, {
+            headers: {
+              Authorization: "Bearer " + this.userSession.data.token,
+            },
+          })
+          .then((response) => {
+            this.showing = true;
+            this.moduleList = response.data.data.module;
+            this.status = {
+              draft: response.data.data.drafted_module,
+              publish: response.data.data.published_module,
+              inactive: response.data.data.inactive_module,
+              lock: response.data.data.locked_module,
+            };
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
   },
   created() {

@@ -108,6 +108,14 @@
               v-if="showing && section == 4"
             ></v-element>
           </transition>
+
+          <transition name="fade">
+            <v-preview
+              @check-section="checkSection"
+              @check-progress="checkProgress"
+              v-if="showing && section == 5"
+            ></v-preview>
+          </transition>
         </div>
       </div>
     </div>
@@ -122,6 +130,7 @@ import Module from "@/components/Admin/Module/Module";
 import Outline from "@/components/Admin/Module/Outline";
 import Part from "@/components/Admin/Module/Part";
 import Element from "@/components/Admin/Module/Element";
+import Preview from "@/components/Admin/Module/Preview";
 
 import axios from "axios";
 import VueFeather from "vue-feather";
@@ -140,6 +149,7 @@ export default {
     "v-outline": Outline,
     "v-part": Part,
     "v-element": Element,
+    "v-preview": Preview,
   },
   data() {
     return {
@@ -150,7 +160,7 @@ export default {
       header: "content",
       showing: false,
       progress: "",
-      section: 1,
+      section: 4,
     };
   },
   methods: {
