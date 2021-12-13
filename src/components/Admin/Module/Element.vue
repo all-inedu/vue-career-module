@@ -267,7 +267,7 @@
                                 >
                                 <input
                                   type="file"
-                                  ref="file"
+                                  :ref="'image_' + index"
                                   class="form-control"
                                   placeholder="Select the image"
                                   @change="previewImage(index)"
@@ -414,7 +414,7 @@
                                 </small>
                                 <input
                                   type="file"
-                                  ref="file"
+                                  :ref="'file_' + index"
                                   class="form-control"
                                   placeholder="Select the file"
                                   @change="previewFile(index)"
@@ -844,11 +844,11 @@ export default {
       }
     },
     previewImage(index) {
-      const file = this.$refs.file;
+      const file = this.$refs["image_" + index];
       this.element.data[index].file = file.files[0];
     },
     previewFile(index) {
-      const file = this.$refs.file;
+      const file = this.$refs["file_" + index];
       this.element.data[index].file = file.files[0];
     },
     saveElement() {
@@ -952,6 +952,12 @@ export default {
           this.addElement = false;
           this.getElementData(this.element.part_id);
           this.element.data = [];
+
+          if (response.data.data.progress) {
+            this.$emit("check-progress", response.data.data.progress);
+          } else {
+            this.$emit("check-progress", this.module.progress);
+          }
         })
         .catch((error) => {
           Swal.close();

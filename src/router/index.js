@@ -13,6 +13,17 @@ const routes = [
     component: () => import('../components/Home/Auth/Reset')
   },
 
+
+
+  // HOME 
+  {
+    path: '/module/:slug',
+    name: 'Module',
+    component: () => import('../views/Home/ModuleDetail')
+  },
+
+
+
   // ADMIN 
   {
     path: '/admin',

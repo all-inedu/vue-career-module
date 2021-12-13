@@ -6,53 +6,89 @@
           <div class="col-md-12">
             <div class="card border">
               <div class="card-body">
-                <h3 class="my-0">Lorem Ipsum Test</h3>
-                <div class="badge badge-pill bg-info">Category</div>
-                <h6 class="my-0">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-                  alias earum laborum! Quae tempora eos expedita, incidunt minus
-                  perferendis sed qui. Obcaecati molestias veritatis maiores,
-                  corrupti molestiae modi perferendis dolores!
-                </h6>
+                <h3 class="my-0">{{ module.module_name }}</h3>
+                <div class="badge badge-pill bg-info">
+                  {{ module.category_name }}
+                </div>
+                <h6 class="my-0" v-html="module.desc"></h6>
                 <hr class="mb-3" />
-                <div v-for="(i, index) in 8" :key="index">
+                <div v-for="(i, index) in module.outline" :key="index">
                   <div class="row g-0 mb-3">
-                    <div style="width: 35px">
-                      <h6>
-                        <strong> {{ alphabet[index] }}. </strong>
-                      </h6>
-                    </div>
-                    <div style="width: auto">
-                      <h6 class="my-0">
-                        <strong> {{ outline_title[index] }} </strong>
-                      </h6>
-                      <div class="" v-for="n in 2" :key="n">
-                        <h6 class="my-0">Part {{ n }} (n Element)</h6>
+                    <h6 class="my-0 mb-2">
+                      <strong class="text-primary">
+                        {{ i.section_name }}
+                      </strong>
+                      <br />
+                      <b>{{ i.name }}</b>
+                    </h6>
+                    <div class="col-md-12">
+                      <div
+                        class="row row-cols-md-4 row-cols-1 align-items-stretch"
+                      >
+                        <div class="col mb-3" v-for="n in i.part" :key="n">
+                          <div class="card h-100">
+                            <div class="card-body text-center">
+                              <div class="mb-3">{{ n.title }} <br /></div>
+
+                              <small
+                                class="text-muted"
+                                style="
+                                  position: absolute;
+                                  bottom: 10px;
+                                  left: 10px;
+                                "
+                              >
+                                Element
+                              </small>
+                              <small
+                                class="badge text-white bg-primary"
+                                style="
+                                  position: absolute;
+                                  bottom: 10px;
+                                  right: 10px;
+                                "
+                              >
+                                {{ n.total_element }}
+                              </small>
+                            </div>
+                          </div>
+                        </div>
                       </div>
+                    </div>
+                    <div class="col-md-12">
+                      <hr class="my-1 mt-3" />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 mt-2">
+                    <div class="float-start">
+                      <button
+                        @click="previous(module.id)"
+                        class="btn btn-admin btn-warning mx-0"
+                      >
+                        <vue-feather
+                          class="pe-2"
+                          type="arrow-left-circle"
+                        ></vue-feather>
+                        Back to Module
+                      </button>
+                    </div>
+                    <div class="float-end" v-if="module.status == 0">
+                      <button
+                        @click="publish(module.id, 1)"
+                        class="btn btn-admin btn-primary mx-0"
+                      >
+                        Publish
+                        <vue-feather
+                          class="ps-2"
+                          type="arrow-right-circle"
+                        ></vue-feather>
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="col-md-12 mt-2">
-            <div class="float-start">
-              <button @click="previous" class="btn btn-admin btn-warning mx-0">
-                <vue-feather
-                  class="pe-2"
-                  type="arrow-left-circle"
-                ></vue-feather>
-                Return
-              </button>
-            </div>
-            <div class="float-end">
-              <button @click="publish" class="btn btn-admin btn-primary mx-0">
-                Publish
-                <vue-feather
-                  class="ps-2"
-                  type="arrow-right-circle"
-                ></vue-feather>
-              </button>
             </div>
           </div>
         </div>
@@ -62,6 +98,10 @@
 </template>
 <script>
 import VueFeather from "vue-feather";
+import axios from "axios";
+import qs from "qs";
+import Swal from "sweetalert2";
+
 export default {
   name: "preview",
   components: {
@@ -70,6 +110,8 @@ export default {
   data() {
     return {
       api_url: "https://api-cm.all-inedu.com/api/v1/",
+      userSession: [],
+      module: [],
       alphabet: [
         "A",
         "B",
@@ -98,24 +140,95 @@ export default {
         "Y",
         "Z",
       ],
-      outline_title: [
-        "Introduction",
-        "Core Tasks",
-        "Types",
-        "Pathway",
-        "Case Studies",
-        "Reflection",
-        "Glossary",
-        "Additional Resources",
-      ],
     };
   },
   methods: {
-    previous() {
-      this.$emit("check-section", 4);
+    toast(status, title) {
+      const Toast = Swal.mixin({
+        toast: true,
+        width: "32rem",
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: status,
+        title: title,
+      });
+    },
+    previous(id) {
+      this.$router.push({ path: "/admin/module/create/" + id });
+      this.$emit("check-section", 1);
+    },
+    getPreviewModule(id) {
+      axios
+        .get(this.api_url + "preview/" + id, {
+          headers: {
+            Authorization: "Bearer " + this.userSession.data.token,
+          },
+        })
+        .then((response) => {
+          this.module = response.data.module;
+          console.log(response.data.module);
+        })
+        .catch(() => {});
+    },
+    publish(id, s) {
+      let status = qs.stringify({ status: s });
+
+      Swal.fire({
+        title: "<h5>Are you sure to publish this module</h5>",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          axios
+            .put(this.api_url + "module/" + id, status, {
+              headers: {
+                "Content-Type":
+                  "application/x-www-form-urlencoded; charset=utf-8",
+                Authorization: "Bearer " + this.userSession.data.token,
+              },
+            })
+            .then((response) => {
+              Swal.close();
+              this.toast("success", response.data.message);
+              this.getPreviewModule(id);
+
+              if (response.data.data.progress) {
+                this.$emit("check-progress", response.data.data.progress);
+                this.$emit("check-status", response.data.data.status);
+              } else {
+                this.$emit("check-progress", this.module.progress);
+                this.$emit("check-status", this.module.status);
+              }
+            })
+            .catch((error) => {
+              Swal.close();
+              console.log(error.response);
+            });
+        }
+      });
     },
   },
-  created() {},
+  created() {
+    if (sessionStorage.getItem("user") != null) {
+      this.userSession = JSON.parse(sessionStorage.getItem("user"));
+    } else {
+      this.userSession = sessionStorage.getItem("user");
+    }
+
+    if (this.$route.params.module_id) {
+      this.getPreviewModule(this.$route.params.module_id);
+    }
+  },
 };
 </script>
 <style scoped>

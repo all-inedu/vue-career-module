@@ -820,7 +820,7 @@ export default {
           } else if (section_id == 8) {
             this.form_error.other = err.response.data.error.name[0];
           }
-          console.log(this.form_error);
+          // console.log(this.form_error);
         });
     },
   },
@@ -901,6 +901,7 @@ export default {
               this.outline_old.other = value.name;
             }
           });
+          // console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
