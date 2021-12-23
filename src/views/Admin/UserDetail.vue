@@ -112,51 +112,58 @@
                             <div class="card-body">
                               <h6 class="text-center">Ongoing</h6>
                               <hr class="mt-0" />
-                              <div
-                                class="card card-module mb-3"
-                                v-for="c in activity.ongoing"
-                                :key="c"
-                              >
-                                <div class="row g-0">
-                                  <div class="col-md-4 bg-ongoing p-3">
-                                    <div class="module-name">
-                                      {{ c.module_name }}
+                              <div v-if="activity.ongoing">
+                                <div
+                                  class="card card-module mb-3"
+                                  v-for="c in activity.ongoing"
+                                  :key="c"
+                                >
+                                  <div class="row g-0">
+                                    <div class="col-md-4 bg-ongoing p-3">
+                                      <div class="module-name">
+                                        {{ c.module_name }}
+                                      </div>
+                                      <div
+                                        class="
+                                          border-top border-white
+                                          module-category
+                                        "
+                                      >
+                                        <small>
+                                          {{ c.category_name }}
+                                        </small>
+                                      </div>
+                                      <div class="module-taken">
+                                        {{ formatDate(c.taken_module) }}
+                                      </div>
                                     </div>
-                                    <div
-                                      class="
-                                        border-top border-white
-                                        module-category
-                                      "
-                                    >
-                                      <small>
-                                        {{ c.category_name }}
-                                      </small>
-                                    </div>
-                                    <div class="module-taken">
-                                      {{ formatDate(c.taken_module) }}
-                                    </div>
-                                  </div>
-                                  <div class="col-md-8 p-3">
-                                    <div class="module-progress">
-                                      <div class="progress" style="height: 8px">
+                                    <div class="col-md-8 p-3">
+                                      <div class="module-progress">
                                         <div
-                                          class="progress-bar"
-                                          role="progressbar"
-                                          :style="'width:' + c.percentage + '%'"
-                                          aria-valuemax="100"
-                                        ></div>
+                                          class="progress"
+                                          style="height: 8px"
+                                        >
+                                          <div
+                                            class="progress-bar"
+                                            role="progressbar"
+                                            :style="
+                                              'width:' + c.percentage + '%'
+                                            "
+                                            aria-valuemax="100"
+                                          ></div>
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div class="row module-outline">
-                                      <div class="col-6 mb-3 text-start">
-                                        {{ c.section_name }}
+                                      <div class="row module-outline">
+                                        <div class="col-6 mb-3 text-start">
+                                          {{ c.section_name }}
+                                        </div>
+                                        <div class="col-6 text-end">
+                                          {{ Math.round(c.percentage) }} %
+                                        </div>
                                       </div>
-                                      <div class="col-6 text-end">
-                                        {{ Math.round(c.percentage) }} %
+                                      <div class="module-part">
+                                        {{ c.current_part_name }}
                                       </div>
-                                    </div>
-                                    <div class="module-part">
-                                      {{ c.current_part_name }}
                                     </div>
                                   </div>
                                 </div>
@@ -175,68 +182,77 @@
                             <div class="card-body">
                               <h6 class="text-center">Completed</h6>
                               <hr class="mt-0" />
-                              <div
-                                class="card card-module mb-3"
-                                v-for="c in activity.completed"
-                                :key="c"
-                              >
-                                <div class="row g-0">
-                                  <div class="col-md-4 bg-completed p-3">
-                                    <div class="module-name">
-                                      {{ c.module_name }}
-                                    </div>
-                                    <div
-                                      class="
-                                        border-top border-white
-                                        module-category
-                                      "
-                                    >
-                                      <small>
-                                        {{ c.category_name }}
-                                      </small>
-                                    </div>
-                                    <div class="module-taken">
-                                      {{ formatDate(c.taken_date) }}
-                                    </div>
-                                  </div>
-                                  <div class="col-md-8 p-3">
-                                    <div class="module-progress">
-                                      <div class="progress" style="height: 8px">
-                                        <div
-                                          class="progress-bar bg-success"
-                                          role="progressbar"
-                                          :style="'width:' + c.percentage + '%'"
-                                          aria-valuemax="100"
-                                        ></div>
+                              <div v-if="activity.completed">
+                                <div
+                                  class="card card-module mb-3"
+                                  v-for="c in activity.completed"
+                                  :key="c"
+                                >
+                                  <div class="row g-0">
+                                    <div class="col-md-4 bg-completed p-3">
+                                      <div class="module-name">
+                                        {{ c.module_name }}
                                       </div>
-                                    </div>
-                                    <div class="row module-outline">
-                                      <div class="col-8 mb-3 text-start">
-                                        {{ c.section_name }}
-                                      </div>
-                                      <div class="col-4 text-end">
-                                        {{ Math.round(c.percentage) }} %
-                                      </div>
-                                    </div>
-                                    <div class="module-part">
-                                      {{ c.current_part_name }}
-                                    </div>
-                                    <div class="float-md-end text-center mb-2">
-                                      <button
+                                      <div
                                         class="
-                                          btn btn-sm btn-warning
-                                          rounded-pill
-                                          mx-0
+                                          border-top border-white
+                                          module-category
                                         "
-                                        @click="viewAnswer(c.slug, userId)"
                                       >
-                                        <vue-feather
-                                          type="clipboard"
-                                          class="me-2"
-                                          size="20"
-                                        ></vue-feather>
-                                        View Answer
-                                      </button>
+                                        <small>
+                                          {{ c.category_name }}
+                                        </small>
+                                      </div>
+                                      <div class="module-taken">
+                                        {{ formatDate(c.taken_date) }}
+                                      </div>
+                                    </div>
+                                    <div class="col-md-8 p-3">
+                                      <div class="module-progress">
+                                        <div
+                                          class="progress"
+                                          style="height: 8px"
+                                        >
+                                          <div
+                                            class="progress-bar bg-success"
+                                            role="progressbar"
+                                            :style="
+                                              'width:' + c.percentage + '%'
+                                            "
+                                            aria-valuemax="100"
+                                          ></div>
+                                        </div>
+                                      </div>
+                                      <div class="row module-outline">
+                                        <div class="col-8 mb-3 text-start">
+                                          {{ c.section_name }}
+                                        </div>
+                                        <div class="col-4 text-end">
+                                          {{ Math.round(c.percentage) }} %
+                                        </div>
+                                      </div>
+                                      <div class="module-part">
+                                        {{ c.current_part_name }}
+                                      </div>
+                                      <div
+                                        class="float-md-end text-center mb-2"
+                                      >
+                                        <button
+                                          class="
+                                            btn btn-sm btn-warning
+                                            rounded-pill
+                                            mx-0
+                                          "
+                                          @click="viewAnswer(c.slug, userId)"
+                                        >
+                                          <vue-feather
+                                            type="clipboard"
+                                            class="me-2"
+                                            size="20"
+                                          ></vue-feather>
+                                          View Answer
+                                        </button>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -353,11 +369,11 @@ export default {
           },
         })
         .then((response) => {
-          // console.log(response);
           this.activity.ongoing_count = response.data.onprogress.length;
           this.activity.ongoing = response.data.onprogress;
           this.activity.completed_count = response.data.completed.length;
           this.activity.completed = response.data.completed;
+          console.log(this.activity);
         })
         .catch((error) => {
           console.log(error);

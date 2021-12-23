@@ -42,7 +42,7 @@
                           <small class="text-muted d-block">
                             Module Name
                           </small>
-                          {{ module_data.module_name }}
+                          <!-- {{ module_data.module_name }} -->
                         </div>
                       </div>
                     </div>
