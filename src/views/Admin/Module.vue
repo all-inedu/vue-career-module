@@ -298,7 +298,6 @@ import AdminCheck from "@/components/Admin/UserCheck";
 import AdminHeader from "@/components/Admin/Header";
 import AdminSidebar from "@/components/Admin/Sidebar";
 import VueFeather from "vue-feather";
-import axios from "axios";
 import moment from "moment";
 import Swal from "sweetalert2";
 
@@ -312,11 +311,10 @@ export default {
   },
   data() {
     return {
-      api_url: "https://api-cm.all-inedu.com/api/v1/",
       sidebar: "sidebar-left",
       sidebarStatus: true,
       header: "content",
-      userSession: [],
+      user: [],
       moduleList: [],
       search: {
         keyword: "",
@@ -400,10 +398,10 @@ export default {
       }
     },
     getMouduleData() {
-      axios
-        .get(this.api_url + "module", {
+      this.$axios
+        .get(this.$api_url + "module", {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -423,16 +421,16 @@ export default {
     },
     searchData() {
       this.showing = false;
-      axios
+      this.$axios
         .post(
-          this.api_url + "find/module",
+          this.$api_url + "find/module",
           {
             keyword: this.search.keyword,
             status: this.search.status,
           },
           {
             headers: {
-              Authorization: "Bearer " + this.userSession.data.token,
+              Authorization: "Bearer " + this.user.token,
             },
           }
         )
@@ -467,10 +465,10 @@ export default {
     modulePage(n) {
       this.showing = false;
       if (this.keyword != "" || this.status != "") {
-        axios
-          .get(this.api_url + "module?page=" + n, {
+        this.$axios
+          .get(this.$api_url + "module?page=" + n, {
             headers: {
-              Authorization: "Bearer " + this.userSession.data.token,
+              Authorization: "Bearer " + this.user.token,
             },
           })
           .then((response) => {
@@ -487,10 +485,10 @@ export default {
             console.log(error);
           });
       } else {
-        axios
-          .get(this.api_url + "find/module?page=" + n, {
+        this.$axios
+          .get(this.$api_url + "find/module?page=" + n, {
             headers: {
-              Authorization: "Bearer " + this.userSession.data.token,
+              Authorization: "Bearer " + this.user.token,
             },
           })
           .then((response) => {
@@ -510,13 +508,11 @@ export default {
     },
   },
   created() {
-    if (sessionStorage.getItem("user") != null) {
-      this.userSession = JSON.parse(sessionStorage.getItem("user"));
-    } else {
-      this.userSession = sessionStorage.getItem("user");
-    }
+    this.user = this.$auth.check();
 
-    this.getMouduleData();
+    if (this.user) {
+      this.getMouduleData();
+    }
   },
 };
 </script>

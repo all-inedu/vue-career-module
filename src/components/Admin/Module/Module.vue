@@ -198,7 +198,6 @@
 </template>
 <script>
 import VueFeather from "vue-feather";
-import axios from "axios";
 import Swal from "sweetalert2";
 
 export default {
@@ -208,8 +207,7 @@ export default {
   },
   data() {
     return {
-      api_url: "https://api-cm.all-inedu.com/api/v1/",
-      userSession: [],
+      user: [],
       preview: null,
       image: null,
       format_price: "",
@@ -238,31 +236,6 @@ export default {
     };
   },
   methods: {
-    loading() {
-      Swal.fire({
-        title: "Please wait a minute",
-      });
-      Swal.showLoading();
-    },
-    toast(status, title) {
-      const Toast = Swal.mixin({
-        toast: true,
-        width: "32rem",
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: status,
-        title: title,
-      });
-    },
     previewImage(event) {
       var input = event.target;
       if (input.files) {
@@ -276,10 +249,10 @@ export default {
       }
     },
     categories() {
-      axios
-        .get(this.api_url + "category/all", {
+      this.$axios
+        .get(this.$api_url + "category/all", {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((res) => {
@@ -290,10 +263,10 @@ export default {
         });
     },
     getModule(id) {
-      axios
-        .get(this.api_url + "module/" + id, {
+      this.$axios
+        .get(this.$api_url + "module/" + id, {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -314,7 +287,7 @@ export default {
           this.old_module.desc = response.data.data[0].desc;
         })
         .catch(() => {
-          this.toast("warning", "Module id is not found");
+          this.$alert.toast("warning", "Module id is not found");
           this.$router.push({ path: "/admin/module" });
         });
     },
@@ -329,7 +302,6 @@ export default {
       }
     },
     saveModule() {
-      // this.loading();
       // checking the array is same or not
       if (
         JSON.stringify(this.old_module) == JSON.stringify(this.module) &&
@@ -339,6 +311,8 @@ export default {
         // this.$emit("check-progress", response.data.data.module.progress);
       } else {
         // create a new
+        this.$alert.loading();
+
         let formData = new FormData();
         formData.append("thumbnail", this.image);
         formData.append("module_name", this.module.module_name);
@@ -355,24 +329,24 @@ export default {
         //   console.log(pair[0] + ", " + pair[1]);
         // }
 
-        axios
-          .post(this.api_url + "module", formData, {
+        this.$axios
+          .post(this.$api_url + "module", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization: "Bearer " + this.userSession.data.token,
+              Authorization: "Bearer " + this.user.token,
             },
           })
           .then((response) => {
             Swal.close();
             if (response.data.success == true) {
-              this.toast("success", response.data.message);
+              this.$alert.toast("success", response.data.message);
               this.$router.push({
                 path: "/admin/module/create/" + response.data.data.module.id,
               });
               this.$emit("check-section", 2);
               this.$emit("check-progress", response.data.data.module.progress);
             } else {
-              this.toast("warning", response.data.error);
+              this.$alert.toast("warning", response.data.error);
             }
           })
           .catch((err) => {
@@ -381,10 +355,10 @@ export default {
               if (typeof err.response.data.error == "object") {
                 this.error_validation.module = err.response.data.error;
               } else {
-                this.toast("warning", err.response.data.message);
+                this.$alert.toast("warning", err.response.data.message);
               }
             } else {
-              this.toast("warning", err.response);
+              this.$alert.toast("warning", err.response);
             }
           });
       }
@@ -396,16 +370,14 @@ export default {
     },
   },
   created() {
-    if (sessionStorage.getItem("user") != null) {
-      this.userSession = JSON.parse(sessionStorage.getItem("user"));
-      this.categories();
-    } else {
-      this.userSession = sessionStorage.getItem("user");
-    }
+    this.user = this.$auth.check();
 
-    if (this.$route.params.module_id) {
-      this.module_id = this.$route.params.module_id;
-      this.getModule(this.$route.params.module_id);
+    if (this.user) {
+      this.categories();
+      if (this.$route.params.module_id) {
+        this.module_id = this.$route.params.module_id;
+        this.getModule(this.$route.params.module_id);
+      }
     }
   },
 };

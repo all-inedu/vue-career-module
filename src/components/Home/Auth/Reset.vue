@@ -89,7 +89,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
 import Swal from "sweetalert2";
 export default {
   name: "Reset",
@@ -150,8 +149,8 @@ export default {
     },
     resetProcess() {
       this.loading();
-      axios
-        .post(this.api_url + "password/reset/" + this.token, this.reset)
+      this.$axios
+        .post(this.$api_url + "password/reset/" + this.token, this.reset)
         .then(() => {
           this.toast("success", "Your password has been changed");
           this.$router.push({ path: "/" });
@@ -163,8 +162,8 @@ export default {
     },
   },
   created() {
-    axios
-      .get(this.api_url + "reset/" + this.token)
+    this.$axios
+      .get(this.$api_url + "reset/" + this.token)
       .then((response) => {
         // console.log(response);
         this.reset.email = response.data.data.email;

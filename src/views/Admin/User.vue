@@ -1,6 +1,5 @@
 <template>
   <div id="dashboard">
-    <AdminCheck></AdminCheck>
     <div class="container-fluid ps-0">
       <div class="row g-0">
         <transition name="slide">
@@ -194,28 +193,24 @@
   </div>
 </template>
 <script>
-import AdminCheck from "@/components/Admin/UserCheck";
 import AdminHeader from "@/components/Admin/Header";
 import AdminSidebar from "@/components/Admin/Sidebar";
 import VueFeather from "vue-feather";
-import axios from "axios";
 import moment from "moment";
 
 export default {
   name: "Student",
   components: {
-    AdminCheck,
     AdminHeader,
     AdminSidebar,
     VueFeather,
   },
   data() {
     return {
-      api_url: "https://api-cm.all-inedu.com/api/v1/",
       sidebar: "sidebar-left",
       sidebarStatus: true,
       header: "content",
-      userSession: [],
+      user: [],
       userList: [],
       filter: "",
       search: "",
@@ -245,16 +240,16 @@ export default {
         if (this.filter == "") {
           this.filter = "name";
         }
-        axios
+        this.$axios
           .post(
-            this.api_url + "filter/student?page=" + n,
+            this.$api_url + "filter/student?page=" + n,
             {
               category: this.filter,
               value: this.search,
             },
             {
               headers: {
-                Authorization: "Bearer " + this.userSession.data.token,
+                Authorization: "Bearer " + this.user.token,
               },
             }
           )
@@ -268,10 +263,10 @@ export default {
             console.log(error);
           });
       } else {
-        axios
-          .get(this.api_url + "user?page=" + n, {
+        this.$axios
+          .get(this.$api_url + "user?page=" + n, {
             headers: {
-              Authorization: "Bearer " + this.userSession.data.token,
+              Authorization: "Bearer " + this.user.token,
             },
           })
           .then((res) => {
@@ -288,16 +283,16 @@ export default {
     },
     verifyProcess() {
       this.showing = false;
-      axios
+      this.$axios
         .post(
-          this.api_url + "filter/student",
+          this.$api_url + "filter/student",
           {
             category: "is_verified",
             value: this.is_verify,
           },
           {
             headers: {
-              Authorization: "Bearer " + this.userSession.data.token,
+              Authorization: "Bearer " + this.user.token,
             },
           }
         )
@@ -317,16 +312,16 @@ export default {
       if (this.filter == "") {
         this.filter = "name";
       }
-      axios
+      this.$axios
         .post(
-          this.api_url + "filter/student",
+          this.$api_url + "filter/student",
           {
             category: this.filter,
             value: this.search,
           },
           {
             headers: {
-              Authorization: "Bearer " + this.userSession.data.token,
+              Authorization: "Bearer " + this.user.token,
             },
           }
         )
@@ -344,10 +339,27 @@ export default {
       this.search = "";
       this.filter = "";
       this.showing = false;
-      axios
-        .get(this.api_url + "user", {
+      this.$axios
+        .get(this.$api_url + "user", {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
+          },
+        })
+        .then((res) => {
+          if (res.data.success) {
+            this.reload();
+            this.userList = res.data.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getUserData() {
+      this.$axios
+        .get(this.$api_url + "user", {
+          headers: {
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((res) => {
@@ -365,24 +377,10 @@ export default {
     },
   },
   created() {
-    if (sessionStorage.getItem("user") != null) {
-      this.userSession = JSON.parse(sessionStorage.getItem("user"));
+    this.user = this.$auth.check();
 
-      axios
-        .get(this.api_url + "user", {
-          headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
-          },
-        })
-        .then((res) => {
-          if (res.data.success) {
-            this.reload();
-            this.userList = res.data.data;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    if (this.user) {
+      this.getUserData();
     }
   },
 };
@@ -407,12 +405,12 @@ export default {
 }
 
 .card-list {
+  border: 3px solid rgba(223, 220, 220, 0.933);
   transition: all 0.5s ease;
-  border: 2px solid rgb(243, 243, 243);
   cursor: pointer;
 }
 
 .card-list:hover {
-  border: 2px solid rgb(38, 25, 114);
+  border: 3px solid rgb(177, 163, 255);
 }
 </style>

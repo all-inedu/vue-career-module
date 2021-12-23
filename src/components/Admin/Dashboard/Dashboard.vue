@@ -100,7 +100,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import axios from "axios";
 
 Chart.register(
   LineController,
@@ -121,8 +120,7 @@ export default {
   },
   data() {
     return {
-      api_url: "https://api-cm.all-inedu.com/api/v1/",
-      userSession: [],
+      user: [],
       user_register: "",
       module: [],
       userChart: {
@@ -157,7 +155,7 @@ export default {
         scales: {
           y: {
             beginAtZero: true,
-            max: 10,
+            max: 15,
             ticks: {
               // forces step size to be 50 units
               stepSize: 5,
@@ -172,11 +170,11 @@ export default {
       this.$router.push({ path: url });
     },
     getUserRegistered() {
-      axios
-        .get(this.api_url + "count/user", {
+      this.$axios
+        .get(this.$api_url + "count/user", {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -188,11 +186,11 @@ export default {
         });
     },
     getModule() {
-      axios
-        .get(this.api_url + "count/module", {
+      this.$axios
+        .get(this.$api_url + "count/module", {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -203,16 +201,19 @@ export default {
         });
     },
     getUserChart() {
-      axios
-        .get(this.api_url + "count/user/weekly", {
+      this.$axios
+        .get(this.$api_url + "count/user/weekly", {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
+          var login = Object.values(response.data.login);
+          var max = Math.max(...login);
           this.userChart.datasets[0].data = response.data.register;
           this.userChart.datasets[1].data = response.data.login;
+          this.options.scales.y.max = max + 5;
           this.userChart.labels = response.data.date;
         })
         .catch((error) => {
@@ -221,15 +222,13 @@ export default {
     },
   },
   created() {
-    if (sessionStorage.getItem("user") != null) {
-      this.userSession = JSON.parse(sessionStorage.getItem("user"));
-    } else {
-      this.userSession = sessionStorage.getItem("user");
-    }
+    this.user = this.$auth.check();
 
-    this.getUserRegistered();
-    this.getModule();
-    this.getUserChart();
+    if (this.user) {
+      this.getUserRegistered();
+      this.getModule();
+      this.getUserChart();
+    }
   },
 };
 </script>

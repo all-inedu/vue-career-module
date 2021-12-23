@@ -20,7 +20,15 @@
         <span> Modules </span>
       </li>
       <hr class="m-0" />
-      <li class="sidebar-li" :class="menu == 'user' ? 'active' : ''">
+      <li
+        class="sidebar-li"
+        :class="menu == 'user' ? 'active' : ''"
+        @click="linkTo('/admin/user')"
+      >
+        <vue-feather type="list" class="me-2 float-end"></vue-feather>
+        <span> User List </span>
+      </li>
+      <!-- <li class="sidebar-li" :class="menu == 'user' ? 'active' : ''">
         <vue-feather type="users" class="me-2 float-end"></vue-feather>
         <span @click="linkTo('/admin/student')"> Users </span>
         <ul class="sub-sidebar">
@@ -42,7 +50,7 @@
             <span> User Progress</span>
           </li>
         </ul>
-      </li>
+      </li> -->
       <hr class="m-0" />
     </ul>
     <div class="btn-sidebar">

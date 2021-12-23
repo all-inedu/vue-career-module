@@ -1,8 +1,12 @@
 <template>
   <div id="navbar">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-allin shadow navbar-light">
       <div class="container">
-        <img src="../../assets/home/logo-1.png" class="navbar-brand" />
+        <img
+          src="../../assets/home/logo-1.png"
+          class="navbar-brand"
+          alt="Career Exploration Module"
+        />
         <button
           class="navbar-toggler"
           type="button"
@@ -19,7 +23,7 @@
           <div class="d-flex">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/">Home</a>
+                <router-link class="nav-link" to="/">Home</router-link>
               </li>
               <li class="nav-item">
                 <a
@@ -31,16 +35,12 @@
                 >
               </li>
               <li class="nav-item">
-                <a v-if="!user" class="nav-link btn-login" @click="login"
-                  >Log In</a
+                <span v-if="!user" class="nav-link btn-login" @click="login"
+                  >Log In</span
                 >
-                <router-link
-                  v-if="user"
-                  class="nav-link btn-login"
-                  to="/student"
-                >
+                <span v-if="user" class="nav-link btn-login" @click="dashboard">
                   Your Dashboard
-                </router-link>
+                </span>
               </li>
             </ul>
           </div>
@@ -52,28 +52,48 @@
 </template>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
+#navbar {
+  font-family: "Ubuntu", sans-serif !important;
+}
+
 .navbar-brand {
   width: 14%;
   margin-left: -20px;
 }
 
 .btn-login {
-  background: #243876;
+  background: #243672;
   border-radius: 30px;
   padding: 5px 20px !important;
   cursor: pointer;
-  color: #fff !important;
+  margin-left: 20px;
+  color: #ffffff !important;
   transition: all 0.4s ease;
+  font-weight: bold;
 }
 
 .btn-login:hover {
   background: #eeaa56;
 }
 
+.navbar-allin {
+  background: #ffffff;
+  color: #fff !important;
+}
+
+.navbar-allin a {
+  color: #243672 !important;
+}
+
 @media screen and (max-width: 600px) {
   .navbar-brand {
     width: 40%;
     margin-left: -20px;
+  }
+
+  .btn-login {
+    margin-left: 0 !important;
   }
 }
 </style>
@@ -94,19 +114,22 @@ export default {
     };
   },
   methods: {
-    checkUser() {
-      if (sessionStorage.getItem("user") != null) {
-        this.showLogin = false;
-        this.user = JSON.parse(sessionStorage.getItem("user"));
-      } else {
-        this.user = sessionStorage.getItem("user");
-      }
-    },
     login() {
       this.showLogin = true;
     },
     closeLogin() {
       this.showLogin = false;
+    },
+    dashboard() {
+      if (this.user) {
+        if (this.user.role_id == 1) {
+          this.$router.push({ path: "/user/dashboard" });
+        } else {
+          this.$router.push({ path: "/admin/dashboard" });
+        }
+      } else {
+        this.$router.push({ path: "/" });
+      }
     },
     capitalize(value) {
       if (!value) return "";
@@ -115,7 +138,7 @@ export default {
     },
   },
   created() {
-    this.checkUser();
+    this.user = this.$auth.user_data();
   },
 };
 </script>

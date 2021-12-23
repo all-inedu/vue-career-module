@@ -184,7 +184,6 @@
 </template>
 <script>
 import VueFeather from "vue-feather";
-import axios from "axios";
 import Swal from "sweetalert2";
 
 export default {
@@ -195,7 +194,7 @@ export default {
   data() {
     return {
       api_url: "https://api-cm.all-inedu.com/api/v1/",
-      userSession: [],
+      user: [],
       module_id: this.$route.params.module_id,
       add: false,
       edit: false,
@@ -214,31 +213,6 @@ export default {
     };
   },
   methods: {
-    loading() {
-      Swal.fire({
-        title: "Please wait a minute",
-      });
-      Swal.showLoading();
-    },
-    toast(status, title) {
-      const Toast = Swal.mixin({
-        toast: true,
-        width: "32rem",
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: status,
-        title: title,
-      });
-    },
     previous() {
       this.$router.push({ path: "/admin/module/create/" + this.module_id });
       this.$emit("check-section", 2);
@@ -249,10 +223,10 @@ export default {
       this.part.title = "";
     },
     getModuleData() {
-      axios
-        .get(this.api_url + "module/" + this.module_id, {
+      this.$axios
+        .get(this.$api_url + "module/" + this.module_id, {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -263,10 +237,10 @@ export default {
         });
     },
     getOutlineData() {
-      axios
-        .get(this.api_url + "detail/outline/" + this.part.outline_id, {
+      this.$axios
+        .get(this.$api_url + "detail/outline/" + this.part.outline_id, {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -279,10 +253,10 @@ export default {
     },
     getData() {
       // get data outline
-      axios
-        .get(this.api_url + "part/" + this.part.outline_id, {
+      this.$axios
+        .get(this.$api_url + "part/" + this.part.outline_id, {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -294,16 +268,16 @@ export default {
     },
     savePart() {
       // console.log(this.part);
-      this.loading();
-      axios
-        .post(this.api_url + "part", this.part, {
+      this.$alert.loading();
+      this.$axios
+        .post(this.$api_url + "part", this.part, {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
           if (response.data.success == true) {
-            this.toast("success", response.data.message);
+            this.$alert.toast("success", response.data.message);
             this.add = false;
             this.edit = false;
             this.part.title = "";
@@ -326,7 +300,7 @@ export default {
             });
             this.$emit("check-section", 4);
           } else {
-            this.toast("warning", response.data.error);
+            this.$alert.toast("warning", response.data.error);
           }
           // console.log(response.data);
         })
@@ -360,9 +334,9 @@ export default {
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          axios
+          this.$axios
             .delete(
-              this.api_url +
+              this.$api_url +
                 "part/" +
                 item.id +
                 "/" +
@@ -371,13 +345,13 @@ export default {
                 this.module_id,
               {
                 headers: {
-                  Authorization: "Bearer " + this.userSession.data.token,
+                  Authorization: "Bearer " + this.user.token,
                 },
               }
             )
             .then((response) => {
               this.getData();
-              this.toast("success", response.data.message);
+              this.$alert.toast("success", response.data.message);
             })
             .catch((error) => {
               console.log(error);
@@ -402,23 +376,22 @@ export default {
   watch: {
     $route(to) {
       this.part.outline_id = to.params.outline_id;
-      this.getData();
-      this.getOutlineData();
+      if (this.user) {
+        this.getData();
+        this.getOutlineData();
+      }
     },
   },
   created() {
-    if (sessionStorage.getItem("user") != null) {
-      this.userSession = JSON.parse(sessionStorage.getItem("user"));
-    } else {
-      this.userSession = sessionStorage.getItem("user");
-    }
+    this.user = this.$auth.check();
 
-    this.getModuleData();
-
-    if (this.$route.params.outline_id) {
-      this.part.outline_id = this.$route.params.outline_id;
-      this.getData();
-      this.getOutlineData();
+    if (this.user) {
+      this.getModuleData();
+      if (this.$route.params.outline_id) {
+        this.part.outline_id = this.$route.params.outline_id;
+        this.getData();
+        this.getOutlineData();
+      }
     }
   },
 };

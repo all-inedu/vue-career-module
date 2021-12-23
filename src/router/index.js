@@ -5,7 +5,8 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: { title: 'Career Exploration Module' }
   },
   {
     path: '/reset/:token',
@@ -17,11 +18,30 @@ const routes = [
 
   // HOME 
   {
-    path: '/module/:slug',
+    path: '/module/:slug/:outline_id?',
     name: 'Module',
     component: () => import('../views/Home/ModuleDetail')
   },
 
+
+  // USER 
+  {
+    path: '/user/dashboard',
+    name: 'User Dashboard',
+    component: () => import('../views/User/Dashboard')
+  },
+
+  {
+    path: '/user/edit',
+    name: 'User Edit',
+    component: () => import('../components/User/EditProfile')
+  },
+
+  {
+    path: '/user/module/answer/:slug',
+    name: 'User Answer',
+    component: () => import('../views/User/Answer')
+  },
 
 
   // ADMIN 
@@ -61,9 +81,9 @@ const routes = [
     component: () => import('../views/Admin/UserDetail')
   },
   {
-    path: '/admin/user/progress',
+    path: '/admin/user/:id/answer/:slug',
     name: 'Admin User Progress',
-    component: () => import('../views/Admin/User')
+    component: () => import('../views/Admin/UserAnswer')
   },
 ]
 

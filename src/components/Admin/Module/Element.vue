@@ -667,7 +667,6 @@
 <script>
 import VueFeather from "vue-feather";
 import Swal from "sweetalert2";
-import axios from "axios";
 import qs from "qs";
 
 export default {
@@ -677,11 +676,10 @@ export default {
   },
   data() {
     return {
-      api_url: "https://api-cm.all-inedu.com/api/v1/",
       addElement: false,
       edit: false,
       typeInput: "text",
-      userSession: [],
+      user: [],
       module: [],
       outline: [],
       part: [],
@@ -727,10 +725,10 @@ export default {
       this.$emit("check-section", 3);
     },
     getModuleData() {
-      axios
-        .get(this.api_url + "module/" + this.$route.params.module_id, {
+      this.$axios
+        .get(this.$api_url + "module/" + this.$route.params.module_id, {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -741,12 +739,15 @@ export default {
         });
     },
     getOutlineData() {
-      axios
-        .get(this.api_url + "detail/outline/" + this.$route.params.outline_id, {
-          headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
-          },
-        })
+      this.$axios
+        .get(
+          this.$api_url + "detail/outline/" + this.$route.params.outline_id,
+          {
+            headers: {
+              Authorization: "Bearer " + this.user.token,
+            },
+          }
+        )
         .then((response) => {
           this.outline = response.data.outline;
         })
@@ -755,10 +756,10 @@ export default {
         });
     },
     getPartData(id) {
-      axios
-        .get(this.api_url + "detail/part/" + id, {
+      this.$axios
+        .get(this.$api_url + "detail/part/" + id, {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -770,10 +771,10 @@ export default {
         });
     },
     getElementData(id) {
-      axios
-        .get(this.api_url + "element/" + id, {
+      this.$axios
+        .get(this.$api_url + "element/" + id, {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -938,11 +939,11 @@ export default {
       // }
 
       // save element
-      axios
-        .post(this.api_url + "element", form, {
+      this.$axios
+        .post(this.$api_url + "element", form, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -991,10 +992,10 @@ export default {
     editElement(i) {
       this.addElement = true;
       this.edit = true;
-      axios
-        .get(this.api_url + "detail/element/" + i, {
+      this.$axios
+        .get(this.$api_url + "detail/element/" + i, {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -1051,10 +1052,10 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.loading();
-          axios
-            .delete(this.api_url + "element/" + i, {
+          this.$axios
+            .delete(this.$api_url + "element/" + i, {
               headers: {
-                Authorization: "Bearer " + this.userSession.data.token,
+                Authorization: "Bearer " + this.user.token,
               },
             })
             .then((response) => {
@@ -1079,11 +1080,11 @@ export default {
         new_order: row.order,
       });
 
-      axios
-        .put(this.api_url + "order/element", form, {
+      this.$axios
+        .put(this.$api_url + "order/element", form, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -1108,17 +1109,16 @@ export default {
     },
   },
   created() {
-    if (sessionStorage.getItem("user") != null) {
-      this.userSession = JSON.parse(sessionStorage.getItem("user"));
-    } else {
-      this.userSession = sessionStorage.getItem("user");
-    }
-    this.getModuleData();
-    this.getOutlineData();
+    this.user = this.$auth.check();
 
-    if (this.$route.params.part_id) {
-      this.getPartData(this.$route.params.part_id);
-      this.getElementData(this.$route.params.part_id);
+    if (this.user) {
+      this.getModuleData();
+      this.getOutlineData();
+
+      if (this.$route.params.part_id) {
+        this.getPartData(this.$route.params.part_id);
+        this.getElementData(this.$route.params.part_id);
+      }
     }
   },
 };

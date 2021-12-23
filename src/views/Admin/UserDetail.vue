@@ -1,6 +1,5 @@
 <template>
   <div id="student_detail">
-    <AdminCheck></AdminCheck>
     <div class="container-fluid ps-0">
       <div class="row g-0">
         <transition name="slide">
@@ -24,7 +23,7 @@
                         <div class="col-md-3 py-3 text-center">
                           <div class="dot">
                             <div class="dot-text text-uppercase">
-                              {{ textLeft(user.first_name) }}
+                              {{ textLeft(user_data.first_name) }}
                             </div>
                           </div>
                         </div>
@@ -39,20 +38,20 @@
                                 <small class="d-block text-muted">
                                   Full Name
                                 </small>
-                                {{ formatCapitalize(user.first_name) }}
-                                {{ formatCapitalize(user.last_name) }}
+                                {{ formatCapitalize(user_data.first_name) }}
+                                {{ formatCapitalize(user_data.last_name) }}
                               </div>
                               <div class="mb-2">
                                 <small class="d-block text-muted">
                                   Email
                                 </small>
-                                {{ user.email }}
+                                {{ user_data.email }}
                               </div>
                               <div class="mb-2">
                                 <small class="d-block text-muted">
                                   Phone Number
                                 </small>
-                                {{ user.phone_number }}
+                                {{ user_data.phone_number }}
                               </div>
                             </div>
 
@@ -61,13 +60,13 @@
                                 <small class="d-block text-muted">
                                   Birthday
                                 </small>
-                                {{ formatDate(user.birthday) }}
+                                {{ formatDate(user_data.birthday) }}
                               </div>
                               <div class="mb-2">
                                 <small class="d-block text-muted">
                                   Address
                                 </small>
-                                {{ user.address }}
+                                {{ user_data.address }}
                               </div>
                             </div>
                           </div>
@@ -82,7 +81,7 @@
                     <div class="card-body">
                       <h4>Activity</h4>
                       <hr class="my-0 mb-3" />
-                      <div class="row align-items-center mb-2">
+                      <!-- <div class="row align-items-center mb-2">
                         <div class="col-md-8 text-start">
                           <unicon
                             class="pointer"
@@ -106,46 +105,147 @@
                             placeholder="Search"
                           />
                         </div>
-                      </div>
-                      <div class="row row-cols-1 align-items-md-stretch">
-                        <div class="col mb-2" v-for="n in 5" :key="n">
+                      </div> -->
+                      <div class="row">
+                        <div class="col-md-6">
                           <div class="card">
                             <div class="card-body">
-                              <div class="row align-items-center">
-                                <div class="col-md-2">
-                                  <img
-                                    src="https://picsum.photos/200"
-                                    class="img-activity"
-                                  />
-                                </div>
-                                <div class="col-md-10">
-                                  <h5 class="mb-0">Module Name</h5>
-                                  <small> Taken on April 23 2021 </small>
-                                  <p class="mt-2" style="text-align: justify">
-                                    Lorem ipsum dolor sit amet consectetur
-                                    adipisicing elit. Corrupti suscipit velit
-                                    exercitationem officia delectus atque
-                                    molestias, asperiores quidem totam
-                                    necessitatibus aliquid maiores reiciendis
-                                    illum ea laudantium sit, vero vitae ad...
-                                  </p>
-                                  <div
-                                    class="progress mt-4"
-                                    style="height: 25px"
-                                  >
+                              <h6 class="text-center">Ongoing</h6>
+                              <hr class="mt-0" />
+                              <div
+                                class="card card-module mb-3"
+                                v-for="c in activity.ongoing"
+                                :key="c"
+                              >
+                                <div class="row g-0">
+                                  <div class="col-md-4 bg-ongoing p-3">
+                                    <div class="module-name">
+                                      {{ c.module_name }}
+                                    </div>
                                     <div
                                       class="
-                                        progress-bar
-                                        progress-bar-striped
-                                        progress-bar-animated
+                                        border-top border-white
+                                        module-category
                                       "
-                                      role="progressbar"
-                                      style="width: 55%"
                                     >
-                                      55%
+                                      <small>
+                                        {{ c.category_name }}
+                                      </small>
+                                    </div>
+                                    <div class="module-taken">
+                                      {{ formatDate(c.taken_module) }}
+                                    </div>
+                                  </div>
+                                  <div class="col-md-8 p-3">
+                                    <div class="module-progress">
+                                      <div class="progress" style="height: 8px">
+                                        <div
+                                          class="progress-bar"
+                                          role="progressbar"
+                                          :style="'width:' + c.percentage + '%'"
+                                          aria-valuemax="100"
+                                        ></div>
+                                      </div>
+                                    </div>
+                                    <div class="row module-outline">
+                                      <div class="col-6 mb-3 text-start">
+                                        {{ c.section_name }}
+                                      </div>
+                                      <div class="col-6 text-end">
+                                        {{ Math.round(c.percentage) }} %
+                                      </div>
+                                    </div>
+                                    <div class="module-part">
+                                      {{ c.current_part_name }}
                                     </div>
                                   </div>
                                 </div>
+                              </div>
+                              <div
+                                class="text-center mt-3 text-muted"
+                                v-if="activity.ongoing_count == 0"
+                              >
+                                No module read yet
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="card">
+                            <div class="card-body">
+                              <h6 class="text-center">Completed</h6>
+                              <hr class="mt-0" />
+                              <div
+                                class="card card-module mb-3"
+                                v-for="c in activity.completed"
+                                :key="c"
+                              >
+                                <div class="row g-0">
+                                  <div class="col-md-4 bg-completed p-3">
+                                    <div class="module-name">
+                                      {{ c.module_name }}
+                                    </div>
+                                    <div
+                                      class="
+                                        border-top border-white
+                                        module-category
+                                      "
+                                    >
+                                      <small>
+                                        {{ c.category_name }}
+                                      </small>
+                                    </div>
+                                    <div class="module-taken">
+                                      {{ formatDate(c.taken_date) }}
+                                    </div>
+                                  </div>
+                                  <div class="col-md-8 p-3">
+                                    <div class="module-progress">
+                                      <div class="progress" style="height: 8px">
+                                        <div
+                                          class="progress-bar bg-success"
+                                          role="progressbar"
+                                          :style="'width:' + c.percentage + '%'"
+                                          aria-valuemax="100"
+                                        ></div>
+                                      </div>
+                                    </div>
+                                    <div class="row module-outline">
+                                      <div class="col-8 mb-3 text-start">
+                                        {{ c.section_name }}
+                                      </div>
+                                      <div class="col-4 text-end">
+                                        {{ Math.round(c.percentage) }} %
+                                      </div>
+                                    </div>
+                                    <div class="module-part">
+                                      {{ c.current_part_name }}
+                                    </div>
+                                    <div class="float-md-end text-center mb-2">
+                                      <button
+                                        class="
+                                          btn btn-sm btn-warning
+                                          rounded-pill
+                                          mx-0
+                                        "
+                                        @click="viewAnswer(c.slug, userId)"
+                                      >
+                                        <vue-feather
+                                          type="clipboard"
+                                          class="me-2"
+                                          size="20"
+                                        ></vue-feather>
+                                        View Answer
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="text-center mt-3 text-muted"
+                                v-if="activity.completed_count == 0"
+                              >
+                                No module has been read yet
                               </div>
                             </div>
                           </div>
@@ -175,29 +275,24 @@
   </div>
 </template>
 <script>
-import AdminCheck from "@/components/Admin/UserCheck";
 import AdminHeader from "@/components/Admin/Header";
 import AdminSidebar from "@/components/Admin/Sidebar";
 import VueFeather from "vue-feather";
-import axios from "axios";
 import moment from "moment";
-import Swal from "sweetalert2";
 
 export default {
   name: "Student Detail",
   components: {
-    AdminCheck,
     AdminHeader,
     AdminSidebar,
     VueFeather,
   },
   data() {
     return {
-      api_url: "https://api-cm.all-inedu.com/api/v1/",
       sidebar: "sidebar-left",
       sidebarStatus: true,
       header: "content",
-      userSession: [],
+      user: [],
       token: "",
       userId: "",
       showing: false,
@@ -205,29 +300,16 @@ export default {
         asc: true,
         desc: false,
       },
-      user: [],
+      activity: {
+        ongoing_count: "",
+        ongoing: [],
+        completed_count: "",
+        completed: [],
+      },
+      user_data: [],
     };
   },
   methods: {
-    toast(status, title) {
-      const Toast = Swal.mixin({
-        toast: true,
-        width: "32rem",
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: status,
-        title: title,
-      });
-    },
     sidebarToggle() {
       if (this.sidebarStatus == true) {
         this.sidebarStatus = false;
@@ -241,6 +323,45 @@ export default {
     },
     reload() {
       this.showing = true;
+    },
+    getUserDetail(id) {
+      this.$axios
+        .get(this.$api_url + "user/" + id, {
+          headers: {
+            Authorization: "Bearer " + this.user.token,
+          },
+        })
+        .then((res) => {
+          if (res.data.success) {
+            this.reload();
+            this.user_data = res.data.data[0];
+          } else {
+            this.$alert.toast("warning", "Sorry, user is not found.");
+            this.$router.push({ path: "/admin/user" });
+          }
+        })
+        .catch((error) => {
+          alert(error);
+          console.log(error);
+        });
+    },
+    getActivity(id) {
+      this.$axios
+        .get(this.$api_url + "user/progress/" + id, {
+          headers: {
+            Authorization: "Bearer " + this.user.token,
+          },
+        })
+        .then((response) => {
+          // console.log(response);
+          this.activity.ongoing_count = response.data.onprogress.length;
+          this.activity.ongoing = response.data.onprogress;
+          this.activity.completed_count = response.data.completed.length;
+          this.activity.completed = response.data.completed;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     formatDate(date) {
       return moment(date).format("LL");
@@ -263,30 +384,19 @@ export default {
         this.sort.desc = true;
       }
     },
+    viewAnswer(slug, id) {
+      this.$router.push({
+        path: "/admin/user/" + id + "/answer/" + slug,
+      });
+    },
   },
   created() {
-    if (sessionStorage.getItem("user") != null) {
-      this.userSession = JSON.parse(sessionStorage.getItem("user"));
+    this.user = this.$auth.check();
+
+    if (this.user) {
       this.userId = this.$route.params.id;
-      axios
-        .get(this.api_url + "user/" + this.userId, {
-          headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
-          },
-        })
-        .then((res) => {
-          if (res.data.success) {
-            this.reload();
-            this.user = res.data.data[0];
-          } else {
-            this.toast("warning", "Sorry, user is not found.");
-            this.$router.push({ path: "/admin/user" });
-          }
-        })
-        .catch((error) => {
-          alert(error);
-          console.log(error);
-        });
+      this.getUserDetail(this.userId);
+      this.getActivity(this.userId);
     }
   },
 };
@@ -302,5 +412,77 @@ export default {
 
 .fade-enter-from {
   opacity: 0;
+}
+
+.bg-ongoing {
+  background: rgb(204, 122, 14);
+  color: #fff;
+  border-radius: 10px 0 0 10px;
+}
+
+.bg-completed {
+  background: #2c265e;
+  color: #fff;
+  border-radius: 10px 0 0 10px;
+}
+
+.card-module {
+  border-radius: 10px;
+}
+
+.module-name {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.module-category {
+  font-size: 0.9em;
+}
+
+.module-taken {
+  position: absolute;
+  bottom: 15px;
+  font-size: 0.7em;
+}
+
+.module-outline {
+  margin-top: 5px;
+}
+
+.module-part {
+  margin-top: -15px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 10;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: rgb(53, 53, 53);
+}
+
+.module-percentage {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 3em;
+  font-weight: bold;
+  z-index: 9;
+  color: rgba(53, 53, 53, 0.116);
+}
+
+@media screen and (max-width: 600px) {
+  .module-taken {
+    margin-top: 20px;
+    position: relative;
+  }
+
+  .bg-ongoing,
+  .bg-completed {
+    border-radius: 10px 10px 0 0;
+  }
+
+  .module-percentage {
+    top: 10%;
+    color: rgba(228, 226, 226, 0.116);
+  }
 }
 </style>

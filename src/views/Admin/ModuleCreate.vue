@@ -195,7 +195,6 @@ import Part from "@/components/Admin/Module/Part";
 import Element from "@/components/Admin/Module/Element";
 import Preview from "@/components/Admin/Module/Preview";
 
-import axios from "axios";
 import VueFeather from "vue-feather";
 import Swal from "sweetalert2";
 import qs from "qs";
@@ -218,7 +217,7 @@ export default {
   data() {
     return {
       api_url: "https://api-cm.all-inedu.com/api/v1/",
-      userSession: [],
+      user: [],
       sidebar: "sidebar-left",
       sidebarStatus: true,
       header: "content",
@@ -229,25 +228,6 @@ export default {
     };
   },
   methods: {
-    toast(status, title) {
-      const Toast = Swal.mixin({
-        toast: true,
-        width: "32rem",
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: status,
-        title: title,
-      });
-    },
     sidebarToggle() {
       if (this.sidebarStatus == true) {
         this.sidebarStatus = false;
@@ -272,10 +252,10 @@ export default {
       this.module.status = data;
     },
     getModuleData(id) {
-      axios
-        .get(this.api_url + "module/" + id, {
+      this.$axios
+        .get(this.$api_url + "module/" + id, {
           headers: {
-            Authorization: "Bearer " + this.userSession.data.token,
+            Authorization: "Bearer " + this.user.token,
           },
         })
         .then((response) => {
@@ -284,7 +264,7 @@ export default {
           this.progress = response.data.data[0].progress;
         })
         .catch(() => {
-          this.toast("warning", "Module id is not found");
+          this.$alert.toast("warning", "Module id is not found");
           this.$router.push({ path: "/admin/module" });
         });
     },
@@ -306,18 +286,18 @@ export default {
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          axios
-            .put(this.api_url + "module/" + id, status, {
+          this.$axios
+            .put(this.$api_url + "module/" + id, status, {
               headers: {
                 "Content-Type":
                   "application/x-www-form-urlencoded; charset=utf-8",
-                Authorization: "Bearer " + this.userSession.data.token,
+                Authorization: "Bearer " + this.user.token,
               },
             })
             .then((response) => {
               // console.log(response.data);
               Swal.close();
-              this.toast("success", response.data.message);
+              this.$alert.toast("success", response.data.message);
               this.getModuleData(id);
             })
             .catch((error) => {
@@ -336,14 +316,12 @@ export default {
       this.reload();
     }, 1000);
 
-    if (sessionStorage.getItem("user") != null) {
-      this.userSession = JSON.parse(sessionStorage.getItem("user"));
-    } else {
-      this.userSession = sessionStorage.getItem("user");
-    }
+    this.user = this.$auth.check();
 
-    if (this.$route.params.module_id) {
-      this.getModuleData(this.$route.params.module_id);
+    if (this.user) {
+      if (this.$route.params.module_id) {
+        this.getModuleData(this.$route.params.module_id);
+      }
     }
   },
 };

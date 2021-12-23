@@ -324,7 +324,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
 import Swal from "sweetalert2";
 import datepicker from "vue3-datepicker";
 import moment from "moment";
@@ -340,7 +339,6 @@ export default {
   },
   data() {
     return {
-      api_url: "https://api-cm.all-inedu.com/api/v1/",
       show_modal: false,
       form_name: "",
       nfbirthday: new Date(),
@@ -383,31 +381,6 @@ export default {
     };
   },
   methods: {
-    loading() {
-      Swal.fire({
-        title: "Please wait a minute",
-      });
-      Swal.showLoading();
-    },
-    toast(status, title) {
-      const Toast = Swal.mixin({
-        toast: true,
-        width: "32rem",
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: status,
-        title: title,
-      });
-    },
     form(name) {
       this.form_name = name;
     },
@@ -427,26 +400,28 @@ export default {
       }
     },
     loginProcess() {
-      this.loading();
-      axios
-        .post(this.api_url + "login", this.login)
+      this.$alert.loading();
+      this.$axios
+        .post(this.$api_url + "login", this.login)
         .then((response) => {
           Swal.close();
           if (response.data.success == true) {
             console.log("");
             if (response.data.data.is_verified == 1) {
               // login success
-              sessionStorage.setItem("user", JSON.stringify(response.data));
-              this.toast("success", "You have successfully logged in");
-              this.$router.go();
-              // if (response.data.data.role_id == 1) {
-              //   this.$router.push({ path: "/student" });
-              // }
+              localStorage.setItem("user", JSON.stringify(response.data));
+              this.$alert.toast("success", "You have successfully logged in");
+              // this.$router.go();
+              if (response.data.data.role_id == 1) {
+                this.$router.push({ path: "/user/dashboard" });
+              } else if (response.data.data.role_id == 2) {
+                this.$router.push({ path: "/admin/dashboard" });
+              }
             } else {
               // verify
               this.token = response.data.data.token;
               this.resendProcess();
-              this.toast("warning", "Please, verify your email first!");
+              this.$alert.toast("warning", "Please, verify your email first!");
               this.form_name = "verify";
             }
           }
@@ -457,22 +432,22 @@ export default {
             this.error_form.login = error.response.data.error;
             Swal.close();
           } else {
-            this.toast("warning", error.response.data.error);
+            this.$alert.toast("warning", error.response.data.error);
             this.login.email = "";
             this.login.password = "";
           }
         });
     },
     registerProcess() {
-      this.loading();
+      this.$alert.loading();
       this.register.birthday = moment(this.nfbirthday).format("YYYY-MM-DD");
-      axios
-        .post(this.api_url + "register", this.register)
+      this.$axios
+        .post(this.$api_url + "register", this.register)
         .then((response) => {
           Swal.close();
           this.token = response.data.token;
           this.login.email = this.register.email;
-          this.toast("warning", "Please, verify your email first!");
+          this.$alert.toast("warning", "Please, verify your email first!");
           this.form_name = "verify";
           this.timerCount = 60;
           this.countDownTimer();
@@ -483,12 +458,12 @@ export default {
         });
     },
     forgotProcess() {
-      this.loading();
-      axios
-        .post(this.api_url + "password/reset", this.forgot)
+      this.$alert.loading();
+      this.$axios
+        .post(this.$api_url + "password/reset", this.forgot)
         .then(() => {
           Swal.close();
-          this.toast("success", "Reset password link has been sent");
+          this.$alert.toast("success", "Reset password link has been sent");
         })
         .catch((error) => {
           this.error_form.forgot = error.response.data.error;
@@ -496,14 +471,14 @@ export default {
         });
     },
     verifyProcess() {
-      this.loading();
+      this.$alert.loading();
       const code =
         this.verify_code[0] +
         this.verify_code[1] +
         this.verify_code[2] +
         this.verify_code[3];
-      axios
-        .get(this.api_url + "user/verify/" + code)
+      this.$axios
+        .get(this.$api_url + "user/verify/" + code)
         .then((response) => {
           Swal.close();
           if (response.data.success == false) {
@@ -524,18 +499,18 @@ export default {
         });
     },
     resendProcess() {
-      this.loading();
-      axios
-        .post(this.api_url + "email/verification-notification", "", {
+      this.$alert.loading();
+      this.$axios
+        .post(this.$api_url + "email/verification-notification", "", {
           headers: {
             Authorization: "Bearer " + this.token,
           },
         })
         .then(() => {
           Swal.close();
-          this.toast("success", "Verification code has been sent");
           this.timerCount = 60;
           this.countDownTimer();
+          this.$alert.toast("success", "Verification code has been sent");
         })
         .catch((error) => {
           console.log(error);

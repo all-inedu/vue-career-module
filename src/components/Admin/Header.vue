@@ -66,8 +66,9 @@ export default {
   },
   methods: {
     logout() {
-      sessionStorage.removeItem("user");
       this.$router.push({ path: "/" });
+      this.$alert.toast("success", "You have successfully logged out");
+      localStorage.removeItem("user");
     },
   },
 };

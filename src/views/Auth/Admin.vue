@@ -64,13 +64,11 @@
   </div>
 </template>
 <script>
-import axios from "axios";
 import Swal from "sweetalert2";
 export default {
   name: "Reset",
   data() {
     return {
-      api_url: "https://api-cm.all-inedu.com/api/v1/",
       passwordType: "password",
       login: {
         email: "",
@@ -81,55 +79,30 @@ export default {
     };
   },
   methods: {
-    loading() {
-      Swal.fire({
-        title: "Please wait a minute",
-      });
-      Swal.showLoading();
-    },
-    toast(status, title) {
-      const Toast = Swal.mixin({
-        toast: true,
-        width: "32rem",
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: status,
-        title: title,
-      });
-    },
     loginProcess() {
-      this.loading();
-      axios
-        .post(this.api_url + "login", this.login)
+      this.$alert.loading();
+      this.$axios
+        .post(this.$api_url + "login", this.login)
         .then((response) => {
           Swal.close();
           if (response.data.success == true) {
             console.log("");
             if (response.data.data.is_verified == 1) {
               // login success
-              // localStorage.user = JSON.stringify(response.data);
-              sessionStorage.setItem("user", JSON.stringify(response.data));
+              localStorage.user = JSON.stringify(response.data);
+              // sessionStorage.setItem("user", JSON.stringify(response.data));
               if (response.data.data.role_id == 1) {
-                this.toast("warning", "Oops, you're not admin");
+                this.$alert.toast("warning", "Oops, you're not admin");
                 this.$router.push({ path: "/" });
               } else if (response.data.data.role_id == 2) {
-                this.toast("success", "You have successfully logged in");
+                this.$alert.toast("success", "You have successfully logged in");
                 this.$router.push({ path: "/admin/dashboard" });
               }
             } else {
               // verify
               this.token = response.data.data.token;
               this.resendProcess();
-              this.toast("warning", "Please, verify your email first!");
+              this.$alert.toast("warning", "Please, verify your email first!");
               this.form_name = "verify";
             }
           }
@@ -137,13 +110,13 @@ export default {
         .catch((error) => {
           Swal.close();
           if (!error.response) {
-            this.toast("warning", "Please check your network");
+            this.$alert.toast("warning", "Please check your network");
           }
           if (typeof error.response.data.error == "object") {
             this.error_login = error.response.data.error;
             Swal.close();
           } else {
-            this.toast("warning", error.response.data.error);
+            this.$alert.toast("warning", error.response.data.error);
             this.login.email = "";
             this.login.password = "";
           }
@@ -160,16 +133,16 @@ export default {
     },
   },
   created() {
-    if (sessionStorage.getItem("user") != null) {
-      this.user = JSON.parse(sessionStorage.getItem("user"));
+    if (localStorage.user != null) {
+      this.user = JSON.parse(localStorage.user);
       if (this.user.data.role_id == 1) {
-        this.toast("warning", "You have already logged in as a student");
+        this.$alert.toast("warning", "You have already logged in as a student");
         this.$router.push({ path: "/" });
       } else if (this.user.data.role_id == 2) {
         this.$router.push({ path: "/admin/dashboard" });
       }
     } else {
-      this.user = sessionStorage.getItem("user");
+      this.user = localStorage.user;
     }
   },
 };

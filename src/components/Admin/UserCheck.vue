@@ -32,13 +32,13 @@ export default {
     },
   },
   created() {
-    if (sessionStorage.getItem("user") != null) {
-      this.user = JSON.parse(sessionStorage.getItem("user"));
-    } else {
-      this.user = sessionStorage.getItem("user");
-      Swal.fire("Oops", "Please log in first !", "warning");
-      this.$router.push({ path: "/" });
-    }
+    // if (sessionStorage.getItem("user") != null) {
+    //   this.user = JSON.parse(sessionStorage.getItem("user"));
+    // } else {
+    //   this.user = sessionStorage.getItem("user");
+    //   Swal.fire("Oops", "Please log in first !", "warning");
+    //   this.$router.push({ path: "/" });
+    // }
   },
 };
 </script>

@@ -15,7 +15,7 @@
             <div class="col mb-2">
               <div
                 class="card card-allin border-allin"
-                @click="getModule('digital-marketing')"
+                @click="getModule('digital-marketing-specialist-101')"
               >
                 <div class="container2 img-bg">
                   <img
@@ -64,7 +64,7 @@
                   ></unicon>
                 </div>
                 <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg">
+                <div class="container2 img-bg lock-module">
                   <img
                     src="../../assets/home/icon/FullStack-Engineer.webp"
                     class="card-img-top blur"
@@ -87,7 +87,7 @@
                   ></unicon>
                 </div>
                 <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg">
+                <div class="container2 img-bg lock-module">
                   <img
                     src="../../assets/home/icon/UX-Designer.webp"
                     class="card-img-top blur"
@@ -110,7 +110,7 @@
                   ></unicon>
                 </div>
                 <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg">
+                <div class="container2 img-bg lock-module">
                   <img
                     src="../../assets/home/icon/Biomedical-Engineer.webp"
                     class="card-img-top blur"
@@ -132,7 +132,7 @@
                   ></unicon>
                 </div>
                 <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg">
+                <div class="container2 img-bg lock-module">
                   <img
                     src="../../assets/home/icon/Investment-Analyst.webp"
                     class="card-img-top blur"
@@ -155,7 +155,7 @@
                   ></unicon>
                 </div>
                 <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg">
+                <div class="container2 img-bg lock-module">
                   <img
                     src="../../assets/home/icon/Psychologist.webp"
                     class="card-img-top blur"
@@ -178,7 +178,7 @@
                   ></unicon>
                 </div>
                 <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg">
+                <div class="container2 img-bg lock-module">
                   <img
                     src="../../assets/home/icon/Conten-Creator.webp"
                     class="card-img-top blur"
@@ -201,7 +201,7 @@
                   ></unicon>
                 </div>
                 <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg">
+                <div class="container2 img-bg lock-module">
                   <img
                     src="../../assets/home/icon/Food-Scientist.webp"
                     class="card-img-top blur"
@@ -224,7 +224,7 @@
                   ></unicon>
                 </div>
                 <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg">
+                <div class="container2 img-bg lock-module">
                   <img
                     src="../../assets/home/icon/Medical-Doctor.webp"
                     class="card-img-top blur"
@@ -258,27 +258,19 @@ export default {
     };
   },
   methods: {
-    checkUser() {
-      if (sessionStorage.getItem("user") != null) {
-        this.showLogin = false;
-        this.user = JSON.parse(sessionStorage.getItem("user"));
-      } else {
-        this.user = sessionStorage.getItem("user");
-      }
-    },
     getModule(slug) {
-      // if (!this.user) {
-      //   this.showLogin = true;
-      // } else {
-      alert(slug);
-      // }
+      if (!this.user) {
+        this.showLogin = true;
+      } else {
+        this.$router.push({ path: "/module/" + slug });
+      }
     },
     closeLogin() {
       this.showLogin = false;
     },
   },
   created() {
-    this.checkUser();
+    this.user = this.$auth.user_data();
   },
 };
 </script>
@@ -324,5 +316,10 @@ a {
 .lock {
   position: absolute;
   right: 5%;
+}
+
+.lock-module {
+  filter: blur(1px);
+  -webkit-filter: blur(1px);
 }
 </style>

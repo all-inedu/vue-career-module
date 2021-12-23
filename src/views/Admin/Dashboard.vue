@@ -1,6 +1,5 @@
 <template>
   <div id="dashboard">
-    <AdminCheck></AdminCheck>
     <div class="container-fluid ps-0">
       <div class="row g-0">
         <transition name="slide">
@@ -24,16 +23,13 @@
   </div>
 </template>
 <script>
-import AdminCheck from "@/components/Admin/UserCheck";
 import AdminHeader from "@/components/Admin/Header";
 import AdminSidebar from "@/components/Admin/Sidebar";
-
 import Dashboard from "@/components/Admin/Dashboard/Dashboard";
 
 export default {
   name: "Dashboard",
   components: {
-    AdminCheck,
     AdminHeader,
     AdminSidebar,
     "v-dashboard": Dashboard,
@@ -60,11 +56,7 @@ export default {
     },
   },
   created() {
-    if (sessionStorage.getItem("user") != null) {
-      this.user = JSON.parse(sessionStorage.getItem("user"));
-    } else {
-      this.user = sessionStorage.getItem("user");
-    }
+    this.user = this.$auth.check();
   },
 };
 </script>
