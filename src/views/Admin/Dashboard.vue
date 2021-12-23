@@ -40,6 +40,7 @@ export default {
       sidebarStatus: true,
       header: "content",
       user: [],
+      data: [],
     };
   },
   methods: {
