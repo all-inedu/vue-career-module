@@ -130,7 +130,7 @@
                                           "
                                           download
                                         >
-                                          Your Worksheet
+                                          Worksheet
                                         </a>
                                       </div>
                                     </td>
