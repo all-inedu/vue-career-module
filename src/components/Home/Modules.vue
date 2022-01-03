@@ -32,7 +32,7 @@
             <div class="col mb-2">
               <div
                 class="card card-allin border-allin"
-                @click="getModule('data-scientist')"
+                @click="getModule('data-scientist-101')"
               >
                 <div class="container2 img-bg">
                   <img
