@@ -276,7 +276,7 @@ export default {
       this.error_count = 0;
       const form = new FormData();
       form.append("module_id", this.module_id);
-      form.append("part_id", this.part.id);
+      form.append("part_id", this.part_data.id);
       form.append("group", data[0].group);
 
       if (typeof this.element_data.read_id !== "undefined") {
