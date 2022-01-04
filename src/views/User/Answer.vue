@@ -149,7 +149,7 @@ export default {
         .then((response) => {
           this.module_data = response.data;
           this.outline_length = this.module_data.outlines.length;
-          console.log(this.module_data);
+          // console.log(this.module_data);
         })
         .catch((error) => {
           console.log(error);
@@ -161,6 +161,7 @@ export default {
     this.user = this.$auth.check();
 
     if (this.$route.params.slug) {
+      console.log(this.$route.params.slug);
       this.getModuleData(this.$route.params.slug);
     }
 

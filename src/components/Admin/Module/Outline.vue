@@ -51,14 +51,16 @@
                         </transition>
                       </div>
                       <div class="col-md-1 d-md-block d-none text-end">
-                        <vue-feather
-                          class="pointer"
-                          type="arrow-right-circle"
-                          fill="green"
-                          stroke="white"
-                          size="30"
-                          @click="saveOutline(1)"
-                        ></vue-feather>
+                        <vue-custom-tooltip label="Insert Outline">
+                          <vue-feather
+                            class="pointer"
+                            type="arrow-right-circle"
+                            fill="green"
+                            stroke="white"
+                            size="30"
+                            @click="saveOutline(1)"
+                          ></vue-feather>
+                        </vue-custom-tooltip>
                       </div>
                       <div class="col-12 d-md-none d-block mt-2">
                         <div class="d-grid gap-2">
@@ -122,14 +124,16 @@
                         </transition>
                       </div>
                       <div class="col-md-1 d-md-block d-none text-end">
-                        <vue-feather
-                          class="pointer"
-                          type="arrow-right-circle"
-                          fill="green"
-                          stroke="white"
-                          size="30"
-                          @click="saveOutline(2)"
-                        ></vue-feather>
+                        <vue-custom-tooltip label="Insert Outline">
+                          <vue-feather
+                            class="pointer"
+                            type="arrow-right-circle"
+                            fill="green"
+                            stroke="white"
+                            size="30"
+                            @click="saveOutline(2)"
+                          ></vue-feather>
+                        </vue-custom-tooltip>
                       </div>
                       <div class="col-12 d-md-none d-block mt-2">
                         <div class="d-grid gap-2">
@@ -189,14 +193,16 @@
                         </transition>
                       </div>
                       <div class="col-md-1 d-md-block d-none text-end">
-                        <vue-feather
-                          class="pointer"
-                          type="arrow-right-circle"
-                          fill="green"
-                          stroke="white"
-                          size="30"
-                          @click="saveOutline(3)"
-                        ></vue-feather>
+                        <vue-custom-tooltip label="Insert Outline">
+                          <vue-feather
+                            class="pointer"
+                            type="arrow-right-circle"
+                            fill="green"
+                            stroke="white"
+                            size="30"
+                            @click="saveOutline(3)"
+                          ></vue-feather>
+                        </vue-custom-tooltip>
                       </div>
                       <div class="col-12 d-md-none d-block mt-2">
                         <div class="d-grid gap-2">
@@ -257,14 +263,16 @@
                         </transition>
                       </div>
                       <div class="col-md-1 d-md-block d-none text-end">
-                        <vue-feather
-                          class="pointer"
-                          type="arrow-right-circle"
-                          fill="green"
-                          stroke="white"
-                          size="30"
-                          @click="saveOutline(4)"
-                        ></vue-feather>
+                        <vue-custom-tooltip label="Insert Outline">
+                          <vue-feather
+                            class="pointer"
+                            type="arrow-right-circle"
+                            fill="green"
+                            stroke="white"
+                            size="30"
+                            @click="saveOutline(4)"
+                          ></vue-feather>
+                        </vue-custom-tooltip>
                       </div>
                       <div class="col-12 d-md-none d-block mt-2">
                         <div class="d-grid gap-2">
@@ -328,14 +336,16 @@
                         </transition>
                       </div>
                       <div class="col-md-1 d-md-block d-none text-end">
-                        <vue-feather
-                          class="pointer"
-                          type="arrow-right-circle"
-                          fill="green"
-                          stroke="white"
-                          size="30"
-                          @click="saveOutline(5)"
-                        ></vue-feather>
+                        <vue-custom-tooltip label="Insert Outline">
+                          <vue-feather
+                            class="pointer"
+                            type="arrow-right-circle"
+                            fill="green"
+                            stroke="white"
+                            size="30"
+                            @click="saveOutline(5)"
+                          ></vue-feather>
+                        </vue-custom-tooltip>
                       </div>
                       <div class="col-12 d-md-none d-block mt-2">
                         <div class="d-grid gap-2">
@@ -385,14 +395,16 @@
                         </transition>
                       </div>
                       <div class="col-md-1 d-md-block d-none text-end">
-                        <vue-feather
-                          class="pointer"
-                          type="arrow-right-circle"
-                          fill="green"
-                          stroke="white"
-                          size="30"
-                          @click="saveOutline(6)"
-                        ></vue-feather>
+                        <vue-custom-tooltip label="Insert Outline">
+                          <vue-feather
+                            class="pointer"
+                            type="arrow-right-circle"
+                            fill="green"
+                            stroke="white"
+                            size="30"
+                            @click="saveOutline(6)"
+                          ></vue-feather>
+                        </vue-custom-tooltip>
                       </div>
                       <div class="col-12 d-md-none d-block mt-2">
                         <div class="d-grid gap-2">
@@ -453,14 +465,16 @@
                         </transition>
                       </div>
                       <div class="col-md-1 d-md-block d-none text-end">
-                        <vue-feather
-                          class="pointer"
-                          type="arrow-right-circle"
-                          fill="green"
-                          stroke="white"
-                          size="30"
-                          @click="saveOutline(7)"
-                        ></vue-feather>
+                        <vue-custom-tooltip label="Insert Outline">
+                          <vue-feather
+                            class="pointer"
+                            type="arrow-right-circle"
+                            fill="green"
+                            stroke="white"
+                            size="30"
+                            @click="saveOutline(7)"
+                          ></vue-feather>
+                        </vue-custom-tooltip>
                       </div>
                       <div class="col-12 d-md-none d-block mt-2">
                         <div class="d-grid gap-2">
@@ -520,14 +534,16 @@
                         </transition>
                       </div>
                       <div class="col-md-1 d-md-block d-none text-end">
-                        <vue-feather
-                          class="pointer"
-                          type="arrow-right-circle"
-                          fill="green"
-                          stroke="white"
-                          size="30"
-                          @click="saveOutline(8)"
-                        ></vue-feather>
+                        <vue-custom-tooltip label="Insert Outline">
+                          <vue-feather
+                            class="pointer"
+                            type="arrow-right-circle"
+                            fill="green"
+                            stroke="white"
+                            size="30"
+                            @click="saveOutline(8)"
+                          ></vue-feather>
+                        </vue-custom-tooltip>
                       </div>
                       <div class="col-12 d-md-none d-block mt-2">
                         <div class="d-grid gap-2">

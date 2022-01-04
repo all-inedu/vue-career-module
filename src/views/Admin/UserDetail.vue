@@ -448,11 +448,16 @@ export default {
 
 .module-name {
   font-size: 1.1em;
+  line-height: 1.2;
   font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .module-category {
   font-size: 0.9em;
+  padding-top: 5px;
+  line-height: 1;
+  margin-bottom: 20px;
 }
 
 .module-taken {

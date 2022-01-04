@@ -228,7 +228,7 @@ export default {
         .then((response) => {
           this.module_data = response.data;
           this.outline_length = this.module_data.outlines.length;
-          //   console.log(this.module_data);
+          // console.log(this.module_data);
         })
         .catch((error) => {
           console.log(error);
