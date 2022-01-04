@@ -376,6 +376,14 @@
                           >6</span
                         >
                         Reflection
+                        <small
+                          class="d-block notif-part text-muted"
+                          v-if="outline.reflection.total_part"
+                        >
+                          This outline has
+                          <strong> {{ outline.reflection.total_part }} </strong>
+                          part
+                        </small>
                       </div>
                       <div class="col-md-7">
                         <input
