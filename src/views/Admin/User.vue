@@ -66,7 +66,7 @@
                     <div class="col-md-12" v-if="userList.from">
                       <small
                         >Showing {{ userList.from }} to {{ userList.to }} of
-                        {{ userList.total }} modules</small
+                        {{ userList.total }} users</small
                       >
                     </div>
                     <div

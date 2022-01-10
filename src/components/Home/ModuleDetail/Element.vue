@@ -1,6 +1,6 @@
 <template>
   <div id="Part">
-    <div class="card">
+    <div class="card" ref="part">
       <div class="card-body">
         <div class="element-sticky">
           <h4>{{ part_data.part_title || part_data.title }}</h4>
@@ -101,17 +101,39 @@
               <div class="element-question" v-html="i.question"></div>
               <div class="mt-3">
                 <small class="text-muted"> Fill in your answer below </small>
-                <input
-                  :type="
-                    i.elementdetails[0].type_blank == 'is exactly'
-                      ? 'text'
-                      : 'number'
+                <!-- Textarea  -->
+                <div
+                  v-if="
+                    element_data.data[index].elementdetails[0].answer == '-'
                   "
-                  v-model="element_data.data[index].answer"
-                  class="form-control"
-                  :class="i.error_form ? 'border-danger' : ''"
-                  @keydown="deleteError(index)"
-                />
+                >
+                  <textarea
+                    class="form-control"
+                    rows="4"
+                    v-model="element_data.data[index].answer"
+                    :class="i.error_form ? 'border-danger' : ''"
+                    @keydown="deleteError(index)"
+                  ></textarea>
+                </div>
+
+                <!-- Input  -->
+                <div
+                  v-if="
+                    element_data.data[index].elementdetails[0].answer != '-'
+                  "
+                >
+                  <input
+                    :type="
+                      i.elementdetails[0].type_blank == 'is exactly'
+                        ? 'text'
+                        : 'number'
+                    "
+                    v-model="element_data.data[index].answer"
+                    class="form-control"
+                    :class="i.error_form ? 'border-danger' : ''"
+                    @keydown="deleteError(index)"
+                  />
+                </div>
                 <div class="col-md-12">
                   <small class="text-danger" v-if="i.error_form">
                     {{ i.error_form }}
@@ -238,7 +260,7 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           this.load = false;
           this.element_data = response.data;
         })
@@ -251,6 +273,12 @@ export default {
     },
     getElementDataByUrl(url) {
       this.load = true;
+
+      this.$refs["part"].scrollIntoView({
+        block: "center",
+        scrollBehavior: "smooth",
+      });
+
       this.$axios
         .get(url, {
           headers: {
@@ -263,7 +291,7 @@ export default {
             this.$emit("outline", this.element_data.next_outline_id);
           }
 
-          console.log(response.data);
+          // console.log(response.data);
           this.element_data = response.data;
           this.getPartData(this.element_data.data[0].part_id);
         })

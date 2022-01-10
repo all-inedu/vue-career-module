@@ -5,11 +5,11 @@
     <div class="container mt-3">
       <div class="row">
         <div class="col-md-12">
-          <div class="card">
+          <!-- <div class="card">
             <div class="card-body">
               <div class="my-0 mt-2" v-html="module_data.desc"></div>
             </div>
-          </div>
+          </div> -->
           <div
             class="alert alert-info alert-dismissible fade show mt-3 mb-0"
             role="alert"
@@ -103,7 +103,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9" ref="part">
           <v-part
             :outline="outline_default"
             :module_id="module_data.id"
@@ -195,12 +195,18 @@ export default {
     },
     goToPart(i) {
       this.outline_default = i;
+      this.$refs["part"].scrollIntoView({
+        block: "center",
+        scrollBehavior: "smooth",
+      });
     },
     checkOutline(data) {
       this.outline_default = data;
     },
   },
   created() {
+    window.scrollTo(0, 0);
+
     this.user = this.$auth.check();
     setInterval(() => {
       this.user = this.$auth.check();

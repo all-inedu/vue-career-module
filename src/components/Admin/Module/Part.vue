@@ -46,7 +46,7 @@
                               my-md-0 my-2
                             "
                           >
-                            <vue-custom-tooltip label="Delete this part">
+                            <vue-custom-tooltip label="Delete part">
                               <vue-feather
                                 @click="deletePart(i)"
                                 class="me-2"
@@ -56,7 +56,7 @@
                               ></vue-feather>
                             </vue-custom-tooltip>
 
-                            <vue-custom-tooltip label="Edit this part">
+                            <vue-custom-tooltip label="Rename part">
                               <vue-feather
                                 @click="editPart(i)"
                                 class="me-2"
@@ -66,7 +66,7 @@
                               ></vue-feather>
                             </vue-custom-tooltip>
 
-                            <vue-custom-tooltip label="View element">
+                            <vue-custom-tooltip label="Edit elements">
                               <vue-feather
                                 @click="viewElement(i.id)"
                                 class="me-2"

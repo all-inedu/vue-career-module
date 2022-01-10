@@ -241,8 +241,8 @@
               <div class="row mt-3">
                 <div class="col-md-12">
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Blanditiis alias harum voluptatibus omnis
+                    Please enter your email and we'll send an email to reset
+                    your password
                   </p>
                   <div class="mb-3">
                     <label class="login-label">E-mail</label>

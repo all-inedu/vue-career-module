@@ -71,6 +71,9 @@ export default {
       localStorage.removeItem("user");
     },
   },
+  created() {
+    document.title = "Admin Dashboard";
+  },
 };
 </script>
 <style scoped>

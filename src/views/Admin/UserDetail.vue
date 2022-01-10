@@ -66,7 +66,13 @@
                                 <small class="d-block text-muted">
                                   Address
                                 </small>
-                                {{ user_data.address }}
+                                <div
+                                  v-html="
+                                    user_data.address != 'null'
+                                      ? user_data.address
+                                      : '-'
+                                  "
+                                ></div>
                               </div>
                             </div>
                           </div>

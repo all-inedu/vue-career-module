@@ -301,11 +301,19 @@
                                 </div>
                                 <small class="text-muted d-block mb-2">
                                   Insert a video from YouTube
+                                  <vue-custom-tooltip
+                                    label="How to Embed a video or playlist"
+                                  >
+                                    <vue-feather
+                                      type="alert-circle"
+                                      @click="showModal('embed')"
+                                    ></vue-feather>
+                                  </vue-custom-tooltip>
                                 </small>
                                 <input
                                   type="text"
                                   class="form-control"
-                                  placeholder="Paste Youtube video link here"
+                                  placeholder="Paste Youtube embed here"
                                   v-model="element.data[index].video_link"
                                 />
                               </div>
@@ -662,6 +670,42 @@
         </div>
       </div>
     </transition>
+
+    <!-- Embed Guide Modal -->
+    <transition>
+      <div v-if="modal == 'embed'">
+        <div class="vue-modal-overlay" @click="closeModal"></div>
+        <div class="vue-modal p-3 shadow">
+          <div class="row justify-content-center">
+            <div class="col-10">
+              <h5>Embed a video or playlist</h5>
+            </div>
+            <div class="col-2 text-end">
+              <vue-feather
+                type="x"
+                class="pointer text-danger"
+                @click="closeModal"
+              ></vue-feather>
+            </div>
+          </div>
+          <hr class="mt-0" />
+          <ol class="modal-list">
+            <li>
+              On a computer, go to the YouTube video or playlist you want to
+              embed.
+            </li>
+            <li>
+              Click SHARE Share. From the list of Share options, click
+              <b>Embed</b>.
+            </li>
+            <li>From the box that appears, copy the HTML code.</li>
+            <li>Paste the code into your website HTML.</li>
+            <li>Change the width width to <b>100%</b></li>
+            <li>And also change the height to <b>450</b></li>
+          </ol>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -679,6 +723,7 @@ export default {
       addElement: false,
       edit: false,
       typeInput: "text",
+      modal: "",
       user: [],
       module: [],
       outline: [],
@@ -693,30 +738,11 @@ export default {
     };
   },
   methods: {
-    loading() {
-      Swal.fire({
-        title: "Please wait a minute",
-      });
-      Swal.showLoading();
+    showModal(name) {
+      this.modal = name;
     },
-    toast(status, title) {
-      const Toast = Swal.mixin({
-        toast: true,
-        width: "32rem",
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: status,
-        title: title,
-      });
+    closeModal() {
+      this.modal = "";
     },
     previous() {
       this.$router.push({
@@ -854,7 +880,7 @@ export default {
     },
     saveElement() {
       // input variable element ke form data
-      this.loading();
+      this.$alert.loading();
       let form = new FormData();
       form.append("part_id", this.element.part_id);
       form.append("module_id", this.element.module_id);
@@ -949,7 +975,7 @@ export default {
         .then((response) => {
           // console.log(response.data);
           Swal.close();
-          this.toast("success", response.data.message);
+          this.$alert.toast("success", response.data.message);
           this.addElement = false;
           this.getElementData(this.element.part_id);
           this.element.data = [];
@@ -1051,7 +1077,7 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.loading();
+          this.$alert.loading();
           this.$axios
             .delete(this.$api_url + "element/" + i, {
               headers: {
@@ -1060,7 +1086,7 @@ export default {
             })
             .then((response) => {
               console.log(response.data);
-              this.toast("success", response.data.message);
+              this.$alert.toast("success", response.data.message);
               this.addElement = false;
               this.edit = false;
               this.element.data = [];
@@ -1090,7 +1116,7 @@ export default {
         .then((response) => {
           console.log(response.data);
           Swal.close();
-          this.toast("success", response.data.message);
+          this.$alert.toast("success", response.data.message);
           this.getElementData(this.element.part_id);
         })
         .catch((error) => {
@@ -1124,6 +1150,10 @@ export default {
 };
 </script>
 <style scoped>
+.sticky-top {
+  z-index: 99;
+}
+
 .fade-enter-active {
   transition: opacity 0.9s ease;
 }

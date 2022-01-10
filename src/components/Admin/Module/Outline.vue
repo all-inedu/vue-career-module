@@ -896,6 +896,12 @@ export default {
         });
     },
   },
+  watch: {
+    $route(to) {
+      this.getModuleData(to.params.module_id);
+      this.getOutlineData(to.params.module_id);
+    },
+  },
   created() {
     this.user = this.$auth.check();
 

@@ -9,8 +9,7 @@
                 <h4>Reset Password</h4>
               </div>
               <div class="card-body">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Est
-                fuga quas pariatur fugiat.
+                Please enter your new password
                 <div class="mb-2 mt-3">
                   <label class="login-label"> E-mail</label>
                   <input
