@@ -84,6 +84,9 @@
                         :value="user_data.phone_number"
                         @input="onInput"
                       ></vue-tel-input>
+                      <small class="text-danger" v-if="error_form.phone_number">
+                        {{ error_form.phone_number[0] }}
+                      </small>
                     </div>
                   </div>
                   <div class="row">
@@ -98,6 +101,9 @@
                           inline: false,
                         }"
                       />
+                      <small class="text-danger" v-if="error_form.address">
+                        {{ error_form.address[0] }}
+                      </small>
                     </div>
                   </div>
                   <div class="row">
@@ -315,6 +321,7 @@ export default {
         error: [],
       },
       code: [],
+      error_form: [],
     };
   },
   methods: {
@@ -344,8 +351,12 @@ export default {
       }
     },
     onInput(phone, phoneObject) {
-      if (phoneObject?.formatted) {
-        this.user_data.phone_number = phoneObject.formatted;
+      if (phone != "") {
+        if (phoneObject?.formatted) {
+          this.user_data.phone_number = phoneObject.formatted;
+        }
+      } else {
+        this.user_data.phone_number = "";
       }
     },
     getProfile() {
@@ -374,6 +385,7 @@ export default {
       }
     },
     updateProfile() {
+      this.$alert.loading();
       const form = new FormData();
       form.append("first_name", this.user_data.first_name);
       form.append("last_name", this.user_data.last_name);
@@ -384,6 +396,10 @@ export default {
       form.append("phone_number", this.user_data.phone_number);
       form.append("address", this.user_data.address);
       form.append("profile_picture", this.user_data.profile_picture);
+
+      // for (var pair of form.entries()) {
+      //   console.log(pair[0] + ", " + pair[1]);
+      // }
 
       this.$axios
         .post(this.$api_url + "profile", form, {
@@ -404,7 +420,9 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error);
+          this.$alert.close();
+          this.error_form = error.response.data.error;
+          // console.log(this.user_data);
         });
     },
     updateEmail() {

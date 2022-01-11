@@ -262,6 +262,9 @@ export default {
 
 .module-category {
   font-size: 0.9em;
+  line-height: 13px;
+  padding-top: 5px;
+  margin-bottom: 20px;
 }
 
 .module-taken {

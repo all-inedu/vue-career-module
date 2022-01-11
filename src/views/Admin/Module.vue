@@ -179,7 +179,9 @@
                           <p
                             class="mb-3"
                             style="text-align: justify"
-                            v-html="formatText(i.desc, 150, '...')"
+                            v-html="
+                              i.desc ? formatText(i.desc, 150, '...') : ''
+                            "
                           ></p>
                         </div>
                         <div class="row align-items-center">

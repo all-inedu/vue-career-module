@@ -351,6 +351,7 @@ export default {
           })
           .catch((err) => {
             Swal.close();
+            console.log(err.response.data);
             if (err.response.data) {
               if (typeof err.response.data.error == "object") {
                 this.error_validation.module = err.response.data.error;
