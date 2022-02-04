@@ -31,7 +31,13 @@
                   href="/file/CAREER_EXPLORATION_GUIDELINES.pdf"
                   download
                   target="_blank"
-                  >Guideline Book</a
+                >
+                  <vue-feather
+                    type="download"
+                    size="20"
+                    class="float-right"
+                  ></vue-feather>
+                  Guidebook</a
                 >
               </li>
               <li class="nav-item dropdown">
@@ -61,8 +67,12 @@
   </div>
 </template>
 <script>
+import VueFeather from "vue-feather";
 export default {
   name: "Navbar",
+  components: {
+    VueFeather,
+  },
   data() {
     return {
       user: [],

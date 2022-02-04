@@ -74,6 +74,7 @@
             :module_id="module_id"
             @part-element="checkElement"
             @outline="checkOutline"
+            @progress="checkProgress"
           ></v-element>
         </div>
       </div>
@@ -166,6 +167,12 @@ export default {
       if (data) {
         this.part = true;
         this.getPartData();
+      }
+    },
+    checkProgress(data) {
+      if (data) {
+        this.$emit("progress", data);
+        // console.log(data);
       }
     },
   },

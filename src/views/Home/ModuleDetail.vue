@@ -52,6 +52,23 @@
         </div>
       </div>
     </div>
+    <div class="container sticky-progress mt-2 py-2">
+      <div class="card">
+        <div class="progress">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            :style="'width:' + Math.round(progress.percentage) + '%'"
+            :class="progress.percentage == 100 ? 'bg-success' : ''"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            {{ Math.round(progress.percentage) }} %
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="container mt-3">
       <div class="row">
@@ -108,6 +125,7 @@
             :outline="outline_default"
             :module_id="module_data.id"
             @outline-data="checkOutline"
+            @progress="checkProgress"
             part_show="true"
           ></v-part>
         </div>
@@ -140,6 +158,9 @@ export default {
       module_data: [],
       outline_data: [],
       outline_default: [],
+      progress: {
+        percentage: 0,
+      },
     };
   },
   methods: {
@@ -154,6 +175,7 @@ export default {
           if (response.data.data.module != null) {
             this.module_data = response.data.data.module;
             document.title = this.module_data.module_name;
+            this.viewProgress(this.module_data.id);
           } else {
             this.$router.push({ path: "/" });
             this.$alert.toast("warning", "The module is not found");
@@ -203,6 +225,26 @@ export default {
     checkOutline(data) {
       this.outline_default = data;
     },
+    checkProgress(data) {
+      if (data) {
+        this.progress = data;
+      }
+    },
+    viewProgress(id) {
+      this.$axios
+        .get(this.$api_url + "module/progress/" + id, {
+          headers: {
+            Authorization: "Bearer " + this.user.token,
+          },
+        })
+        .then((response) => {
+          this.progress = response.data.data;
+          // console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   created() {
     window.scrollTo(0, 0);
@@ -250,7 +292,7 @@ export default {
 .outline-sticky {
   position: -webkit-sticky; /* Safari */
   position: sticky;
-  top: 10px;
+  top: 30px;
 }
 
 .w-5 {
@@ -259,6 +301,21 @@ export default {
 
 .w-95 {
   width: 95%;
+}
+
+.progress-module {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
+.sticky-progress {
+  display: block;
+  position: -webkit-sticky !important; /* Safari */
+  position: sticky !important;
+  top: 0;
+  background: white;
+  z-index: 99999;
 }
 
 @media only screen and (max-width: 600px) {

@@ -391,6 +391,7 @@ export default {
             } else {
               this.$emit("part-element", true);
             }
+            this.checkProgress();
           })
           .catch((error) => {
             console.log(error.response.data);
@@ -405,6 +406,21 @@ export default {
       } else {
         this.$emit("part-element", true);
       }
+    },
+    checkProgress() {
+      this.$axios
+        .get(this.$api_url + "module/progress/" + this.module_id, {
+          headers: {
+            Authorization: "Bearer " + this.user.token,
+          },
+        })
+        .then((response) => {
+          this.$emit("progress", response.data.data);
+          // console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   created() {
@@ -501,8 +517,8 @@ export default {
 .element-sticky {
   position: -webkit-sticky; /* Safari */
   position: sticky;
-  top: 0px;
-  padding: 10px 0 5px 0;
+  top: 30px;
+  padding-top: 10px;
   border-bottom: 1px solid #dedede;
   background: white;
 }

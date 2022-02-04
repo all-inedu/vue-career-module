@@ -31,7 +31,13 @@
                   href="/file/CAREER_EXPLORATION_GUIDELINES.pdf"
                   download
                   target="_blank"
-                  >Guideline Book</a
+                >
+                  <vue-feather
+                    type="download"
+                    size="20"
+                    class="float-right"
+                  ></vue-feather>
+                  Guidebook</a
                 >
               </li>
               <li class="nav-item">
@@ -101,10 +107,11 @@
 <script>
 import Auth from "@/components/Home/Auth/Auth";
 // @ is an alias to /src
-
+import VueFeather from "vue-feather";
 export default {
   name: "Navbar",
   components: {
+    VueFeather,
     Auth,
   },
   data() {
