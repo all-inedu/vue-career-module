@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-lg navbar-allin shadow navbar-light">
       <div class="container">
         <img
-          src="../../assets/home/logo-1.png"
+          src="../../assets/home/logo.png"
           class="navbar-brand"
           alt="Career Exploration Module"
         />
@@ -97,7 +97,7 @@ export default {
 
 .navbar-brand {
   width: 14%;
-  margin-left: -20px;
+  margin-left: 0px;
 }
 
 .navbar-allin {
