@@ -3,7 +3,7 @@
     <div class="container py-4">
       <div class="row">
         <div class="col-md-4 mb-3">
-          <img src="../../assets/home/logo-white.png" alt="" />
+          <img src="../../assets/home/logo.webp" alt="" />
         </div>
         <div class="col-md-3 mb-3">
           <i class="fas fa-globe fa-fw"></i>
