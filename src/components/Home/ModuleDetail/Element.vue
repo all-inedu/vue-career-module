@@ -430,7 +430,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .item {
   display: flex;
@@ -494,7 +493,7 @@ export default {
 .form-check-input {
   width: 1.2em;
   height: 1.2em;
-  margin-right: 15px;
+  margin-right: 0px;
   margin-top: 2.5px;
   margin-bottom: 10px;
   transition: all 0.3s ease;
@@ -512,6 +511,7 @@ export default {
 
 .form-check-label {
   cursor: pointer;
+  padding-left: 10px;
 }
 
 .element-sticky {
