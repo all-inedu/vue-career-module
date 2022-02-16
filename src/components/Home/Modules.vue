@@ -32,9 +32,40 @@
             <div class="col mb-2">
               <div
                 class="card card-allin border-allin"
+                @click="getModule('uiux-designer')"
+              >
+                <!-- <div class="lock">
+                  <unicon
+                    name="lock-access"
+                    fill="#233874"
+                    icon-style="monochrome"
+                  ></unicon>
+                </div> -->
+                <div class="container-overflow text-center pt-2"></div>
+                <div class="container2 img-bg">
+                  <img
+                    src="../../assets/home/icon/UX-Designer.webp"
+                    class="card-img-top blur"
+                  />
+                  <div class="card-text blur">UI/UX Designer</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col mb-2">
+              <div
+                class="card card-allin border-allin"
                 @click="getModule('data-scientist-101')"
               >
-                <div class="container2 img-bg">
+                <div class="lock">
+                  <unicon
+                    name="lock-access"
+                    fill="#233874"
+                    icon-style="monochrome"
+                  ></unicon>
+                </div>
+                <div class="container-overflow text-center pt-2"></div>
+                <div class="container2 img-bg lock-module">
                   <img
                     src="../../assets/home/icon/Data-Scientist.webp"
                     class="card-img-top"
@@ -70,29 +101,6 @@
                     class="card-img-top blur"
                   />
                   <div class="card-text blur">Full Stack Engineering</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col mb-2">
-              <div
-                class="card card-allin border-allin"
-                @click="getModule('ux-designer')"
-              >
-                <div class="lock">
-                  <unicon
-                    name="lock-access"
-                    fill="#233874"
-                    icon-style="monochrome"
-                  ></unicon>
-                </div>
-                <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg lock-module">
-                  <img
-                    src="../../assets/home/icon/UX-Designer.webp"
-                    class="card-img-top blur"
-                  />
-                  <div class="card-text blur">UX Designer</div>
                 </div>
               </div>
             </div>
