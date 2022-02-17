@@ -23,6 +23,14 @@
                 </vue-feather>
                 {{ module_data.module_name }}
               </h5>
+              <button
+                class="btn-warning float-end btn-sm rounded-pill"
+                @click="download"
+              >
+                Download
+              </button>
+              <br />
+              <div class="mb-3"></div>
               <div class="table-responsive">
                 <table class="table table-bordered align-middle">
                   <thead>
@@ -155,13 +163,23 @@ export default {
           console.log(error);
         });
     },
+    download() {
+      window.open(
+        "https://api-cm.all-inedu.com/api/v1/module/" +
+          this.$route.params.slug +
+          "/answer/user/" +
+          this.user.id +
+          "/download/",
+        "_blank"
+      );
+    },
   },
   created() {
     document.title = "Module Answer";
     this.user = this.$auth.check();
 
     if (this.$route.params.slug) {
-      console.log(this.$route.params.slug);
+      // console.log(this.$route.params.slug);
       this.getModuleData(this.$route.params.slug);
     }
 

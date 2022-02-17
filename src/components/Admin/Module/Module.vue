@@ -67,7 +67,7 @@
                             </transition>
                           </div>
                           <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-12">
                               <div class="mb-3">
                                 <label>Category</label>
                                 <select
@@ -100,7 +100,7 @@
                                 </transition>
                               </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-12">
                               <div class="mb-3">
                                 <label>Price</label>
                                 <div class="input-group">
@@ -132,7 +132,7 @@
                             </div>
                           </div>
 
-                          <div class="mb-2">
+                          <!-- <div class="mb-2">
                             <label>Description</label>
                             <editor
                               v-model="module.desc"
@@ -157,7 +157,7 @@
                                 {{ error_validation.module.desc[0] }}
                               </small>
                             </transition>
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                       <hr />

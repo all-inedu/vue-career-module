@@ -46,6 +46,14 @@
                         </div>
                       </div>
                     </div>
+                    <button
+                      class="btn-warning float-end btn-sm rounded-pill"
+                      @click="download"
+                    >
+                      Download
+                    </button>
+                    <br />
+                    <br />
                     <div class="table-responsive">
                       <table class="table table-bordered align-middle">
                         <thead>
@@ -235,6 +243,16 @@ export default {
           this.$router.push({ path: "/admin/user" });
           this.$alert.toast("error", "The module is not found");
         });
+    },
+    download() {
+      window.open(
+        "https://api-cm.all-inedu.com/api/v1/module/" +
+          this.$route.params.slug +
+          "/answer/user/" +
+          this.user_data.id +
+          "/download/",
+        "_blank"
+      );
     },
   },
   created() {

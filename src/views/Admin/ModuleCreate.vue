@@ -308,7 +308,8 @@ export default {
       });
     },
     preview() {
-      this.section = 5;
+      // this.section = 5;
+      window.open("/module/" + this.module.slug, "_blank");
     },
   },
   created() {
