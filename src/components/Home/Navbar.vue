@@ -26,6 +26,9 @@
                 <router-link class="nav-link" to="/">Home</router-link>
               </li>
               <li class="nav-item">
+                <router-link class="nav-link" to="/resources">Resources</router-link>
+              </li>
+              <li class="nav-item">
                 <a
                   class="nav-link"
                   href="/file/CAREER_EXPLORATION_GUIDELINES.pdf"
@@ -41,12 +44,8 @@
                 >
               </li>
               <li class="nav-item">
-                <span v-if="!user" class="nav-link btn-login" @click="login"
-                  >Log In</span
-                >
-                <span v-if="user" class="nav-link btn-login" @click="dashboard">
-                  Your Dashboard
-                </span>
+                <span v-if="!user" class="nav-link btn-login" @click="login">Log In</span>
+                <span v-if="user" class="nav-link btn-login" @click="dashboard">Your Dashboard</span>
               </li>
             </ul>
           </div>

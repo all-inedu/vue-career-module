@@ -8,6 +8,8 @@ const routes = [
     component: Home,
     meta: { title: 'Career Exploration Module' }
   },
+
+  
   {
     path: '/reset/:token',
     name: 'About',
@@ -22,6 +24,12 @@ const routes = [
     name: 'Module',
     component: () => import('../views/Home/ModuleDetail')
   },
+  {
+    path: '/resources',
+    name: 'Resources',
+    component: () => import('../views/Home/Resources')
+  },
+ 
 
 
   // USER 
@@ -85,6 +93,7 @@ const routes = [
     name: 'Admin User Progress',
     component: () => import('../views/Admin/UserAnswer')
   },
+  
 ]
 
 const router = createRouter({
