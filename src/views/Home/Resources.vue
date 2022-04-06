@@ -32,7 +32,9 @@
                                 </li>
                                 <li>
                                     Initial Reflection: complete this quiz to find your potential career paths to explore. 
-                                    There are two assessments to be filled: one by you, and one by your closest relative 
+                                    There are two assessments to be filled: <a href="/file/resources-xlsx/Final-Initial Reflection Career Module.xlsx" class="resources-xlsx" download target="_blank">
+                                        one by you </a> , and <a href="/file/resources-xlsx/Final-Other Person Reflections Career Module.xlsx" class="resources-xlsx" download target="_blank">
+                                        one by your closest relative </a>  
                                     (ask your parent(s)/friend/relatives that knows you well.
                                 </li>
                                 <li>
@@ -61,8 +63,6 @@
                                     <span v-else>Read More</span>
                                   </button>
                               </li>
-                              
-                              
                               <li>
                                   YouTube playlist: a curated playlist that corresponds to the Career List, that will 
                                   help you understand the day-to-day activities of a particular career. (collapsible)
@@ -220,6 +220,10 @@ export default {
 <style scoped>
 .about-icon {
   width: 20%;
+}
+.resources-xlsx{
+  color: #eeaa56;
+  text-decoration: none;
 }
 
 .btn-career {
