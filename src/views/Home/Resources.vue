@@ -106,6 +106,7 @@
         </div>
 
 
+
         <!-- About Us  -->
         <!-- <div class="container mt-5">
           <div class="row mt-4 justify-content-center">
@@ -178,9 +179,11 @@
     </transition>
 
     <Auth :show="showLogin"></Auth>
-
+// test
   </div>
 </template>
+
+
 
 <script>
 // @ is an alias to /src
