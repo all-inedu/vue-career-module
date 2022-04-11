@@ -52,7 +52,7 @@
         </div>
       </div>
     </div>
-    <div class="container sticky-progress mt-2 py-2">
+    <div class="container sticky-progress mt-2 py-2" v-if="user.role_id != 2">
       <div class="card">
         <div class="progress">
           <div

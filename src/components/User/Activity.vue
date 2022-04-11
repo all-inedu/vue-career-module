@@ -202,7 +202,7 @@ export default {
           },
         })
         .then((response) => {
-          // console.log(response.data);
+          console.log(response.data);
           // Onprogress Module
           this.module.ongoing_count = response.data.onprogress.length;
           this.module.ongoing = response.data.onprogress;
