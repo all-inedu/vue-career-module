@@ -7,7 +7,7 @@
                         <p style="font-size: 1.3em">
                             <ul style="padding-left: 0;">
                                 <li>
-                                   <a href="/file/resources-factsheet/Actuary.docx" class="list-factsheet" download target="_blank">
+                                    <a href="/file/resources-factsheet/Actuary.docx" class="list-factsheet" download target="_blank">
                                         Actuary
                                         <vue-feather type="download" size="18" class="float-right"> </vue-feather>
                                     </a> 
@@ -51,7 +51,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                   <a href="/file/resources-factsheet/Copy of Data Scientist.docx" class="list-factsheet" download target="_blank">
+                                    <a href="/file/resources-factsheet/Copy of Data Scientist.docx" class="list-factsheet" download target="_blank">
                                         Copy of Data Scientist
                                         <vue-feather type="download" size="18" class="float-right"> </vue-feather>
                                     </a> 
@@ -75,7 +75,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                   <a href="/file/resources-factsheet/Doctor.docx" class="list-factsheet" download target="_blank">
+                                    <a href="/file/resources-factsheet/Doctor.docx" class="list-factsheet" download target="_blank">
                                         Doctor
                                         <vue-feather type="download" size="18" class="float-right"> </vue-feather>
                                     </a> 

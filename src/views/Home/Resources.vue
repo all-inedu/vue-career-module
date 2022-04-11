@@ -38,7 +38,8 @@
                                     (ask your parent(s)/friend/relatives that knows you well.
                                 </li>
                                 <li>
-                                    Career List: Refer to this list after you completed the Initial Reflection. 
+                                    <a href="/file/career-bank-list/Final-Career Bank List.pdf" class="resources-xlsx" download target="_blank">
+                                        Career List</a>: Refer to this list after you completed the Initial Reflection. 
                                     Use them as a guidance to check the Career Fact Sheets and YouTube Playlist below.
                                 </li>
                                 
@@ -63,13 +64,26 @@
                                     <span v-else>Read More</span>
                                   </button>
                               </li>
-                              <li>
+                              <li class="mb-3">
                                   YouTube playlist: a curated playlist that corresponds to the Career List, that will 
-                                  help you understand the day-to-day activities of a particular career. (collapsible)
+                                  help you understand the day-to-day activities of a particular career. <br>
+                                  <span v-if="youtubePlaylist"></span><span v-else></span>
+                                  <div class="row" v-show="youtubePlaylist">
+                                    <div class="col-md-12 mt-4">
+                                      <transition name="fade">
+                                        <hYoutubePlaylist></hYoutubePlaylist>
+                                      </transition>
+                                    </div>
+                                  </div>
+                                  <button class="btn btn-career" @click="youtubePlaylist =! youtubePlaylist">
+                                    <span v-if="youtubePlaylist">Read Less</span>
+                                    <span v-else>Youtube Playlist</span>
+                                  </button>
 
                               </li>
                               <li>
-                                  End Of Phase 1 Reflection: complete the Talent-Interest Matching to see how much your talent, 
+                                  <a href="/file/resources-xlsx/Final-End of Phase 1 Reflection Career Module.xlsx" class="resources-xlsx" download target="_blank">
+                                        End Of Phase 1 Reflection</a>: complete the Talent-Interest Matching to see how much your talent, 
                                   interest and personality aligns with the career of your choice.
                               </li>
                           </ul>
@@ -78,7 +92,8 @@
                         <b>Phase 2 </b><br />
                           <ul style="padding-left: 4vh;">
                               <li>
-                                  End Of Phase 2 Reflection: identify the current skill and knowledge gap between you and the dream career, 
+                                  <a href="/file/resources-xlsx/Final-End of Phase 2 Reflection Career Module.xlsx" class="resources-xlsx" download target="_blank">
+                                        End Of Phase 2 Reflection</a>: identify the current skill and knowledge gap between you and the dream career, 
                                   which will at the end help you choose your major(s).
                               </li>
                               
@@ -90,7 +105,7 @@
           </div>
         </div>
 
-       
+
 
         <!-- About Us  -->
         <!-- <div class="container mt-5">
@@ -164,16 +179,17 @@
     </transition>
 
     <Auth :show="showLogin"></Auth>
-
-   
   </div>
 </template>
+
+
 
 <script>
 // @ is an alias to /src
 import Auth from "@/components/Home/Auth/Auth";
 import hNavbar from "@/components/Home/Navbar";
 import hCareerModule from "@/components/Home/CareerModule";
+import hYoutubePlaylist from "@/components/Home/YoutubePlaylist";
 // import hBanner from "@/components/Home/Banner";
 // import hModule from "@/components/Home/Modules";
 import hFooter from "@/components/Home/Footer";
@@ -186,6 +202,7 @@ export default {
     Auth,
     hNavbar,
     hCareerModule,
+    hYoutubePlaylist,
     // hBanner,
     // hModule,
     hFooter,
@@ -197,9 +214,8 @@ export default {
       showLogin: false,
       reflection: false,
       showModal: false,
-      
-    readMore: false,
- 
+      readMore: false,
+      youtubePlaylist: false,
     };
   },
   methods: {
@@ -221,7 +237,7 @@ export default {
 .about-icon {
   width: 20%;
 }
-.resources-xlsx{
+.resources-xlsx {
   color: #eeaa56;
   text-decoration: none;
 }

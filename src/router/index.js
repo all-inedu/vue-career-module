@@ -29,7 +29,7 @@ const routes = [
     name: 'Resources',
     component: () => import('../views/Home/Resources')
   },
- 
+
 
 
   // USER 

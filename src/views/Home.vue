@@ -43,14 +43,14 @@
               class="text-decoration-none"
               id="reflection-btn"
             > -->
-                <a
+                <!-- <a
                   href="/file/Initial Reflection.xlsx"
                   download
                   v-if="reflection"
                   class="btn btn-allin-blue"
                 >
                   Reflection
-                </a>
+                </a> -->
                 <!-- </a> -->
               </div>
             </div>
@@ -151,24 +151,32 @@
           <div class="row justify-content-center">
             <div class="col-md-10">
               <div class="row">
-                  <div class="col-md-6">
-                    <div class="text-center my-md-1">
-                      <a href="/file/CAREER_EXPLORATION_GUIDELINES.pdf" class="list-factsheet" download target="_blank">
-                          <img src="../assets/home/Step-1.webp" class="popup-img" >
-                      </a>
-                    </div>
+                <div class="col-md-6">
+                  <div class="text-center my-md-1">
+                    <a
+                      href="/file/CAREER_EXPLORATION_GUIDELINES.pdf"
+                      class="list-factsheet"
+                      download
+                      target="_blank"
+                    >
+                      <img src="../assets/home/Step-1.webp" class="popup-img" />
+                    </a>
+                  </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="text-left my-md-1">
-                        <div class="text-center my-md-1">
-                         <img src="../assets/home/Step-2.webp" class="popup-img" @click="$router.push({path:'/resources'})">
-                        </div>
+                  <div class="text-left my-md-1">
+                    <div class="text-center my-md-1">
+                      <img
+                        src="../assets/home/Step-2.webp"
+                        class="popup-img"
+                        @click="$router.push({ path: '/resources' })"
+                      />
                     </div>
+                  </div>
                 </div>
               </div>
             </div>
-                
-            </div>
+          </div>
         </div>
         <div class="modal-footer justify-content-center">
           <!-- <a href="/file/CAREER_EXPLORATION_GUIDELINES.pdf" download class="my-2 btn btn-primary btn-allin">
@@ -228,11 +236,11 @@ export default {
   width: 20%;
 }
 
-.popup{
+.popup {
   text-decoration: none;
 }
 
-.popup-img{
+.popup-img {
   width: 100%;
 }
 
