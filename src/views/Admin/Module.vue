@@ -175,7 +175,7 @@
                             {{ formatDate(i.updated_at) }}
                           </span>
                         </div>
-                        <div style="height: 100px">
+                        <!-- <div style="height: 100px">
                           <p
                             class="mb-3"
                             style="text-align: justify"
@@ -183,7 +183,7 @@
                               i.desc ? formatText(i.desc, 150, '...') : ''
                             "
                           ></p>
-                        </div>
+                        </div> -->
                         <div class="row align-items-center">
                           <div class="col text-start px-0">
                             <button

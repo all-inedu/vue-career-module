@@ -29,6 +29,7 @@
               </div>
             </div>
 
+            <!-- UI/UX Designer  -->
             <div class="col mb-2">
               <div
                 class="card card-allin border-allin"
@@ -52,6 +53,107 @@
               </div>
             </div>
 
+            <!-- Process Control Engineering  -->
+            <div class="col mb-2">
+              <div
+                class="card card-allin border-allin"
+                @click="getModule('process-control-engineer-101-module')"
+              >
+                <!-- <div class="lock">
+                  <unicon
+                    name="lock-access"
+                    fill="#233874"
+                    icon-style="monochrome"
+                  ></unicon>
+                </div> -->
+                <div class="container-overflow text-center pt-2"></div>
+                <div class="container2 img-bg">
+                  <img
+                    src="../../assets/home/icon/Process-Control-Engineering.webp"
+                    class="card-img-top blur"
+                  />
+                  <div class="card-text blur">
+                    Process Control <br class="d-md-block d-none" />
+                    Engineering
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Psychologist  -->
+            <div class="col mb-2">
+              <div
+                class="card card-allin border-allin"
+                @click="getModule('psychologist-101')"
+              >
+                <div class="lock">
+                  <unicon
+                    name="lock-access"
+                    fill="#233874"
+                    icon-style="monochrome"
+                  ></unicon>
+                </div>
+                <div class="container-overflow text-center pt-2"></div>
+                <div class="container2 img-bg lock-module">
+                  <!-- lock-module-->
+                  <img
+                    src="../../assets/home/icon/Psychologist.webp"
+                    class="card-img-top blur"
+                  />
+                  <div class="card-text blur">Psychologist</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Food Scientist  -->
+            <div class="col mb-2">
+              <div
+                class="card card-allin border-allin"
+                @click="getModule('food-scientist')"
+              >
+                <div class="lock">
+                  <unicon
+                    name="lock-access"
+                    fill="#233874"
+                    icon-style="monochrome"
+                  ></unicon>
+                </div>
+                <div class="container-overflow text-center pt-2"></div>
+                <div class="container2 img-bg lock-module">
+                  <img
+                    src="../../assets/home/icon/Food-Scientist.webp"
+                    class="card-img-top blur"
+                  />
+                  <div class="card-text blur">Food Scientist</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content Creator  -->
+            <div class="col mb-2">
+              <div
+                class="card card-allin border-allin"
+                @click="getModule('content-creator')"
+              >
+                <div class="lock">
+                  <unicon
+                    name="lock-access"
+                    fill="#233874"
+                    icon-style="monochrome"
+                  ></unicon>
+                </div>
+                <div class="container-overflow text-center pt-2"></div>
+                <div class="container2 img-bg lock-module">
+                  <img
+                    src="../../assets/home/icon/Conten-Creator.webp"
+                    class="card-img-top blur"
+                  />
+                  <div class="card-text blur">Content Creator</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Data Scientist  -->
             <div class="col mb-2">
               <div
                 class="card card-allin border-allin"
@@ -75,6 +177,7 @@
               </div>
             </div>
 
+            <!-- Full Stack Dev  -->
             <div class="col mb-2">
               <div
                 class="card card-allin border-allin"
@@ -105,6 +208,7 @@
               </div>
             </div>
 
+            <!-- Biomedical Eng  -->
             <div class="col mb-2">
               <div
                 class="card card-allin border-allin"
@@ -127,6 +231,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Investment Analyst  -->
             <div class="col mb-2">
               <div
                 class="card card-allin border-allin"
@@ -146,98 +252,6 @@
                     class="card-img-top blur"
                   />
                   <div class="card-text blur">Investment Analyst</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col mb-2">
-              <div
-                class="card card-allin border-allin"
-                @click="getModule('psychologist')"
-              >
-                <div class="lock">
-                  <unicon
-                    name="lock-access"
-                    fill="#233874"
-                    icon-style="monochrome"
-                  ></unicon>
-                </div>
-                <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg lock-module">
-                  <img
-                    src="../../assets/home/icon/Psychologist.webp"
-                    class="card-img-top blur"
-                  />
-                  <div class="card-text blur">Psychologist</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col mb-2">
-              <div
-                class="card card-allin border-allin"
-                @click="getModule('content-creator')"
-              >
-                <div class="lock">
-                  <unicon
-                    name="lock-access"
-                    fill="#233874"
-                    icon-style="monochrome"
-                  ></unicon>
-                </div>
-                <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg lock-module">
-                  <img
-                    src="../../assets/home/icon/Conten-Creator.webp"
-                    class="card-img-top blur"
-                  />
-                  <div class="card-text blur">Content Creator</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col mb-2">
-              <div
-                class="card card-allin border-allin"
-                @click="getModule('food-scientist')"
-              >
-                <div class="lock">
-                  <unicon
-                    name="lock-access"
-                    fill="#233874"
-                    icon-style="monochrome"
-                  ></unicon>
-                </div>
-                <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg lock-module">
-                  <img
-                    src="../../assets/home/icon/Food-Scientist.webp"
-                    class="card-img-top blur"
-                  />
-                  <div class="card-text blur">Food Scientist</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col mb-2">
-              <div
-                class="card card-allin border-allin"
-                @click="getModule('medical-doctor')"
-              >
-                <div class="lock">
-                  <unicon
-                    name="lock-access"
-                    fill="#233874"
-                    icon-style="monochrome"
-                  ></unicon>
-                </div>
-                <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg lock-module">
-                  <img
-                    src="../../assets/home/icon/Medical-Doctor.webp"
-                    class="card-img-top blur"
-                  />
-                  <div class="card-text blur">Medical Doctor</div>
                 </div>
               </div>
             </div>
