@@ -86,15 +86,15 @@
                 class="card card-allin border-allin"
                 @click="getModule('psychologist-101')"
               >
-                <div class="lock">
+                <!-- <div class="lock">
                   <unicon
                     name="lock-access"
                     fill="#233874"
                     icon-style="monochrome"
                   ></unicon>
-                </div>
+                </div> -->
                 <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg lock-module">
+                <div class="container2 img-bg">
                   <!-- lock-module-->
                   <img
                     src="../../assets/home/icon/Psychologist.webp"
@@ -109,17 +109,17 @@
             <div class="col mb-2">
               <div
                 class="card card-allin border-allin"
-                @click="getModule('food-scientist')"
+                @click="getModule('food-scientist-101')"
               >
-                <div class="lock">
+                <!-- <div class="lock">
                   <unicon
                     name="lock-access"
                     fill="#233874"
                     icon-style="monochrome"
                   ></unicon>
-                </div>
+                </div> -->
                 <div class="container-overflow text-center pt-2"></div>
-                <div class="container2 img-bg lock-module">
+                <div class="container2 img-bg">
                   <img
                     src="../../assets/home/icon/Food-Scientist.webp"
                     class="card-img-top blur"
