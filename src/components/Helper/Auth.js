@@ -5,9 +5,9 @@ import router from '../../router';
 export const auth = {
     check() {
         // return localStorage.user;
-        // let api_url = "https://api-cm.all-inedu.com/api/v1/";
-
-        let api_url = "https://dev.api-cm.all-inedu.com/api/v1/";
+        let api_url = "https://api-cm.all-inedu.com/api/v1/";
+        // let api_url = "https://dev.api-cm.all-inedu.com/api/v1/";
+        
         let data = [];
         let token = '';
         const Toast = Swal.mixin({
